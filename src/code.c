@@ -1064,11 +1064,15 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
   segmentStats* results;
   int strand, frame, sites,L;
   double* scores;
+  double sum;
   double* maxScores;
   int segmentStart, segmentEnd, currPos, hssCount;
-  double currMax, cumSum;
+  double currMax, currEntry;
+  int iMax;
+  int jMax;
   double pvalue;
-  int i,j;
+  double** matrix;
+  int i,j,k,l;
 
   struct aln *inputAlnRev[MAX_NUM_NAMES];
   struct aln **currAln;
@@ -1083,7 +1087,7 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
 
   hssCount=0;
   
-  for (strand=0;strand<=0;strand++){
+  for (strand=0;strand<=1;strand++){
     
     if (strand==0){
       currAln=(struct aln**)inputAln;
@@ -1091,119 +1095,91 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
       currAln=(struct aln**)inputAlnRev;
     }
 
-    for (frame=0;frame<1;frame++){
+    for (frame=0;frame<3;frame++){
 
       sites=((int)(L-frame)/3);
 
-      //printf("Frame %i, strand %i, sites: %i:\n",frame, strand, sites);
+      printf("Frame %i, strand %i, sites: %i:\n",frame, strand, sites);
+
+      //sites=13;
 
       scores=sumOfPairScore(modelMatrix,(const struct aln**)currAln,frame, L-1);
 
-      cumSum=0.0;
-      segmentStart=0;
-      segmentEnd=1;
-      currMax=cumSum;
-      for (currPos=0;currPos<sites;currPos++){
+      /*
+      scores=(double*)malloc(sites*sizeof(double));
+      
+      scores[0]=2.0;
+      scores[1]=-1.0;
+      scores[2]=3.0;
+      scores[3]=4.0;
+      scores[4]=-3.0;
+      scores[5]=-2.0;
+      scores[6]=-20.0;
+      scores[7]=2.0;
+      scores[8]=-1.0;
+      scores[9]=3.0;
+      scores[10]=4.0;
+      scores[11]=-3.0;
+      scores[12]=-2.0;
+      */
 
-        cumSum+=scores[currPos];
+      /* Create matrix that holds sum of scores for each sub-sequence */
+      matrix=(double**)malloc(sizeof(double*)*sites);
 
-        if (cumSum<0.0){
-          cumSum=0.0;
-        }
-
-        if (cumSum>=currMax){
-          segmentEnd=currPos;
-          currMax=cumSum;
-        }
-
-        printf("%i-%i %.2f %.2f %.2f\n",segmentStart, segmentEnd,scores[currPos],cumSum, currMax);
-
-        for (j=0;inputAln[j]!=NULL;j++){
-          for (i=segmentStart*3;i<=segmentEnd*3;i+=3){
-            printf("%c%c%c ",inputAln[j]->seq[i],inputAln[j]->seq[i+1],inputAln[j]->seq[i+2]);
+      for (i=0; i<sites; ++i){
+        matrix[i]=(double*)malloc(sizeof(double)*sites);
+        for (j=0;j<sites;j++){
+          if (i==j) {
+            matrix[i][j]=scores[j];
+          } else {
+            matrix[i][j]=matrix[i][j-1]+scores[j];
           }
-          printf("\n");
-        }
-
-        printf("======================\n");
-
-        for (j=0;inputAln[j]!=NULL;j++){
-          for (i=segmentStart*3;i<=segmentEnd*3;i+=3){
-            printf("%c%c%c ",inputAln[j]->fullSeq[i],inputAln[j]->fullSeq[i+1],inputAln[j]->fullSeq[i+2]);
-          }
-          printf("\n");
-        }
-
-
-        
-
-        printf("\n");
-
-        if ((cumSum<0.0001) || (currPos==sites-1) ){
-          if (segmentEnd-segmentStart>2){
-
-            if (scores[segmentStart]<0){
-              segmentStart++;
-            }
-            
-            pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
-
-            if (pvalue<cutoff){
-
-              /* re-allocate for each new result, leave room for last entry */
-              results=(segmentStats*)realloc(results,sizeof(segmentStats)*(hssCount+2));
-
-              if (results==NULL){
-                exit(1);
-              }
-
-              /* chromosome name is also stored in results, note that we
-                 use statically allocated memory there */
-            
-              //strncpy((char*)results[hssCount].name,inputAln[0]->name,256);
-              //results[hssCount].name[strlen(inputAln[0]->seq)]='\0';
-
-              results[hssCount].name=strdup(inputAln[0]->name);
-              results[hssCount].strand=strand;
-              results[hssCount].frame=frame;
-              results[hssCount].startSite=segmentStart;
-              results[hssCount].endSite=segmentEnd;
-              results[hssCount].score=currMax;
-
-              /* If CLUSTAL W input without coordinates */
-              if ((inputAln[0]->start==0) && (inputAln[0]->length==0)){
-              
-                results[hssCount].start=segmentStart*3+frame;
-                results[hssCount].end=segmentEnd*3+frame+2;
-
-              } else {
-
-                if (strand==0){
-                  results[hssCount].start=inputAln[0]->start+segmentStart*3+frame;
-                  results[hssCount].end=inputAln[0]->start+segmentEnd*3+frame+2;
-
-                } else {
-              
-                  results[hssCount].end=(inputAln[0]->start+inputAln[0]->length-1)-segmentStart*3-frame;
-                  results[hssCount].start=(inputAln[0]->start+inputAln[0]->length-1)-segmentEnd*3-frame-2;
-                }
-              }
-
-              results[hssCount].pvalue=pvalue;
-
-                        
-              //printf("from: %i to %i\n", segmentStart, segmentEnd);
-              hssCount++;
-            }
-
-          }
-          segmentStart=currPos;
-          segmentEnd=currPos;
-          currMax=0.0;
-          
         }
       }
-      //free(cumSum);
+
+      for (i=0; i<sites; i++){
+        for (j=0;j<sites;j++){
+          //printf("%*.1f ",5,matrix[i][j]);
+        }
+        //printf("\n");
+      }
+
+      /* Search for local maximum scores that cannot be improved by
+         adding sites left or right to the subsequence */
+
+      currMax=0.0;
+      iMax=-1;
+      jMax=-1;
+
+      for (i=0; i<sites; i++){
+        for (j=i;j<sites;j++){
+          currEntry=matrix[i][j];
+          /* only consider positive entries */
+          if (currEntry>0.0){
+            /* if current position does not overlap with current
+            maximum and positive value has been found previously, this
+            is written as local maxium */
+            if (jMax<i && jMax!=-1){
+              printf("%u,%u:%.2f\n",iMax,jMax,currMax);
+              currMax=currEntry; 
+              iMax=i; 
+              jMax=j; 
+            } 
+            /* current positive value overlaps with previously found
+               maximum */
+            else { 
+              /* set new maximum if curr entry is larger */
+              if (currEntry>currMax){ 
+                currMax=currEntry; 
+                iMax=i; 
+                jMax=j; 
+              }
+            } 
+          }
+        }
+      } 
+      printf("%u,%u:%.2f\n",iMax,jMax,currMax);
+
       free(scores);
     }
   }
@@ -1220,6 +1196,8 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
 
 
 }
+
+
 
 
 

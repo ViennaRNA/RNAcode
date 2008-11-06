@@ -1,0 +1,11 @@
+# gengetopt template file
+# create cmdline.h and cmdline.c with the following command:
+#
+#gengetopt < cmdline.ggo -F cmdline --unamed-opts --no-handle-version --no-handle-help --no-handle-error
+
+option      "outfile"     o         "Output filename"       string       no
+option      "num-samples" n         "Number of samples"     int          no
+option      "verbose"                      v  "verbose"        flag off
+option      "cutoff"                       e  "e-value cutoff"  float       no
+option      "gtf"                          g  "GTF output"     flag off
+option      "fast-sampling"                          f  "Fast sampling"     flag off          

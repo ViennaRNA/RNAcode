@@ -1,0 +1,10 @@
+* TODO Re-implement current algorithm in matrix
+* TODO Check score distributions
+* TODO Add penalty for stop codons
+* TODO Add frame-score
+* TODO Set up test-sets
+** TODO Alignments/annotations
+*** TODO Fly
+*** TODO Human
+*** TODO Plasmodium
+** TODO Statistics

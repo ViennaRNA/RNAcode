@@ -148,17 +148,12 @@ int main(int argc, char *argv[]){
     modelMatrix=getModelMatrix(tree,inputAln,kappa);
 
     getExtremeValuePars(tree, modelMatrix, (const struct aln**)inputAln, sampleN, sampleMode, &parMu, &parLambda);
-    results=getHSS(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
-
-    hssCount=0;
-
-    while (results[hssCount].score>=0) hssCount++;
-
-    qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
-
-    printResults(outputFile,outputFormat,results);
-
-    freeResults(results);
+    //results=getHSS(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
+    //hssCount=0;
+    //while (results[hssCount].score>=0) hssCount++;
+    //qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+    //printResults(outputFile,outputFormat,results);
+    //freeResults(results);
 
     results=getHSSnew(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
 

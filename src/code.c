@@ -1059,7 +1059,8 @@ segmentStats* getHSS(bgModel** modelMatrix, const struct aln** inputAln, double 
 }
 
 
-segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, double parMu, double parLambda,double cutoff){
+segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, 
+                        double parMu, double parLambda,double cutoff){
 
   segmentStats* results;
   int strand, frame, sites,L;
@@ -1068,11 +1069,10 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
   double* maxScores;
   int segmentStart, segmentEnd, currPos, hssCount;
   double currMax, currEntry;
-  int iMax;
-  int jMax;
   double pvalue;
   double** matrix;
   int i,j,k,l;
+  int minSegmentLength=2;
 
   struct aln *inputAlnRev[MAX_NUM_NAMES];
   struct aln **currAln;
@@ -1099,7 +1099,7 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
 
       sites=((int)(L-frame)/3);
 
-      printf("Frame %i, strand %i, sites: %i:\n",frame, strand, sites);
+      //printf("Frame %i, strand %i, sites: %i:\n",frame, strand, sites);
 
       //sites=13;
 
@@ -1148,38 +1148,87 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
          adding sites left or right to the subsequence */
 
       currMax=0.0;
-      iMax=-1;
-      jMax=-1;
-
+      segmentStart=-1;
+      segmentEnd=-1;
+      
       for (i=0; i<sites; i++){
         for (j=i;j<sites;j++){
           currEntry=matrix[i][j];
-          /* only consider positive entries */
-          if (currEntry>0.0){
-            /* if current position does not overlap with current
-            maximum and positive value has been found previously, this
-            is written as local maxium */
-            if (jMax<i && jMax!=-1){
-              printf("%u,%u:%.2f\n",iMax,jMax,currMax);
+      
+          if (currEntry>0.0 ||           /* only consider positive entries */
+              (i==sites-1 && j==sites-1)){ /* enter on last entry in
+                                              any case to report last found
+                                              maximum */ 
+          
+            /* if maximum has been found previously and we have reached a point
+               not overlapping with this segment, it is reported as
+               local maximum (we report on last entry in any case...)*/
+            if ((currMax>0.0 && segmentEnd<i ) || (i==sites-1 && j==sites-1)){
+              
+              //printf("%u,%u:%.2f\n",segmentStart,segmentEnd,currMax);
+              
+              pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
+              
+              if (pvalue<cutoff && segmentEnd-segmentStart>=minSegmentLength){
+
+                /* re-allocate for each new result, leave room for last entry */
+                results=(segmentStats*)realloc(results,sizeof(segmentStats)*(hssCount+2));
+
+                if (results==NULL){
+                  exit(1);
+                }
+
+                /* chromosome name is also stored in results, note that we
+                   use statically allocated memory there */
+            
+                results[hssCount].name=strdup(inputAln[0]->name);
+                results[hssCount].strand=strand;
+                results[hssCount].frame=frame;
+                results[hssCount].startSite=segmentStart;
+                results[hssCount].endSite=segmentEnd;
+                results[hssCount].score=currMax;
+
+                /* If CLUSTAL W input without coordinates */
+                if ((inputAln[0]->start==0) && (inputAln[0]->length==0)){
+              
+                  results[hssCount].start=segmentStart*3+frame;
+                  results[hssCount].end=segmentEnd*3+frame+2;
+
+                } else {
+
+                  if (strand==0){
+                    results[hssCount].start=inputAln[0]->start+segmentStart*3+frame;
+                    results[hssCount].end=inputAln[0]->start+segmentEnd*3+frame+2;
+                    
+                  } else {
+                    
+                    results[hssCount].end=(inputAln[0]->start+inputAln[0]->length-1)-segmentStart*3-frame;
+                    results[hssCount].start=(inputAln[0]->start+inputAln[0]->length-1)-segmentEnd*3-frame-2;
+                  }
+                }
+
+                results[hssCount].pvalue=pvalue;
+                        
+                hssCount++;
+              }
+           
               currMax=currEntry; 
-              iMax=i; 
-              jMax=j; 
+              segmentStart=i; 
+              segmentEnd=j; 
             } 
-            /* current positive value overlaps with previously found
-               maximum */
+            /* current potential maximal segment overlaps with
+               previously found segment */
             else { 
               /* set new maximum if curr entry is larger */
               if (currEntry>currMax){ 
                 currMax=currEntry; 
-                iMax=i; 
-                jMax=j; 
+                segmentStart=i; 
+                segmentEnd=j; 
               }
             } 
           }
         }
       } 
-      printf("%u,%u:%.2f\n",iMax,jMax,currMax);
-
       free(scores);
     }
   }
@@ -1196,12 +1245,6 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, doub
 
 
 }
-
-
-
-
-
-
 
 
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]){

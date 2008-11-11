@@ -31,6 +31,7 @@ int main(int argc, char *argv[]){
 
   FILE *inputFile=stdin;
   FILE *outputFile=stdout;
+  FILE *debugFile=stdout;
 
   int (*readFunction)(FILE *clust,struct aln *alignedSeqs[]);
 
@@ -41,6 +42,13 @@ int main(int argc, char *argv[]){
   int sampleMode=0;
   int outputFormat=0; /* 0: normal list; 1: GTF */
   double cutoff=1.0;
+
+  /* For debugging purposes, set these variable to print out
+     false-positive or false-negatives on test sets of noncoding or
+     coding regions of known  annotation */
+
+  double printIfBelow=-1.0; 
+  double printIfAbove=-1.0;
 
   srand(time(NULL));
 
@@ -83,6 +91,16 @@ int main(int argc, char *argv[]){
   if (args.cutoff_given){
     cutoff=args.cutoff_arg;
   }
+
+  if (args.print_if_below_given){
+    printIfBelow=args.print_if_below_arg;
+  }
+
+  if (args.print_if_above_given){
+    printIfAbove=args.print_if_above_arg;
+  }
+
+
 
   if (args.help_given){
     help();
@@ -162,6 +180,26 @@ int main(int argc, char *argv[]){
     while (results[hssCount].score>=0) hssCount++;
 
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+
+
+    if (printIfAbove > -1.0){
+      printf("%.4f\n", printIfAbove);
+      if (results[0].pvalue > printIfAbove){
+        debugFile = fopen("falseNegatives.maf", "w");
+        printAlnMAF(debugFile,(const struct aln**)inputAln,0);
+      }
+    }
+    
+    if (printIfBelow > -1.0){
+      if (results[0].pvalue < printIfBelow){
+        debugFile = fopen("falsePositives.maf", "w");
+        printAlnMAF(debugFile,(const struct aln**)inputAln,0);
+      }
+    }
+
+
+
+
 
     printResults(outputFile,outputFormat,results);
 

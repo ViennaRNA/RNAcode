@@ -1,10 +1,19 @@
-* TODO Re-implement current algorithm in matrix
-* TODO Check score distributions
-* TODO Add penalty for stop codons
-* TODO Add frame-score
-* TODO Set up test-sets
+* Finishing core functionalities in RNAcode
+** DONE Re-implement current algorithm in matrix
+** TODO Simple test set to score alignemts for tinkering
+*** DONE Fly positive/negative set
+*** TODO Human positive/negative set
+*** TODO Score pipeline
+**** TODO score
+**** TODO R-plots and statistics
+**** TODO false positives/false negatives
+** TODO Add penalty for stop codons
+** TODO Add frame-score
+** TODO Analyze score distributions and statistics
+* Real life tests
+** TODO Pipeline to automatically score alignments
 ** TODO Alignments/annotations
 *** TODO Fly
 *** TODO Human
 *** TODO Plasmodium
-** TODO Statistics
+* Further Ideas

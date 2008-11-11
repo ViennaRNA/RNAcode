@@ -511,9 +511,10 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
       }
 
 
-      fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2e\t%c\t%c\t%s\n",
+      fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2f|%.2e\t%c\t%c\t%s\n",
               name, "RNAcode","CDS",
               results[i].start+1,results[i].end+1,
+              results[i].score,
               results[i].pvalue,
               direction, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
       i++;

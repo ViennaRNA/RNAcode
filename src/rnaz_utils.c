@@ -688,3 +688,35 @@ int encodeBase(char base){
   return -1;
 }
 
+void printAlnMAF(FILE *out, const struct aln* AS[],int printU){
+
+  int i,j,N;
+  int L;
+  char* tmpString;
+
+  L=strlen(AS[0]->seq);
+
+  fprintf(out, "a score=0\n");
+
+  for (i=0;AS[i]!=NULL;i++){
+
+    tmpString=AS[i]->seq;
+
+    j=0;
+    
+    while (tmpString[j]){
+      if (!printU){
+        if (tmpString[j]=='U'){
+          tmpString[j]='T';
+        }
+      }
+      j++;
+    }
+  }
+  
+  for (i=0;AS[i]!=NULL;i++){
+    fprintf(out, "s %s %i %i %c %i %s\n",AS[i]->name,AS[i]->start,AS[i]->length,AS[i]->strand, AS[i]->fullLength, AS[i]->seq);
+  }
+  fprintf(out, "\n");
+  
+}

@@ -54,4 +54,9 @@ void freeFields(char** fields);
 
 char** splitLines(char* string);
 
+void printAlnMAF(FILE *out, const struct aln* AS[],int printU);
+
+
+
+
 #endif

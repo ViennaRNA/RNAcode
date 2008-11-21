@@ -13,6 +13,7 @@ struct aln {
   char *name;
   char *seq; 
   char *fullSeq; /* Remembers full sequence when gaps are stripped in seq*/
+  double score;
   int start;
   int length;
   int fullLength;

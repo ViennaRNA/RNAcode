@@ -8,6 +8,9 @@ option      "num-samples" n         "Number of samples"     int          no
 option      "verbose"                      v  "verbose"        flag off
 option      "cutoff"                       e  "e-value cutoff"  float       no
 option      "gtf"                          g  "GTF output"     flag off
+option      "concise"                          t  "Concise output (debugging)"     flag off
 option      "fast-sampling"                          f  "Fast sampling"     flag off
-option      "print-if-below"                         x  "Print alignments below p-value cutoff (debugging)"     float   no
+option      "debug-file"     d         "Debug file"       string       no
+option      "print-if-below"                         z  "Print alignments below p-value cutoff (debugging)"     float   no
 option      "print-if-above"                         y  "Print alignments above p-value cutoff (debugging)"     float   no
+option      "gfx"                          x  "Postscript output"     flag off

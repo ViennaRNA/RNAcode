@@ -12,11 +12,12 @@
 #include "tree.h"
 #include "treeSimulate.h"
 #include "extreme_fit.h"
+#include "postscript.h"
 
 void usage(void);
 void help(void);
 void version(void);
-
+void printDebugAlignments(char* fileName, struct aln *alignment[]);
 
 int main(int argc, char *argv[]){
 
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]){
   bgModel** modelMatrix;
   segmentStats *results;
   TTree* tree;
-
+  char debugFileName[1024]="";
   FILE *inputFile=stdin;
   FILE *outputFile=stdout;
   FILE *debugFile=stdout;
@@ -39,8 +40,8 @@ int main(int argc, char *argv[]){
   struct aln *inputAln[MAX_NUM_NAMES];
 
   int sampleN=1000;
-  int sampleMode=0;
-  int outputFormat=0; /* 0: normal list; 1: GTF */
+  int sampleMode=1;
+  int outputFormat=0; /* 0: normal list; 1: GTF; 2:compact list (debugging) */
   double cutoff=1.0;
 
   /* For debugging purposes, set these variable to print out
@@ -58,14 +59,13 @@ int main(int argc, char *argv[]){
   ntMap['T']=ntMap['t']=3;
   ntMap['U']=ntMap['u']=3;
 
-
   /* Read command line arguments */
   
   if (cmdline_parser (argc, argv, &args) != 0){
     usage();
     exit(EXIT_FAILURE);
   }
-
+  
   if (args.inputs_num>=1){
     inputFile = fopen(args.inputs[0], "r"); 
     if (inputFile == NULL){
@@ -87,20 +87,27 @@ int main(int argc, char *argv[]){
     outputFormat=1;
   }
 
+  if (args.concise_given){
+    outputFormat=2;
+  }
 
   if (args.cutoff_given){
     cutoff=args.cutoff_arg;
   }
 
+  if (args.debug_file_given){
+    strcpy(debugFileName,args.debug_file_arg);
+  }
+
   if (args.print_if_below_given){
-    printIfBelow=args.print_if_below_arg;
+      printIfBelow=args.print_if_below_arg; 
+      debugFile = fopen(debugFileName, "w");
   }
 
   if (args.print_if_above_given){
-    printIfAbove=args.print_if_above_arg;
+    printIfAbove=args.print_if_above_arg; 
+    debugFile = fopen(debugFileName, "w");
   }
-
-
 
   if (args.help_given){
     help();
@@ -138,11 +145,16 @@ int main(int argc, char *argv[]){
       }
     }
     
-    //    printAlnClustal(outputFile,(const struct aln**)inputAln); 
+    //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
 
     stripGaps((struct aln**)inputAln);
 
     L=strlen(inputAln[0]->seq);
+
+    if (L<3){
+      continue;
+    }
+
     for (N=0; inputAln[N]!=NULL; N++);   
 
 
@@ -166,12 +178,6 @@ int main(int argc, char *argv[]){
     modelMatrix=getModelMatrix(tree,inputAln,kappa);
 
     getExtremeValuePars(tree, modelMatrix, (const struct aln**)inputAln, sampleN, sampleMode, &parMu, &parLambda);
-    //results=getHSS(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
-    //hssCount=0;
-    //while (results[hssCount].score>=0) hssCount++;
-    //qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
-    //printResults(outputFile,outputFormat,results);
-    //freeResults(results);
 
     results=getHSSnew(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
 
@@ -181,27 +187,24 @@ int main(int argc, char *argv[]){
 
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
 
-
     if (printIfAbove > -1.0){
-      printf("%.4f\n", printIfAbove);
       if (results[0].pvalue > printIfAbove){
-        debugFile = fopen("falseNegatives.maf", "w");
         printAlnMAF(debugFile,(const struct aln**)inputAln,0);
       }
     }
-    
+      
     if (printIfBelow > -1.0){
       if (results[0].pvalue < printIfBelow){
-        debugFile = fopen("falsePositives.maf", "w");
         printAlnMAF(debugFile,(const struct aln**)inputAln,0);
       }
     }
-
-
-
-
-
+     
     printResults(outputFile,outputFormat,results);
+
+
+    if (args.gfx_given){
+      colorAln("color.ps", (const struct aln**)inputAln, results[0]);
+    }
 
     freeResults(results);
 
@@ -211,18 +214,30 @@ int main(int argc, char *argv[]){
 
     freeSeqgenTree(tree);
 
+
+
     freeAln((struct aln**)inputAln);
 
   }
+  
+  if ((printIfAbove > -1.0) || (printIfBelow > -1.0)){
+    fclose(debugFile);
+  }
+
 
   fclose(inputFile);
 
   cmdline_parser_free(&args);
-
+  
   exit(EXIT_SUCCESS);
 
 }
 
+
+
+//void printDebugAlignments(char* fileName, const struct aln *alignment[]){
+//}
+ 
 
 void usage(void){
   help();

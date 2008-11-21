@@ -47,14 +47,21 @@ struct gengetopt_args_info
   const char *cutoff_help; /**< @brief e-value cutoff help description.  */
   int gtf_flag;	/**< @brief GTF output (default=off).  */
   const char *gtf_help; /**< @brief GTF output help description.  */
+  int concise_flag;	/**< @brief Concise output (debugging) (default=off).  */
+  const char *concise_help; /**< @brief Concise output (debugging) help description.  */
   int fast_sampling_flag;	/**< @brief Fast sampling (default=off).  */
   const char *fast_sampling_help; /**< @brief Fast sampling help description.  */
+  char * debug_file_arg;	/**< @brief Debug file.  */
+  char * debug_file_orig;	/**< @brief Debug file original value given at command line.  */
+  const char *debug_file_help; /**< @brief Debug file help description.  */
   float print_if_below_arg;	/**< @brief Print alignments below p-value cutoff (debugging).  */
   char * print_if_below_orig;	/**< @brief Print alignments below p-value cutoff (debugging) original value given at command line.  */
   const char *print_if_below_help; /**< @brief Print alignments below p-value cutoff (debugging) help description.  */
   float print_if_above_arg;	/**< @brief Print alignments above p-value cutoff (debugging).  */
   char * print_if_above_orig;	/**< @brief Print alignments above p-value cutoff (debugging) original value given at command line.  */
   const char *print_if_above_help; /**< @brief Print alignments above p-value cutoff (debugging) help description.  */
+  int gfx_flag;	/**< @brief Postscript output (default=off).  */
+  const char *gfx_help; /**< @brief Postscript output help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -63,9 +70,12 @@ struct gengetopt_args_info
   unsigned int verbose_given ;	/**< @brief Whether verbose was given.  */
   unsigned int cutoff_given ;	/**< @brief Whether cutoff was given.  */
   unsigned int gtf_given ;	/**< @brief Whether gtf was given.  */
+  unsigned int concise_given ;	/**< @brief Whether concise was given.  */
   unsigned int fast_sampling_given ;	/**< @brief Whether fast-sampling was given.  */
+  unsigned int debug_file_given ;	/**< @brief Whether debug-file was given.  */
   unsigned int print_if_below_given ;	/**< @brief Whether print-if-below was given.  */
   unsigned int print_if_above_given ;	/**< @brief Whether print-if-above was given.  */
+  unsigned int gfx_given ;	/**< @brief Whether gfx was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

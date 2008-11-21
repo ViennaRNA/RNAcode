@@ -1,3 +1,8 @@
+#ifndef _CODE_H_
+#define _CODE_H_
+
+
+
 #include "rnaz_utils.h"
 #include "tree.h"
 #include "treeSimulate.h"
@@ -94,3 +99,6 @@ void randomlyPlaceGaps(const struct aln* origAln[], struct aln* sampledAln[]);
 void sortAln(const struct aln* origAln[], struct aln* sampledAln[]);
 
 void freeResults(segmentStats results[]);
+
+
+#endif

@@ -321,16 +321,16 @@ void revAln(struct aln *AS[]) {
   length=strlen(AS[0]->seq);
   
   for (i=0;AS[i]!=NULL;i++){
-	tmp = (char *) space((unsigned) length+1);
-	for (j=length-1;j>=0;j--){
-	  letter=AS[i]->seq[j];
-	  switch(letter){
-		case 'T': letter='A'; break;
-		case 'U': letter='A'; break;
-		case 'C': letter='G'; break;
-		case 'G': letter='C'; break;
-		case 'A': letter='T'; break;
-	  }
+    tmp = (char *) space((unsigned) length+1);
+    for (j=length-1;j>=0;j--){
+      letter=AS[i]->seq[j];
+      switch(letter){
+      case 'T': letter='A'; break;
+      case 'U': letter='A'; break;
+      case 'C': letter='G'; break;
+      case 'G': letter='C'; break;
+      case 'A': letter='T'; break;
+      }
 	  tmp[length-j-1]=letter;
 	}
 	tmp[length]='\0';
@@ -420,12 +420,12 @@ struct aln* createAlnEntry(char* name, char* seq, int start, int length, int ful
 }
 
 
- void printAln(const struct aln* AS[]){
-   int i;
-   for (i=0;AS[i]!=NULL;i++){
-	 printf("%s %s\n",AS[i]->name,AS[i]->seq);
-   }
- }
+void printAln(const struct aln* AS[]){
+  int i;
+  for (i=0;AS[i]!=NULL;i++){
+    printf("%s %s\n",AS[i]->name,AS[i]->seq);
+  }
+}
 
  int checkFormat(FILE *file){
 

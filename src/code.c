@@ -441,8 +441,6 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
   char prefix[1024]="";
   char suffix[1024]="";
 
-
-
   if (outputFormat==0){
 
     if (results[0].score<0.0){
@@ -482,19 +480,12 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
     }
   }
 
-
   
   if (outputFormat==1){
-
     i=0;
-
     while (results[i].score>0){
-      
       direction='+';
-      
       if (results[i].strand==1)  direction='-';
-
-
       /* if name is of the form hg18.chromX than only display chromX */
       k=0;
       while (1){
@@ -510,7 +501,6 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
         strcpy(name,results[i].name+k+1);
       }
 
-
       fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2f|%.2e\t%c\t%c\t%s\n",
               name, "RNAcode","CDS",
               results[i].start+1,results[i].end+1,
@@ -523,7 +513,34 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
       if (i > 0) break;
     }
   }
+
+  if (outputFormat==2){
+
+    i=0;
+
+    while (results[i].score>0){
+      direction='+';
+      if (results[i].strand==1)  direction='-';
+   
+      fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f",
+              direction, results[i].frame,
+              results[i].endSite-results[i].startSite+1,
+              results[i].startSite,results[i].endSite,
+              results[i].name,
+              results[i].start,results[i].end,
+              results[i].score);
+
+      if (results[i].pvalue < 0.001){
+        fprintf(outfile, "% 9.3e\n",results[i].pvalue);
+      } else {
+        fprintf(outfile, "% 9.3f\n",results[i].pvalue);
+      }
+      break;
+      i++;
+    }
+  }
 }
+
 
 
 void stripGaps(struct aln* alignment[]){
@@ -809,6 +826,8 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
   double* maxScores;
   double mu, sigma;
   struct aln *sampledAln[MAX_NUM_NAMES];
+  int sampleWritten=0;
+
 
   L=strlen(alignment[0]->seq);
 
@@ -833,6 +852,17 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
       
       scores=sumOfPairScore(modelMatrix,(const struct aln**)sampledAln,0, L-1);
 
+      /* Write one random sampling, debugging */
+      if (!sampleWritten){
+        int x=0;
+        FILE *fp = fopen("samples.maf", "a");
+        for (x=1; sampledAln[x]!=NULL; ++x){
+          sampledAln[x]->strand='+';
+        }
+        printAlnMAF(fp,(const struct aln**)sampledAln,0);
+        sampleWritten=1;
+      }
+      
       freeAln((struct aln**)sampledAln);
 
       sum=0.0;
@@ -849,7 +879,6 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
       maxScores[i]=maxSum;
       free(scores);
     }
-
   } else {
 
     simulateTree(tree,freqsMono,kappa,sampleN*3);
@@ -1130,7 +1159,7 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln,
       for (i=0; i<sites; ++i){
         matrix[i]=(double*)malloc(sizeof(double)*sites);
         for (j=0;j<sites;j++){
-          if (i==j) {
+          if (i==j || j == 0) {
             matrix[i][j]=scores[j];
           } else {
             matrix[i][j]=matrix[i][j-1]+scores[j];
@@ -1236,9 +1265,11 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln,
 
   if (hssCount==0){
     results=(segmentStats*)malloc(sizeof(segmentStats));
+    results[0].pvalue=1.0;
   }
 
   results[hssCount].score=-1; /* mark end of list */
+  
 
   freeAln((struct aln**)inputAlnRev);
 

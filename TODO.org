@@ -2,14 +2,18 @@
 ** DONE Re-implement current algorithm in matrix
 ** TODO Simple test set to score alignemts for tinkering
 *** DONE Fly positive/negative set
-*** TODO Human positive/negative set
-*** TODO Score pipeline
+*** DONE Human positive/negative set
+*** DONE Score pipeline
 **** TODO score
 **** TODO R-plots and statistics
-**** TODO false positives/false negatives
+**** DONE false positives/false negatives
 ** TODO Add penalty for stop codons
 ** TODO Add frame-score
 ** TODO Analyze score distributions and statistics
+* Bling
+** TODO PS-Output
+*** TODO Get basic aligment print from RNAz into code.
+*** Add coloring
 * Real life tests
 ** TODO Pipeline to automatically score alignments
 ** TODO Alignments/annotations
@@ -17,3 +21,13 @@
 *** TODO Human
 *** TODO Plasmodium
 * Further Ideas
+** Subtrees
+** Single site predicition: More sophisticated tree method: ML on HKY and codon
+** putative ORFs in Bacteria
+
+
+* TODAY
+** TODO Subset in scoring
+** DONE p-value distributions native noncoding
+** DONE p-value distributions simulted noncoding
+** TODO plots

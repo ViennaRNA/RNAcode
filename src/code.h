@@ -2,7 +2,6 @@
 #define _CODE_H_
 
 
-
 #include "rnaz_utils.h"
 #include "tree.h"
 #include "treeSimulate.h"

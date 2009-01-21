@@ -62,6 +62,9 @@ struct gengetopt_args_info
   const char *print_if_above_help; /**< @brief Print alignments above p-value cutoff (debugging) help description.  */
   int gfx_flag;	/**< @brief Postscript output (default=off).  */
   const char *gfx_help; /**< @brief Postscript output help description.  */
+  char * limit_arg;	/**< @brief limit to species.  */
+  char * limit_orig;	/**< @brief limit to species original value given at command line.  */
+  const char *limit_help; /**< @brief limit to species help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -76,6 +79,7 @@ struct gengetopt_args_info
   unsigned int print_if_below_given ;	/**< @brief Whether print-if-below was given.  */
   unsigned int print_if_above_given ;	/**< @brief Whether print-if-above was given.  */
   unsigned int gfx_given ;	/**< @brief Whether gfx was given.  */
+  unsigned int limit_given ;	/**< @brief Whether limit was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

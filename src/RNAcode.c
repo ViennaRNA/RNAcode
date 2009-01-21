@@ -17,7 +17,6 @@
 void usage(void);
 void help(void);
 void version(void);
-void printDebugAlignments(char* fileName, struct aln *alignment[]);
 
 int main(int argc, char *argv[]){
 
@@ -83,6 +82,11 @@ int main(int argc, char *argv[]){
     }
   }
 
+  if (args.num_samples_given){
+    sampleN=args.num_samples_arg;
+  }
+
+
   if (args.gtf_given){
     outputFormat=1;
   }
@@ -144,6 +148,11 @@ int main(int argc, char *argv[]){
         j++;
       }
     }
+
+    if (args.limit_given){
+      pruneAln(args.limit_arg,(struct aln**)inputAln);
+    }
+    
     
     //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
 
@@ -178,8 +187,7 @@ int main(int argc, char *argv[]){
     modelMatrix=getModelMatrix(tree,inputAln,kappa);
 
     getExtremeValuePars(tree, modelMatrix, (const struct aln**)inputAln, sampleN, sampleMode, &parMu, &parLambda);
-
-    results=getHSSnew(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
+    results=getHSS(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
 
     hssCount=0;
     
@@ -201,7 +209,6 @@ int main(int argc, char *argv[]){
      
     printResults(outputFile,outputFormat,results);
 
-
     if (args.gfx_given){
       colorAln("color.ps", (const struct aln**)inputAln, results[0]);
     }
@@ -213,8 +220,6 @@ int main(int argc, char *argv[]){
     free(treeString);
 
     freeSeqgenTree(tree);
-
-
 
     freeAln((struct aln**)inputAln);
 
@@ -234,9 +239,6 @@ int main(int argc, char *argv[]){
 }
 
 
-
-//void printDebugAlignments(char* fileName, const struct aln *alignment[]){
-//}
  
 
 void usage(void){
@@ -253,7 +255,8 @@ void help(void){
 }
 
 void version(void){
-  printf("RNAcode v " PACKAGE_VERSION "\n");
+  //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
+  printf("RNAcode v Wed Dec 10 14:53:47 2008\n");
   exit(EXIT_SUCCESS);
 }
 

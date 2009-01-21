@@ -13,7 +13,6 @@ struct aln {
   char *name;
   char *seq; 
   char *fullSeq; /* Remembers full sequence when gaps are stripped in seq*/
-  double score;
   int start;
   int length;
   int fullLength;
@@ -57,7 +56,8 @@ char** splitLines(char* string);
 
 void printAlnMAF(FILE *out, const struct aln* AS[],int printU);
 
+void pruneAln(char *species, struct aln* AS[]);
 
-
+char** splitString(char* string, char* separators);
 
 #endif

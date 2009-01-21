@@ -14,3 +14,4 @@ option      "debug-file"     d         "Debug file"       string       no
 option      "print-if-below"                         z  "Print alignments below p-value cutoff (debugging)"     float   no
 option      "print-if-above"                         y  "Print alignments above p-value cutoff (debugging)"     float   no
 option      "gfx"                          x  "Postscript output"     flag off
+option      "limit"     l         "limit to species"       string       no

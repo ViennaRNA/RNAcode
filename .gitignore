@@ -1,0 +1,13 @@
+.RData
+aclocal.m4
+autom4te.cache
+config.h
+config.h.in
+config.log
+config.status
+configure
+depcomp
+install-sh
+missing
+src/*ps
+stamp-h1

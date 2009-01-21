@@ -1,4 +1,4 @@
-/*********************************************************************                
+ /*******************************************************************\                
  *                                                                   *
  *                        rnaz_utils.c                               *
  *                                                                   *
@@ -7,9 +7,9 @@
  *                                                                   *
  *	                    Stefan Washietl                              *
  *                                                                   *
- *	   $Id: rnaz_utils.c,v 1.3 2006-10-12 13:17:42 wash Exp $              *
+ *	   $Id: rnaz_utils.c,v 1.3 2006-10-12 13:17:42 wash Exp $        *
  *                                                                   *
- *********************************************************************/
+ \*******************************************************************/
 
 
 
@@ -477,7 +477,7 @@ void printAln(const struct aln* AS[]){
 
 
 
- char** splitFields(char* string){
+char** splitFields(char* string){
 
   char c;
   char* currField;
@@ -719,4 +719,73 @@ void printAlnMAF(FILE *out, const struct aln* AS[],int printU){
   }
   fprintf(out, "\n");
   
+}
+
+void pruneAln(char* species, struct aln* alignment[]){
+
+  int i,j,N,x, counter;
+  int seen;
+  struct aln *newAln[MAX_NUM_NAMES];
+  char** list;
+
+  list=splitString(species,",");
+
+  counter=0;
+
+  for (i=0;alignment[i]!=NULL;i++){
+    seen=0;
+    for (x=0;list[x]!=NULL;x++){
+      if (strncmp(list[x],alignment[i]->name,strlen(list[x]))==0){
+        //printf("matching %s\n",alignment[i]->name);
+        seen=1;
+      }
+    }
+    if (seen==0){
+      //printf("deleting %s\n",alignment[i]->name);
+      for (j=i;alignment[j]!=NULL;j++){
+        alignment[j]=alignment[j+1];
+      }
+      i--;
+    }
+    //printAlnMAF(stdout,(const struct aln**)alignment,0); 
+  }
+}
+
+char** splitString(char* string, char* separators){
+
+  char sp[10000]; /* max length hardcoded */
+  char* pch;
+  char** output;
+  char* currField;
+  int counter=0;
+
+  /* strtok only functions that way, cannot pass char pointer
+     directly */
+  strcpy(sp,string);
+
+  pch=strtok(sp,",");
+
+  counter=0;
+
+  output=(char**)malloc(sizeof(char*));
+  currField=(char*)malloc(sizeof(char)*(strlen(pch)+1));
+  strcpy(currField, pch);
+  output[counter++]=currField;
+  
+  while (pch != NULL){
+    //printf ("-------> %s\n",pch);
+    pch=strtok(NULL,",");
+    if (pch == NULL){
+      output=(char**)realloc(output,sizeof(char*)*(counter+1));
+      output[counter]=NULL;
+      break;
+    }
+    output=(char**)realloc(output,sizeof(char*)*(counter+1));
+    currField=(char*)malloc(sizeof(char)*(strlen(pch)+1));
+    strcpy(currField, pch);
+    output[counter++]=currField;
+  }
+  
+  return output;
+
 }

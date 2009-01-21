@@ -826,8 +826,9 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
   double* maxScores;
   double mu, sigma;
   struct aln *sampledAln[MAX_NUM_NAMES];
+  segmentStats *results;
   int sampleWritten=0;
-
+  int hssCount;
 
   L=strlen(alignment[0]->seq);
 
@@ -835,6 +836,8 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
   kappa=modelMatrix[0][1].kappa;
 
   maxScores=(double*)malloc(sizeof(double)*sampleN);
+
+  //FILE *fp = fopen("scores.dat", "a");
 
   if (sampleMode==1){
 
@@ -853,22 +856,30 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
       scores=sumOfPairScore(modelMatrix,(const struct aln**)sampledAln,0, L-1);
 
       /* Write one random sampling, debugging */
-      if (!sampleWritten){
-        int x=0;
-        FILE *fp = fopen("samples.maf", "a");
-        for (x=1; sampledAln[x]!=NULL; ++x){
-          sampledAln[x]->strand='+';
-        }
-        printAlnMAF(fp,(const struct aln**)sampledAln,0);
-        sampleWritten=1;
-      }
+      /* if (!sampleWritten){ */
+      /*   int x=0; */
+      /*   FILE *fp = fopen("samples.maf", "a"); */
+      /*   for (x=1; sampledAln[x]!=NULL; ++x){ */
+      /*     sampledAln[x]->strand='+'; */
+      /*   } */
+      /*   printAlnMAF(fp,(const struct aln**)sampledAln,0); */
+      /*   fprintf(fp,"\n"); */
+      /*   fclose(fp); */
+      /*   sampleWritten=1; */
+      /* } */
       
-      freeAln((struct aln**)sampledAln);
-
+      
       sum=0.0;
       maxSum=0;
+      results=getHSS(modelMatrix, (const struct aln**)sampledAln, 0.0, 0.0, 1.0);
 
-      for (j=0; j<L/3; j++){
+      hssCount=0;
+      while (results[hssCount].score>=0) hssCount++;
+
+      qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+
+
+      /*for (j=0; j<L/3; j++){
         sum+=scores[j];
         if (sum<0){
           sum=0.0;
@@ -876,9 +887,19 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
         maxSum=(sum>maxSum)?sum:maxSum;
       }
       
-      maxScores[i]=maxSum;
+      */
+
+      maxScores[i]=results[0].score;
+
+      //fprintf(fp,"%.2f ",maxScores[i]);
+  
+      freeAln((struct aln**)sampledAln);
+      free(results);
       free(scores);
     }
+
+    //fprintf(fp,"\n");
+
   } else {
 
     simulateTree(tree,freqsMono,kappa,sampleN*3);
@@ -921,176 +942,12 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
   EVDMaxLikelyFit(maxScores, NULL, sampleN, parMu, parLambda);
 
   free(maxScores);
+  //fclose(fp);
 
 }
 
-
-segmentStats* getHSS(bgModel** modelMatrix, const struct aln** inputAln, double parMu, double parLambda,double cutoff){
-
-  segmentStats* results;
-  int strand, frame, sites,L;
-  double* scores;
-  double* cumSum;
-  double* maxScores;
-  int segmentStart, segmentEnd, currPos, hssCount;
-  double currMax;
-  double pvalue;
-  int i;
-
-  struct aln *inputAlnRev[MAX_NUM_NAMES];
-  struct aln **currAln;
-  
-  L=strlen(inputAln[0]->seq);
-
-  copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
-
-  revAln((struct aln**)inputAlnRev);
-  
-  results=NULL;
-
-
-  hssCount=0;
-  
-  for (strand=0;strand<=1;strand++){
-    
-    if (strand==0){
-      currAln=(struct aln**)inputAln;
-    } else {
-      currAln=(struct aln**)inputAlnRev;
-    }
-
-    for (frame=0;frame<3;frame++){
-
-      sites=((int)(L-frame)/3);
-
-      //printf("Frame %i, strand %i, sites: %i:\n",frame, strand, sites);
-
-      scores=sumOfPairScore(modelMatrix,(const struct aln**)currAln,frame, L-1);
-
-      cumSum=getCumSum(scores,sites);
-
-      
-      /*
-        for (i=0;i<sites;i++){
-        printf("%i %.2f %.2f\n",i, scores[i],cumSum[i]);
-        }
-      */
-
-      /*
-
-      for (i=0;i<sites;i++){
-      printf("%i\t",i);
-      }
-
-      printf("\n");
-
-      for (i=0;i<sites;i++){
-         printf("%c%c%c\t",currAln[0]->seq[i*3+frame],currAln[0]->seq[i*3+1+frame],currAln[0]->seq[i*3+2+frame]);
-      }
-     
-      printf("\n");
-
-      for (i=0;i<sites;i++){
-         printf("%.2f\t",cumSum[i]);
-      }
-      printf("\n");
-      */
-
-      segmentStart=0;
-      segmentEnd=1;
-      currMax=cumSum[0];
-      for (currPos=0;currPos<sites;currPos++){
-
-        if (cumSum[currPos]>=currMax){
-          segmentEnd=currPos;
-          currMax=cumSum[currPos];
-        }
-
-        if ((cumSum[currPos]<0.0001) || (currPos==sites-1) ){
-          if (segmentEnd-segmentStart>2){
-
-            if (scores[segmentStart]<0){
-              segmentStart++;
-            }
-            
-            pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
-
-            if (pvalue<cutoff){
-
-              /* re-allocate for each new result, leave room for last entry */
-              results=(segmentStats*)realloc(results,sizeof(segmentStats)*(hssCount+2));
-
-              if (results==NULL){
-                exit(1);
-              }
-
-              /* chromosome name is also stored in results, note that we
-                 use statically allocated memory there */
-            
-              //strncpy((char*)results[hssCount].name,inputAln[0]->name,256);
-              //results[hssCount].name[strlen(inputAln[0]->seq)]='\0';
-
-              results[hssCount].name=strdup(inputAln[0]->name);
-              results[hssCount].strand=strand;
-              results[hssCount].frame=frame;
-              results[hssCount].startSite=segmentStart;
-              results[hssCount].endSite=segmentEnd;
-              results[hssCount].score=currMax;
-
-              /* If CLUSTAL W input without coordinates */
-              if ((inputAln[0]->start==0) && (inputAln[0]->length==0)){
-              
-                results[hssCount].start=segmentStart*3+frame;
-                results[hssCount].end=segmentEnd*3+frame+2;
-
-              } else {
-
-                if (strand==0){
-                  results[hssCount].start=inputAln[0]->start+segmentStart*3+frame;
-                  results[hssCount].end=inputAln[0]->start+segmentEnd*3+frame+2;
-
-                } else {
-              
-                  results[hssCount].end=(inputAln[0]->start+inputAln[0]->length-1)-segmentStart*3-frame;
-                  results[hssCount].start=(inputAln[0]->start+inputAln[0]->length-1)-segmentEnd*3-frame-2;
-                }
-              }
-
-              results[hssCount].pvalue=pvalue;
-
-                        
-              //printf("from: %i to %i\n", segmentStart, segmentEnd);
-              hssCount++;
-            }
-
-          }
-          segmentStart=currPos;
-          segmentEnd=currPos;
-          currMax=0.0;
-          
-        }
-      }
-      free(cumSum);
-      free(scores);
-    }
-  }
-
-  if (hssCount==0){
-    results=(segmentStats*)malloc(sizeof(segmentStats));
-  }
-
-  results[hssCount].score=-1; /* mark end of list */
-
-  freeAln((struct aln**)inputAlnRev);
-
-  return results;
-
-
-}
-
-
-segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, 
-                        double parMu, double parLambda,double cutoff){
+segmentStats* getHSS(bgModel** modelMatrix, const struct aln** inputAln, 
+                     double parMu, double parLambda,double cutoff){
 
   segmentStats* results;
   int strand, frame, sites,L;
@@ -1197,7 +1054,13 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln,
               
               //printf("%u,%u:%.2f\n",segmentStart,segmentEnd,currMax);
               
-              pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
+              /* If both parameters are set to zero, no p-values are
+                 calculated and all positive scores are reported */
+              if (parLambda==0.0 && parMu==0.0){
+                pvalue=0.0;
+              } else {
+                pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
+              }
               
               if (pvalue<cutoff && segmentEnd-segmentStart>=minSegmentLength){
 
@@ -1257,12 +1120,20 @@ segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln,
               }
             } 
           }
-        }
-      } 
-      free(scores);
-    }
-  }
+        } /* j */
+      } /* i */
+      
+      for (i=0; i<sites; i++){
+        free(matrix[i]);
+      }
 
+      free(matrix);
+
+
+      free(scores);
+    } /* frame */
+  }  /* strand */
+  
   if (hssCount==0){
     results=(segmentStats*)malloc(sizeof(segmentStats));
     results[0].pvalue=1.0;

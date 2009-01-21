@@ -251,7 +251,7 @@ void tree2aln(TTree* tree, struct aln *alignment[]){
 
 
     alignment[i]=createAlnEntry(strdup(tree->names[i]), 
-                                seq,0,0,0,'?');
+                                seq,0,0,0,'+');
   
   }
 

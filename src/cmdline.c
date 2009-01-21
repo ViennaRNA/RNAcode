@@ -41,6 +41,7 @@ const char *gengetopt_args_info_help[] = {
   "  -z, --print-if-below=FLOAT  Print alignments below p-value cutoff (debugging)",
   "  -y, --print-if-above=FLOAT  Print alignments above p-value cutoff (debugging)",
   "  -x, --gfx                   Postscript output  (default=off)",
+  "  -l, --limit=STRING          limit to species",
     0
 };
 
@@ -80,6 +81,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->print_if_below_given = 0 ;
   args_info->print_if_above_given = 0 ;
   args_info->gfx_given = 0 ;
+  args_info->limit_given = 0 ;
 }
 
 static
@@ -98,6 +100,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->print_if_below_orig = NULL;
   args_info->print_if_above_orig = NULL;
   args_info->gfx_flag = 0;
+  args_info->limit_arg = NULL;
+  args_info->limit_orig = NULL;
   
 }
 
@@ -119,6 +123,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->print_if_below_help = gengetopt_args_info_help[10] ;
   args_info->print_if_above_help = gengetopt_args_info_help[11] ;
   args_info->gfx_help = gengetopt_args_info_help[12] ;
+  args_info->limit_help = gengetopt_args_info_help[13] ;
   
 }
 
@@ -208,6 +213,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->debug_file_orig));
   free_string_field (&(args_info->print_if_below_orig));
   free_string_field (&(args_info->print_if_above_orig));
+  free_string_field (&(args_info->limit_arg));
+  free_string_field (&(args_info->limit_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -268,6 +275,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "print-if-above", args_info->print_if_above_orig, 0);
   if (args_info->gfx_given)
     write_into_file(outfile, "gfx", 0, 0 );
+  if (args_info->limit_given)
+    write_into_file(outfile, "limit", args_info->limit_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -521,10 +530,11 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "print-if-below",	1, NULL, 'z' },
         { "print-if-above",	1, NULL, 'y' },
         { "gfx",	0, NULL, 'x' },
+        { "limit",	1, NULL, 'l' },
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVo:n:ve:gtfd:z:y:x", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVo:n:ve:gtfd:z:y:xl:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -676,6 +686,18 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           if (update_arg((void *)&(args_info->gfx_flag), 0, &(args_info->gfx_given),
               &(local_args_info.gfx_given), optarg, 0, 0, ARG_FLAG,
               check_ambiguity, override, 1, 0, "gfx", 'x',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'l':	/* limit to species.  */
+        
+        
+          if (update_arg( (void *)&(args_info->limit_arg), 
+               &(args_info->limit_orig), &(args_info->limit_given),
+              &(local_args_info.limit_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "limit", 'l',
               additional_error))
             goto failure;
         

@@ -49,10 +49,10 @@ int** getScoringMatrix(){
   int** matrix;
   int i,j;
 
-  matrix=(int**)space(sizeof(int*)*24);
+  matrix=(int**)malloc(sizeof(int*)*24);
 
   for (i=0;i<24;i++){
-    matrix[i]=(int*)space(sizeof(int)*24);
+    matrix[i]=(int*)malloc(sizeof(int)*24);
   }
   
   for (i=0;i<24;i++){
@@ -142,7 +142,7 @@ char* translateSeq(char* seq){
 
   encodedSeq=encodeSeq(seq);
 
-  peptideSeq=(char*)space(sizeof(char)*strlen(seq));
+  peptideSeq=(char*)malloc(sizeof(char)*strlen(seq));
   
   
   j=0;
@@ -168,7 +168,7 @@ int* encodeSeq(char* seq){
   int i;
   char c;
 
-  encoded=(int*)space(sizeof(int)*(strlen(seq)+1));
+  encoded=(int*)malloc(sizeof(int)*(strlen(seq)+1));
 
   i=0;
 
@@ -417,8 +417,6 @@ void copyAln(struct aln *src[],struct aln *dest[]){
 
   for (i=0;src[i]!=NULL;i++){
     
-    //    seq=(char*)space((sizeof(char))*(numSites+1));
-
     dest[i]=createAlnEntry(strdup(src[i]->name),
                            strdup(src[i]->seq),
                            src[i]->start, 
@@ -447,10 +445,10 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
       fprintf(outfile,"No significant coding regions found.\n");
     } else {
 
-      fprintf(outfile, "\n% 5s% 7s % 6s % 6s % 15s % 9s % 9s % 7s % 9s\n",
+      fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
               "Frame","Length","From","To","Name","Start","End", "Score","P");
   
-      fprintf(outfile, "================================================================================\n");
+      fprintf(outfile, "==============================================================================\n");
 
       i=0;
 
@@ -460,7 +458,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
         if (results[i].strand==1)  direction='-';
 
    
-        fprintf(outfile, "% 4c%i% 7i % 6i % 6i % 15s % 9i % 9i % 7.3f",
+        fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
                 direction, results[i].frame,
                 results[i].endSite-results[i].startSite+1,
                 results[i].startSite,results[i].endSite,
@@ -469,9 +467,9 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
                 results[i].score);
 
         if (results[i].pvalue < 0.001){
-          fprintf(outfile, "% 9.3e\n",results[i].pvalue);
+          fprintf(outfile, "% 9.1e\n",results[i].pvalue);
         } else {
-          fprintf(outfile, "% 9.3f\n",results[i].pvalue);
+          fprintf(outfile, "% 9.2f\n",results[i].pvalue);
         }
 
 
@@ -646,7 +644,7 @@ void countFreqsMono(const struct aln *alignment[], double freqs[]){
 }
 
 
-double* sumOfPairScore(bgModel** modelMatrix, const struct aln *alignment[],int from, int to){
+double* sumOfPairScore(bgModel* models, const struct aln *alignment[],int from, int to){
 
   double* scores;
   int i,j,k,L,N,h;
@@ -674,52 +672,50 @@ double* sumOfPairScore(bgModel** modelMatrix, const struct aln *alignment[],int 
     counts=0;
     sum=0;
     
-    for (i=0;i<N;i++){
+    strncpy(codonA,alignment[0]->seq+k,3);
+    codonA[3]='\0';
+
+    gapsA=0;
+    if (codonA[0]=='-') gapsA++;
+    if (codonA[1]=='-') gapsA++;
+    if (codonA[2]=='-') gapsA++;
+
+    for (j=1;j<N;j++){
+      strncpy(codonB,alignment[j]->seq+k,3);
+      codonB[3]='\0';
+
+      gapsB=0;
+      if (codonB[0]=='-') gapsB++;
+      if (codonB[1]=='-') gapsB++;
+      if (codonB[2]=='-') gapsB++;
+
       
-      strncpy(codonA,alignment[i]->seq+k,3);
-      codonA[3]='\0';
+      h=hDist(ntMap[codonA[0]], ntMap[codonA[1]], ntMap[codonA[2]],
+              ntMap[codonB[0]], ntMap[codonB[1]], ntMap[codonB[2]]);
 
-      gapsA=0;
-      if (codonA[0]=='-') gapsA++;
-      if (codonA[1]=='-') gapsA++;
-      if (codonA[2]=='-') gapsA++;
+      if (gapsA==0 && gapsB==0 && h>0){
 
-      for (j=i+1;j<N;j++){
-        strncpy(codonB,alignment[j]->seq+k,3);
-        codonB[3]='\0';
+        pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
+        pepB=transcode[ntMap[codonB[0]]][ntMap[codonB[1]]][ntMap[codonB[2]]];
 
-        gapsB=0;
-        if (codonB[0]=='-') gapsB++;
-        if (codonB[1]=='-') gapsB++;
-        if (codonB[2]=='-') gapsB++;
+        if (pepA==-1) pepA=23;
+        if (pepB==-1) pepB=23;
 
+        expectedScore=models[j].scores[h];
+        observedScore=(double)models[j].matrix[pepA][pepB];
 
-        h=hDist(ntMap[codonA[0]], ntMap[codonA[1]], ntMap[codonA[2]],
-                ntMap[codonB[0]], ntMap[codonB[1]], ntMap[codonB[2]]);
-
-        if (gapsA==0 && gapsB==0 && h>0){
-
-          pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
-          pepB=transcode[ntMap[codonB[0]]][ntMap[codonB[1]]][ntMap[codonB[2]]];
-
-          if (pepA==-1) pepA=23;
-          if (pepB==-1) pepB=23;
-
-          expectedScore=modelMatrix[i][j].scores[h];
-          observedScore=(double)modelMatrix[i][j].matrix[pepA][pepB];
-
-          /*
+        /*
           printf("%i %s (%c) : %i %s (%c); observed: %.2f, expected: %.2f\n",
-                 i, codonA, decodeAA(pepA), j, codonB, decodeAA(pepB),observedScore, expectedScore);
-          */
+          i, codonA, decodeAA(pepA), j, codonB, decodeAA(pepB),observedScore, expectedScore);
+        */
           
-          sum+=observedScore-expectedScore;
+        sum+=observedScore-expectedScore;
           
-          counts++;
+        counts++;
         
-        }
       }
     }
+  
     //printf("%.2f\n\n",sum/(double)counts);
 
     if (counts>0){
@@ -753,15 +749,13 @@ double* getCumSum(double* scores, int N){
 }
 
 
-
-
-bgModel** getModelMatrix(TTree* tree, struct aln *alignment[], double kappa){
+bgModel* getModels(TTree* tree, struct aln *alignment[], double kappa){
 
   int i,j,N;
   int **scoringMatrix;
   double** distanceMatrix;
   double freqsMono[4];
-  bgModel** modelMatrix;
+  bgModel* models;
 
   for (N=0; alignment[N]!=NULL; N++);   
   
@@ -769,53 +763,47 @@ bgModel** getModelMatrix(TTree* tree, struct aln *alignment[], double kappa){
   
   countFreqsMono((const struct aln**)alignment, (double *) freqsMono);
 
-  modelMatrix=(bgModel**)malloc(sizeof(bgModel*)*N);
+  models=(bgModel*)malloc(sizeof(bgModel)*N);
 
-  for (i=0;i<N;i++){
-    modelMatrix[i]=(bgModel*)malloc(sizeof(bgModel)*N);
+  /*for (i=0;i<N;i++){
+    models[i]=(bgModel*)malloc(sizeof(bgModel)*N);
   }
+  */
 
-  for (i=0;i<N;i++){
-    for (j=0;j<N;j++){
-      scoringMatrix=getScoringMatrix();
-      modelMatrix[i][j].dist=distanceMatrix[i][j];
-      modelMatrix[i][j].kappa=kappa;
-      modelMatrix[i][j].freqs[0]=freqsMono[0];
-      modelMatrix[i][j].freqs[1]=freqsMono[1];
-      modelMatrix[i][j].freqs[2]=freqsMono[2];
-      modelMatrix[i][j].freqs[3]=freqsMono[3];
-      modelMatrix[i][j].matrix=scoringMatrix;
-      calculateBG(modelMatrix[i]+j);
-    }
+  //i=0;
+  for (j=0;j<N;j++){
+    scoringMatrix=getScoringMatrix();
+    models[j].dist=distanceMatrix[0][j];
+    models[j].kappa=kappa;
+    models[j].freqs[0]=freqsMono[0];
+    models[j].freqs[1]=freqsMono[1];
+    models[j].freqs[2]=freqsMono[2];
+    models[j].freqs[3]=freqsMono[3];
+    models[j].matrix=scoringMatrix;
+    calculateBG(&models[j]);
   }
 
   for (i=0;i<N;i++){
     free(distanceMatrix[i]);
   }
-
   free(distanceMatrix);
 
-  return modelMatrix;
+  return models;
   
 }
 
-void freeModelMatrix(bgModel** modelMatrix, int N){
+void freeModels(bgModel* models, int N){
 
   int i, j;
 
-  for (i=0;i<N;i++){
-    for (j=0;j<N;j++){
-      freeScoringMatrix(modelMatrix[i][j].matrix);
-    }
+  for (j=0;j<N;j++){
+    freeScoringMatrix(models[j].matrix);
   }
 
-  for (i=0;i<N;i++){
-    free(modelMatrix[i]);
-  }
-  free(modelMatrix);
+  free(models);
 }
 
-void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *alignment[], 
+void getExtremeValuePars(TTree* tree, bgModel* models, const struct aln *alignment[], 
                          int sampleN, int sampleMode, double* parMu, double* parLambda){
 
   int tmpCounter, L, i, j;
@@ -832,8 +820,8 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
 
   L=strlen(alignment[0]->seq);
 
-  freqsMono=modelMatrix[0][1].freqs;
-  kappa=modelMatrix[0][1].kappa;
+  freqsMono=models[0].freqs;
+  kappa=models[0].kappa;
 
   maxScores=(double*)malloc(sizeof(double)*sampleN);
 
@@ -853,7 +841,7 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
       
       reintroduceGaps(alignment, sampledAln);
       
-      scores=sumOfPairScore(modelMatrix,(const struct aln**)sampledAln,0, L-1);
+      scores=sumOfPairScore(models,(const struct aln**)sampledAln,0, L-1);
 
       /* Write one random sampling, debugging */
       /* if (!sampleWritten){ */
@@ -871,7 +859,7 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
       
       sum=0.0;
       maxSum=0;
-      results=getHSS(modelMatrix, (const struct aln**)sampledAln, 0.0, 0.0, 1.0);
+      results=getHSS(models, (const struct aln**)sampledAln, 0.0, 0.0, 1.0);
 
       hssCount=0;
       while (results[hssCount].score>=0) hssCount++;
@@ -912,7 +900,7 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
 
     //    printAlnClustal(stdout, (const struct aln**)sampledAln); 
 
-    scores=sumOfPairScore(modelMatrix,(const struct aln**)sampledAln,0, sampleN*3);
+    scores=sumOfPairScore(models,(const struct aln**)sampledAln,0, sampleN*3);
 
     freeAln((struct aln**)sampledAln);
 
@@ -946,7 +934,7 @@ void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *a
 
 }
 
-segmentStats* getHSS(bgModel** modelMatrix, const struct aln** inputAln, 
+segmentStats* getHSS(bgModel* models, const struct aln** inputAln, 
                      double parMu, double parLambda,double cutoff){
 
   segmentStats* results;
@@ -990,7 +978,7 @@ segmentStats* getHSS(bgModel** modelMatrix, const struct aln** inputAln,
 
       //sites=13;
 
-      scores=sumOfPairScore(modelMatrix,(const struct aln**)currAln,frame, L-1);
+      scores=sumOfPairScore(models,(const struct aln**)currAln,frame, L-1);
 
       /*
       scores=(double*)malloc(sites*sizeof(double));

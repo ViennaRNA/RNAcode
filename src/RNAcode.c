@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
   char inputFileName[1024]="STDIN";
   char *tmpSeq, *treeString;
   double kappa, parMu, parLambda;
-  bgModel** modelMatrix;
+  bgModel* models;
   segmentStats *results;
   TTree* tree;
   char debugFileName[1024]="";
@@ -184,11 +184,11 @@ int main(int argc, char *argv[]){
   
     tree=string2tree(treeString);
 
-    modelMatrix=getModelMatrix(tree,inputAln,kappa);
+    models=getModels(tree,inputAln,kappa);
 
-    getExtremeValuePars(tree, modelMatrix, (const struct aln**)inputAln, sampleN, sampleMode, &parMu, &parLambda);
-    results=getHSS(modelMatrix, (const struct aln**)inputAln, parMu, parLambda,cutoff);
-
+    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, sampleMode, &parMu, &parLambda);
+    results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
+    
     hssCount=0;
     
     while (results[hssCount].score>=0) hssCount++;
@@ -215,7 +215,7 @@ int main(int argc, char *argv[]){
 
     freeResults(results);
 
-    freeModelMatrix(modelMatrix,N);
+    freeModels(models,N);
 
     free(treeString);
 
@@ -256,7 +256,7 @@ void help(void){
 
 void version(void){
   //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
-  printf("RNAcode v Wed Dec 10 14:53:47 2008\n");
+  printf("RNAcode v Thu Jan 22 15:07:09 2009\n");
   exit(EXIT_SUCCESS);
 }
 

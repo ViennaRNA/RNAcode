@@ -106,10 +106,10 @@ double** getDistanceMatrix(TTree* tree, struct aln *alignment[]){
 
   for (N=0; alignment[N]!=NULL; N++);
 
-  matrix=(double**)space(sizeof(double*)*N);
+  matrix=(double**)malloc(sizeof(double*)*N);
 
   for (i=0;i<N;i++){
-    matrix[i]=(double*)space(sizeof(double)*N);
+    matrix[i]=(double*)malloc(sizeof(double)*N);
   }
 
        
@@ -183,8 +183,8 @@ TNode* getLCA(TTree* tree, TNode* nodeA, TNode* nodeB){
   int numAncestorsA,numAncestorsB;
   int minNumAncestors,maxNumAncestors;
 
-  listA=(TNode**)space(sizeof(TNode*)*tree->numNodes);
-  listB=(TNode**)space(sizeof(TNode*)*tree->numNodes);
+  listA=(TNode**)malloc(sizeof(TNode*)*tree->numNodes);
+  listB=(TNode**)malloc(sizeof(TNode*)*tree->numNodes);
 
   numAncestorsA=0;
 
@@ -240,7 +240,7 @@ void tree2aln(TTree* tree, struct aln *alignment[]){
   
   for (i=0; i<tree->numTips; i++) {
     
-    seq=(char*)space((sizeof(char))*(numSites+1));
+    seq=(char*)malloc((sizeof(char))*(numSites+1));
      
     encodedSeq=tree->tips[i]->sequence;
 

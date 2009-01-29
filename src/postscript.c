@@ -97,12 +97,12 @@ int colorAln(const char *filename, const struct aln *alignment[],segmentStats re
 
   /* Allocate memory for various strings, length*2 is (more than)
      enough for all of them */
-  tmpBuffer = (char *) space((unsigned) length*2);
-  ssEscaped=(char *) space((unsigned) length*2);
-  ruler=(char *) space((unsigned) length*2);
-  cds=(char *) space((unsigned) length*2);
-  syn=(int *) space(sizeof(int)*length*2);
-  non_syn=(int *)space(sizeof(int)*length*2);
+  tmpBuffer = (char *) malloc((unsigned) length*2);
+  ssEscaped=(char *) malloc((unsigned) length*2);
+  ruler=(char *) malloc((unsigned) length*2);
+  cds=(char *) malloc((unsigned) length*2);
+  syn=(int *) malloc(sizeof(int)*length*2);
+  non_syn=(int *)malloc(sizeof(int)*length*2);
 
   /* Get length of longest name and count sequences in alignment*/
 

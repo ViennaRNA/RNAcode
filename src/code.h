@@ -46,7 +46,7 @@ int** getScoringMatrix();
 
 void freeScoringMatrix(int** matrix);
 
-void calculateBG(bgModel* model);
+void calculateBG(bgModel* models);
 
 int* encodeSeq(char* seq);
 
@@ -76,20 +76,18 @@ void copyAln(struct aln *src[],struct aln *dest[]);
 
 void countFreqsMono(const struct aln *alignment[], double freqs[]);
 
-double* sumOfPairScore(bgModel** modelMatrix, const struct aln *alignment[],int from, int to);
+double* sumOfPairScore(bgModel* models, const struct aln *alignment[],int from, int to);
 
 double* getCumSum(double* scores, int N);
 
-bgModel** getModelMatrix(TTree* tree, struct aln *alignment[], double kappa);
+bgModel* getModelMatrix(TTree* tree, struct aln *alignment[], double kappa);
 
-void freeModelMatrix(bgModel** modelMatrix, int N);
+void freeModelMatrix(bgModel* models, int N);
 
-void getExtremeValuePars(TTree* tree, bgModel** modelMatrix, const struct aln *alignment[],                          
+void getExtremeValuePars(TTree* tree, bgModel* models, const struct aln *alignment[],                          
                          int sampleN, int sampleMode, double* parMu, double* parLambda);
 
-segmentStats* getHSS(bgModel** modelMatrix, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
-
-segmentStats* getHSSnew(bgModel** modelMatrix, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
+segmentStats* getHSS(bgModel* models, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
 
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]);
 

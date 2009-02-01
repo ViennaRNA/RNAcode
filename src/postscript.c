@@ -87,7 +87,7 @@ int colorAln(const char *filename, const struct aln *alignment[],segmentStats re
   nameStep=3*fontWidth;	     /* distance between names and sequences */
   numberStep=fontWidth;      /* distance between sequeces and numbers */
   maxConsBar=2.5*fontHeight; /* Height of conservation curve */
-  startY=2;		               /* "y origin" */
+  startY=2;		             /* "y origin" */
   namesX=fontWidth;	         /* "x origin" */
   
   /* Number of columns of the alignment */

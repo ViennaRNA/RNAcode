@@ -63,7 +63,7 @@ z        ... difference of gaps between reference and k in the block
 
 */
 
-void getBlock(const char* seq_0, const char* seq_k, int i, char* block_0, char* block_k, int* z ){
+void getBlock(int i, const char* seq_0, const char* seq_k, const int* map_0, const int* map_k, char* block_0, char* block_k, int* z ){
 
   int start,end;
   int gap_0, gap_k;
@@ -76,14 +76,16 @@ void getBlock(const char* seq_0, const char* seq_k, int i, char* block_0, char* 
   }
 
   if (i>3){
-    start=pos2col(seq_0,i-3)+1;
+    //start=pos2col(seq_0,i-3)+1;
+    start=map_0[i-3]+1;
   }
 
   if (i==3){
     start=1;
   }
   
-  end=pos2col(seq_0,i);
+  //end=pos2col(seq_0,i);
+  end=map_0[i];
 
   strncpy(block_0, seq_0+start-1,end-start+1);
   strncpy(block_k, seq_k+start-1,end-start+1);
@@ -230,3 +232,140 @@ double stddev(double* data, int N){
   return sqrt(sum/(double)(N-1));
 }
 
+void copyAln(struct aln *src[],struct aln *dest[]){
+
+  int i,j,L;
+  char* seq;
+  
+  L=strlen(src[0]->seq);
+
+  for (i=0;src[i]!=NULL;i++){
+    
+    dest[i]=createAlnEntry(strdup(src[i]->name),
+                           strdup(src[i]->seq),
+                           src[i]->start, 
+                           src[i]->length,
+                           src[i]->fullLength,
+                           src[i]->strand);
+  }
+
+  dest[i]=NULL;
+}
+
+
+
+
+
+
+void printAlnClustal(FILE *out, const struct aln* AS[]){
+
+  int i;
+  
+  fprintf(out,"CLUSTAL W\n\n");
+
+  for (i=0;AS[i]!=NULL;i++){
+    fprintf(out, "%s %s\n",AS[i]->name,AS[i]->seq);
+  }
+
+  fprintf(out, "\n");
+
+}
+
+
+void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
+
+  int i,k;
+  char c;
+  char name[1024]="";
+  char prefix[1024]="";
+  char suffix[1024]="";
+
+  if (outputFormat==0){
+
+    if (results[0].score<0.0){
+      fprintf(outfile,"No significant coding regions found.\n");
+    } else {
+
+      fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
+              "Frame","Length","From","To","Name","Start","End", "Score","P");
+  
+      fprintf(outfile, "==============================================================================\n");
+
+      i=0;
+
+      while (results[i].score>0){
+
+        fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
+                results[i].strand, results[i].frame,
+                results[i].endSite-results[i].startSite+1,
+                results[i].startSite,results[i].endSite,
+                results[i].name,
+                results[i].start,results[i].end,
+                results[i].score);
+
+        if (results[i].pvalue < 0.001){
+          fprintf(outfile, "% 9.1e\n",results[i].pvalue);
+        } else {
+          fprintf(outfile, "% 9.2f\n",results[i].pvalue);
+        }
+
+        i++;
+      }
+    }
+  }
+
+  
+  if (outputFormat==1){
+    i=0;
+    while (results[i].score>0){
+      /* if name is of the form hg18.chromX than only display chromX */
+      k=0;
+      while (1){
+        if (results[i].name[k]=='\0' || results[i].name[k]=='.'){
+          break;
+        }
+        k++;
+      }
+
+      if (k==strlen((char*)results[i].name)){
+        strcpy(name,results[i].name);
+      } else {
+        strcpy(name,results[i].name+k+1);
+      }
+
+      fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2f|%.2e\t%c\t%c\t%s\n",
+              name, "RNAcode","CDS",
+              results[i].start+1,results[i].end+1,
+              results[i].score,
+              results[i].pvalue,
+              results[i].strand, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
+      i++;
+
+      /* GTF, currently only outputs highest scoring hit */
+      if (i > 0) break;
+    }
+  }
+
+  if (outputFormat==2){
+
+    i=0;
+
+    while (results[i].score>0){
+      fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f",
+              results[i].strand, results[i].frame,
+              results[i].endSite-results[i].startSite+1,
+              results[i].startSite,results[i].endSite,
+              results[i].name,
+              results[i].start,results[i].end,
+              results[i].score);
+
+      if (results[i].pvalue < 0.001){
+        fprintf(outfile, "% 9.3e\n",results[i].pvalue);
+      } else {
+        fprintf(outfile, "% 9.3f\n",results[i].pvalue);
+      }
+      break;
+      i++;
+    }
+  }
+}

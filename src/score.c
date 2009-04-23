@@ -6,10 +6,10 @@
 #include "code.h"
 #include "misc.h"
 
-double sigma=+4.0;
-double omega=-2.0;
-double Omega=-4.0;
-double Delta=-10.0;
+extern double sigma;
+extern double omega;
+extern double Omega;
+extern double Delta;
 
 extern int transcode[4][4][4];
 extern int BLOSUM62[24][24];
@@ -191,44 +191,6 @@ int compareScores(const void * a, const void * b){
 
 }
 
-void copyAln(struct aln *src[],struct aln *dest[]){
-
-  int i,j,L;
-  char* seq;
-  
-  L=strlen(src[0]->seq);
-
-  for (i=0;src[i]!=NULL;i++){
-    
-    dest[i]=createAlnEntry(strdup(src[i]->name),
-                           strdup(src[i]->seq),
-                           src[i]->start, 
-                           src[i]->length,
-                           src[i]->fullLength,
-                           src[i]->strand);
-  }
-
-  dest[i]=NULL;
-}
-
-
-
-
-
-
-void printAlnClustal(FILE *out, const struct aln* AS[]){
-
-  int i;
-  
-  fprintf(out,"CLUSTAL W\n\n");
-
-  for (i=0;AS[i]!=NULL;i++){
-    fprintf(out, "%s %s\n",AS[i]->name,AS[i]->seq);
-  }
-
-  fprintf(out, "\n");
-
-}
 
 void countFreqsMono(const struct aln *alignment[], double freqs[]){
 
@@ -314,7 +276,6 @@ void freeModels(bgModel* models, int N){
 }
 
 
-
 double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
 
   char codonA[4];
@@ -395,10 +356,10 @@ double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln
   return(S);
 }
 
-segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, double parLambda, double cutoff){
+segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, double parMu, double parLambda, double cutoff){
 
   segmentStats* results;
-  int sites,L, frame, strand;
+  int sites,L, frame;
   int segmentStart, segmentEnd, currPos, hssCount;
   double currMax, currEntry;
   double pvalue;
@@ -409,8 +370,6 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, doub
 
   results=NULL;
   hssCount=0;
-
-  strand=0;
 
   for (frame=0;frame<=2;frame++){
 
@@ -453,7 +412,6 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, doub
               /* re-allocate for each new result, leave room for last entry */
               results=(segmentStats*)realloc(results,sizeof(segmentStats)*(hssCount+2));
 
-
               if (results==NULL){
                 exit(1);
               }
@@ -462,7 +420,7 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, doub
                  use statically allocated memory there */
             
               results[hssCount].name=strdup(inputAln[0]->name);
-              results[hssCount].strand='+';
+              results[hssCount].strand=strand;
               results[hssCount].frame=frame;
               results[hssCount].startSite=segmentStart;
               results[hssCount].endSite=segmentEnd;
@@ -476,7 +434,7 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, doub
 
               } else {
                 
-                if (strand==0){
+                if (strand=='+'){
                   results[hssCount].start=inputAln[0]->start+segmentStart*3+frame;
                   results[hssCount].end=inputAln[0]->start+segmentEnd*3+frame+2;
                   
@@ -516,122 +474,12 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, doub
     results[0].pvalue=1.0;
   }
 
-  results[hssCount].score=-1; /* mark end of list */
+  results[hssCount].score=-1.0; /* mark end of list */
   
   return results;
  
-
 }
 
-
-void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
-
-  char direction;
-  int i,k;
-  char c;
-  char name[1024]="";
-  char prefix[1024]="";
-  char suffix[1024]="";
-
-  if (outputFormat==0){
-
-    if (results[0].score<0.0){
-      fprintf(outfile,"No significant coding regions found.\n");
-    } else {
-
-      fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
-              "Frame","Length","From","To","Name","Start","End", "Score","P");
-  
-      fprintf(outfile, "==============================================================================\n");
-
-      i=0;
-
-      while (results[i].score>0){
-
-        direction='+';
-        if (results[i].strand==1)  direction='-';
-
-   
-        fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
-                direction, results[i].frame,
-                results[i].endSite-results[i].startSite+1,
-                results[i].startSite,results[i].endSite,
-                results[i].name,
-                results[i].start,results[i].end,
-                results[i].score);
-
-        if (results[i].pvalue < 0.001){
-          fprintf(outfile, "% 9.1e\n",results[i].pvalue);
-        } else {
-          fprintf(outfile, "% 9.2f\n",results[i].pvalue);
-        }
-
-
-        i++;
-      }
-    }
-  }
-
-  
-  if (outputFormat==1){
-    i=0;
-    while (results[i].score>0){
-      direction='+';
-      if (results[i].strand==1)  direction='-';
-      /* if name is of the form hg18.chromX than only display chromX */
-      k=0;
-      while (1){
-        if (results[i].name[k]=='\0' || results[i].name[k]=='.'){
-          break;
-        }
-        k++;
-      }
-
-      if (k==strlen((char*)results[i].name)){
-        strcpy(name,results[i].name);
-      } else {
-        strcpy(name,results[i].name+k+1);
-      }
-
-      fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2f|%.2e\t%c\t%c\t%s\n",
-              name, "RNAcode","CDS",
-              results[i].start+1,results[i].end+1,
-              results[i].score,
-              results[i].pvalue,
-              direction, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
-      i++;
-
-      /* GTF, currently only outputs highest scoring hit */
-      if (i > 0) break;
-    }
-  }
-
-  if (outputFormat==2){
-
-    i=0;
-
-    while (results[i].score>0){
-      direction='+';
-      if (results[i].strand==1)  direction='-';
-   
-      fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f",
-              direction, results[i].frame,
-              results[i].endSite-results[i].startSite+1,
-              results[i].startSite,results[i].endSite,
-              results[i].name,
-              results[i].start,results[i].end,
-              results[i].score);
-
-      if (results[i].pvalue < 0.001){
-        fprintf(outfile, "% 9.3e\n",results[i].pvalue);
-      } else {
-        fprintf(outfile, "% 9.3f\n",results[i].pvalue);
-      }
-      break;
-      i++;
-    }
-  }
-}
 
 
 void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignment[], 
@@ -689,7 +537,7 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
     Sk=getPairwiseScoreMatrix(models,(const struct aln**)sampledAln);
     S=getMultipleScoreMatrix(Sk,models,(const struct aln**)sampledAln);
 
-    results=getHSS(S, (const struct aln**)sampledAln, 0.0, 0.0, 1.0);
+    results=getHSS(S, (const struct aln**)sampledAln, '+', 0.0, 0.0, 1.0);
 
     hssCount=0;
     while (results[hssCount].score>=0) hssCount++;
@@ -697,7 +545,7 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
     //printf("%.2f\n", results[0].score);
 
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
-
+    
     maxScores[i]=results[0].score;
         
     freeAln((struct aln**)sampledAln);
@@ -705,12 +553,11 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
   }
 
   EVDMaxLikelyFit(maxScores, NULL, sampleN, parMu, parLambda);
-
+  
   free(maxScores);
   //fclose(fp);
 
 }
-
 
 
 
@@ -721,8 +568,9 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
 
 double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
   
-  int L,N, pos,z,b,i,x, k;
+  int L,N, pos,z,b,i,x, k,l;
   char *block_0, *block_k, *seq_0, *seq_k;
+  int *map_0, *map_k;
   double**** S;
 
   seq_0=alignment[0]->seq;
@@ -765,15 +613,24 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
 
   //printf("%s <-REF\n",seq_0);
 
+  map_0=(int*)malloc(sizeof(int)*(L+1));
+  map_k=(int*)malloc(sizeof(int)*(L+1));
+
+  for (l=1;l<=L;l++){
+    map_0[l]=pos2col(seq_0,l);
+  }
+
   for (k=1;k<N;k++){
 
     seq_k=alignment[k]->seq;
+    
+    for (l=1;l<=L;l++){
+      map_k[l]=pos2col(seq_k,l);
+    }
 
-    //printf("%s\n",seq_k);
-      
     for (b=1;b<L+1;b++){
       for (i=b+2;i<L+1;i+=3){
-        getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+        getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
         
         if (z==0){
           S[k][0][b][i]=S[k][0][b][i-3]+calculateSigma(block_0,block_k,k,models);
@@ -833,6 +690,7 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
   char* block_0;
   char* block_k;
   int* states;
+  int *map_0, *map_k;
   
   char* seq_0;
   char* seq_k;
@@ -842,7 +700,7 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
   
   char string[1000];
 
-  int pos,i,b,x,z,L;
+  int pos,i,b,x,l,z,L;
 
   L=getSeqLength(seq_0);
 
@@ -870,19 +728,29 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
 
   printf("Max score: %.1f at b=%i, i=%i at state %i\n", opt_score, opt_b, opt_i, opt_state);
 
-   states=(int*)malloc(sizeof(int)*(L+3));
+  states=(int*)malloc(sizeof(int)*(L+3));
       
   for (i=0;i<=L+1;i++) states[i]=-1;
   
   // Allocate conservatively for full length of sequence;
   block_0 = (char*) malloc(sizeof(char)*(L+1));
   block_k = (char*) malloc(sizeof(char)*(L+1));
+
+  map_0=(int*)malloc(sizeof(int)*(L+1));
+  map_k=(int*)malloc(sizeof(int)*(L+1));
+
+  for (l=1;l<=L;l++){
+    map_0[l]=pos2col(seq_0,l);
+    map_k[l]=pos2col(seq_k,l);
+  }
+
+
       
   curr_state=opt_state;
   b=opt_b;
   
   for (i=opt_i;i>=opt_b+2;i-=3){
-    getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
     
     printf("%i %i %i %i\n",b, i, z, curr_state);
 
@@ -934,14 +802,15 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
   }
 
   for (i=opt_b+2;i<=opt_i;i+=3){
-    getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
     printf("%s ",block_0);
   }
 
   printf("\n");
 
   for (i=opt_b+2;i<=opt_i;i+=3){
-    getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+    //getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
     printf("%s ",block_k);
   }
   printf("\n");
@@ -967,7 +836,8 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
 
   pos=0;
   for (i=opt_b+2;i<=opt_i;i+=3){
-    getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+    //getBlock(seq_0, seq_k, i, block_0, block_k, &z );
+    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
     sprintf(string, "%i  ", states[i]);
     strncpy(display_line1+pos,string,strlen(string));
     sprintf(string, "%+.0f  ", S[k][0][opt_b][i]);

@@ -20,6 +20,11 @@ void usage(void);
 void help(void);
 void version(void);
 
+double sigma=+4.0;
+double omega=-2.0;
+double Omega=-4.0;
+double Delta=-10.0;
+
 int main(int argc, char *argv[]){
 
   int i,j,k,L,N,hssCount;
@@ -28,7 +33,7 @@ int main(int argc, char *argv[]){
   char *tmpSeq, *treeString;
   double kappa, parMu, parLambda;
   bgModel* models;
-  segmentStats *results;
+  segmentStats *results, *resultsRev, *allResults;
   TTree* tree;
   char debugFileName[1024]="";
   FILE *inputFile=stdin;
@@ -42,6 +47,7 @@ int main(int argc, char *argv[]){
 
   struct gengetopt_args_info args;
   struct aln *inputAln[MAX_NUM_NAMES];
+  struct aln *inputAlnRev[MAX_NUM_NAMES];
 
   int sampleN=1000;
   int sampleMode=1;
@@ -185,19 +191,38 @@ int main(int argc, char *argv[]){
     }
   
     tree=string2tree(treeString);
-
     models=getModels(tree,inputAln,kappa);
 
+    copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
+    revAln((struct aln**)inputAlnRev);
+    
     Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
     S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
+    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
+    results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
+   
+    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAlnRev);
+    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAlnRev);
+    resultsRev=getHSS(S, (const struct aln**)inputAln, '-', parMu, parLambda, cutoff);
+
+    hssCount=0;
+
+    i=0;
+    while (results[i].score > 0.0){
+      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
+      allResults[hssCount++]=results[i++];
+    }
+
+    i=0;
+    while (resultsRev[i].score > 0.0){
+      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
+      allResults[hssCount++]=resultsRev[i++];
+    }
+
+    printResults(outputFile,outputFormat,allResults);
 
     //backtrack(Sk, 1, (const struct aln**)inputAln);
-
-    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
-  
-    results=getHSS(S, (const struct aln**)inputAln, parMu, parLambda, cutoff);
-    printResults(outputFile,outputFormat,results);
-
+    
   }
     
   //results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
@@ -223,11 +248,8 @@ int main(int argc, char *argv[]){
     */
 
   freeModels(models,N);
-
   free(treeString);
-
   freeSeqgenTree(tree);
-
   freeAln((struct aln**)inputAln);
 
   

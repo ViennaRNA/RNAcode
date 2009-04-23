@@ -53,17 +53,9 @@ void freeScoringMatrix(int** matrix);
 
 void calculateBG(bgModel* models);
 
-
-
 int compareScores(const void * a, const void * b);
 
-void printAlnClustal(FILE *out, const struct aln* AS[]);
-
 void stripGaps(struct aln* AS[]);
-
-void printResults(FILE* outfile, int outputFormat, segmentStats results[]);
-
-void copyAln(struct aln *src[],struct aln *dest[]);
 
 void countFreqsMono(const struct aln *alignment[], double freqs[]);
 
@@ -84,7 +76,7 @@ void getExtremeValuePars(TTree* tree, bgModel* models, const struct aln *alignme
 
 //segmentStats* getHSS(bgModel* models, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
 
-segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
+segmentStats* getHSS(double** S, const struct aln** inputAln,  char strand, double parMu, double parLambda, double cutoff);
 
 
 

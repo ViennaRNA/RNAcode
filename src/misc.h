@@ -11,7 +11,8 @@ void sortAln(const struct aln* origAln[], struct aln* sampledAln[]);
 
 void freeResults(segmentStats results[]);
 
-void getBlock(const char* seq_0, const char* seq_k, int i, char* block_0, char* block_k, int* z );
+//void getBlock(const char* seq_0, const char* seq_k, int i, char* block_0, char* block_k, int* z );
+void getBlock(int i, const char* seq_0, const char* seq_k, const int* map_0, const int* map_k, char* block_0, char* block_k, int* z );
 
 int pos2col(const char* seq, int pos);
 
@@ -25,5 +26,10 @@ double stddev(double* data, int N);
 
 double gaussian (const double sigma);
 
+void copyAln(struct aln *src[],struct aln *dest[]);
+
+void printAlnClustal(FILE *out, const struct aln* AS[]);
+
+void printResults(FILE* outfile, int outputFormat, segmentStats results[]);
 
 #endif

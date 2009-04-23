@@ -10,5 +10,7 @@ depcomp
 install-sh
 missing
 src/*ps
+src/scratch.c
+src/RNAcode
 stamp-h1
 RNAcode*.tar.gz

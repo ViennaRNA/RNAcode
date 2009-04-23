@@ -20,11 +20,8 @@ struct aln {
 };
 
 
-int read_clustal(FILE *clust,
-						 struct aln *alignedSeqs[]);
-
-int read_maf(FILE *clust,
-						 struct aln *alignedSeqs[]);
+int read_clustal(FILE *clust, struct aln *alignedSeqs[]);
+int read_maf(FILE *clust, struct aln *alignedSeqs[]);
 
 
 char *consensus(const struct aln *AS[]);

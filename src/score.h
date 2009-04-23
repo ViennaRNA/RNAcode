@@ -1,0 +1,96 @@
+#ifndef _SCORE_H_
+#define _SCORE_H_
+
+#include "rnaz_utils.h"
+#include "tree.h"
+#include "treeSimulate.h"
+
+#define UNDEF -9.0
+#define MINUS_INF -99.0
+
+#define MAX(x,y)       (((x)>(y)) ? (x) : (y))
+#define MAX3(x,y,z)    (MAX(  (MAX((x),(y))) ,(z)))
+
+typedef struct _bgModel bgModel;
+
+struct _bgModel {
+
+  double scores[4];
+  double probs[4];
+  double kappa;
+  double dist;
+  double freqs[4];
+  int** matrix;
+
+};
+
+typedef struct _segmentStats segmentStats;
+
+struct _segmentStats {
+
+  int startSite;
+  int endSite;
+  int strand;
+  int frame;
+  int start;
+  int end;
+  char *name;
+  double score;
+  double pvalue;
+  
+};
+
+/* Values set in main() */
+int ntMap[256]; 
+
+extern int transcode[4][4][4];
+
+double probHKY(int i, int j, double d, double freqs[4], double kappa);
+
+int** getScoringMatrix();
+
+void freeScoringMatrix(int** matrix);
+
+void calculateBG(bgModel* models);
+
+
+
+int compareScores(const void * a, const void * b);
+
+void printAlnClustal(FILE *out, const struct aln* AS[]);
+
+void stripGaps(struct aln* AS[]);
+
+void printResults(FILE* outfile, int outputFormat, segmentStats results[]);
+
+void copyAln(struct aln *src[],struct aln *dest[]);
+
+void countFreqsMono(const struct aln *alignment[], double freqs[]);
+
+double* sumOfPairScore(bgModel* models, const struct aln *alignment[],int from, int to);
+
+double* getCumSum(double* scores, int N);
+
+bgModel* getModelMatrix(TTree* tree, struct aln *alignment[], double kappa);
+
+void freeModelMatrix(bgModel* models, int N);
+
+//void getExtremeValuePars(TTree* tree, bgModel* models, const struct aln *alignment[],                          
+//                         int sampleN, int sampleMode, double* parMu, double* parLambda);
+
+void getExtremeValuePars(TTree* tree, bgModel* models, const struct aln *alignment[], 
+                         int sampleN, double* parMu, double* parLambda);
+
+
+//segmentStats* getHSS(bgModel* models, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
+
+segmentStats* getHSS(double** S, const struct aln** inputAln, double parMu, double parLambda, double cutoff);
+
+
+
+double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]);
+double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln *alignment[]);
+
+double* backtrack(double**** S, int k, const struct aln *alignment[]);
+
+#endif

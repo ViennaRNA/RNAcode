@@ -249,6 +249,10 @@ void tree2aln(TTree* tree, struct aln *alignment[]){
       encodedSeq++;
     }
 
+    seq[j]='\0';
+
+    //printf("---> %s\n",seq);
+
 
     alignment[i]=createAlnEntry(strdup(tree->names[i]), 
                                 seq,0,0,0,'+');

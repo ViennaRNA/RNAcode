@@ -9,10 +9,12 @@
 #include "treeML.h"
 #include "cmdline.h"
 #include "code.h"
+#include "score.h"
 #include "tree.h"
 #include "treeSimulate.h"
 #include "extreme_fit.h"
 #include "postscript.h"
+#include "misc.h"
 
 void usage(void);
 void help(void);
@@ -32,6 +34,9 @@ int main(int argc, char *argv[]){
   FILE *inputFile=stdin;
   FILE *outputFile=stdout;
   FILE *debugFile=stdout;
+
+  double**** Sk;
+  double** S;
 
   int (*readFunction)(FILE *clust,struct aln *alignedSeqs[]);
 
@@ -153,19 +158,17 @@ int main(int argc, char *argv[]){
       pruneAln(args.limit_arg,(struct aln**)inputAln);
     }
     
-    
     //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
 
-    stripGaps((struct aln**)inputAln);
+    //stripGaps((struct aln**)inputAln);
 
-    L=strlen(inputAln[0]->seq);
+    //L=strlen(inputAln[0]->seq);
 
-    if (L<3){
-      continue;
-    }
+    //if (L<3){
+    //  continue;
+    //}
 
     for (N=0; inputAln[N]!=NULL; N++);   
-
 
     /* Currently minimum number of sequences is 3 because BIONJ seg-faults with 2 */
     /* Fix this that it works with two sequences*/
@@ -176,7 +179,6 @@ int main(int argc, char *argv[]){
       //exit(1);
     }
 
-    
     if (treeML((const struct aln**)inputAln,&treeString,&kappa)==0){
       fprintf(stderr,"\nFailed to build ML tree.\n");
       continue; 
@@ -186,49 +188,52 @@ int main(int argc, char *argv[]){
 
     models=getModels(tree,inputAln,kappa);
 
-    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, sampleMode, &parMu, &parLambda);
-    results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
-    
-    hssCount=0;
-    
-    while (results[hssCount].score>=0) hssCount++;
+    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
+    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
 
-    qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+    //backtrack(Sk, 1, (const struct aln**)inputAln);
 
+    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
+  
+    results=getHSS(S, (const struct aln**)inputAln, parMu, parLambda, cutoff);
+    printResults(outputFile,outputFormat,results);
+
+  }
+    
+  //results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
+  //hssCount=0;
+  //while (results[hssCount].score>=0) hssCount++;
+  //qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+  /*
     if (printIfAbove > -1.0){
-      if (results[0].pvalue > printIfAbove){
-        printAlnMAF(debugFile,(const struct aln**)inputAln,0);
-      }
+    if (results[0].pvalue > printIfAbove){
+    printAlnMAF(debugFile,(const struct aln**)inputAln,0);
     }
-      
+    }
     if (printIfBelow > -1.0){
       if (results[0].pvalue < printIfBelow){
         printAlnMAF(debugFile,(const struct aln**)inputAln,0);
       }
     }
-     
     printResults(outputFile,outputFormat,results);
-
     if (args.gfx_given){
       colorAln("color.ps", (const struct aln**)inputAln, results[0]);
     }
-
     freeResults(results);
+    */
 
-    freeModels(models,N);
+  freeModels(models,N);
 
-    free(treeString);
+  free(treeString);
 
-    freeSeqgenTree(tree);
+  freeSeqgenTree(tree);
 
-    freeAln((struct aln**)inputAln);
+  freeAln((struct aln**)inputAln);
 
-  }
   
   if ((printIfAbove > -1.0) || (printIfBelow > -1.0)){
     fclose(debugFile);
   }
-
 
   fclose(inputFile);
 
@@ -237,7 +242,6 @@ int main(int argc, char *argv[]){
   exit(EXIT_SUCCESS);
 
 }
-
 
  
 

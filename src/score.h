@@ -85,4 +85,7 @@ double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln
 
 double* backtrack(double**** S, int k, const struct aln *alignment[]);
 
+void freeSk (double**** S, const struct aln *alignment[]);
+void freeS (double** S, const struct aln *alignment[]);
+
 #endif

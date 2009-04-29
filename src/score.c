@@ -278,28 +278,45 @@ void freeModels(bgModel* models, int N){
 
 double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
 
-  char codonA[4];
-  char codonB[4];
+  char codonA[4]="XXX";
+  char codonB[4]="XXX";
   int pepA, pepB;
   int i,j,h;
   double currScore,expectedScore, observedScore;
-
+  
   i=j=0;
   while (block_0[i] != '\0') {
-    if (block_0[i]!='-') codonA[j++]=block_0[i++];
+    if (block_0[i] != '-') {
+      codonA[j++]=block_0[i];
+    }
+    i++;
   }
+
   i=j=0;
   while (block_k[i] != '\0') {
-    if (block_k[i]!='-') codonB[j++]=block_k[i++];
+    if (block_k[i]!='-') {
+      codonB[j++]=block_k[i];
+    }
+    i++;
   }
-  
-  codonA[3]=codonB[3]='\0';
 
+  // Second sequence was gap only 
+  if (strcmp(codonB,"XXX")==0){
+    return 0.0;
+  }
+
+  //printf("%s %s\n", block_0, block_k);
+
+  codonA[3]=codonB[3]='\0';
+  
   h=hDist(ntMap[codonA[0]], ntMap[codonA[1]], ntMap[codonA[2]],
           ntMap[codonB[0]], ntMap[codonB[1]], ntMap[codonB[2]]);
 
   if (h==0) return 0.0;
 
+  //printf("%s %s\n",codonA, codonB);
+  //printf("%s %s\n", block_0, block_k);
+      
   pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
   pepB=transcode[ntMap[codonB[0]]][ntMap[codonB[1]]][ntMap[codonB[2]]];
 
@@ -308,8 +325,6 @@ double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
   
   expectedScore=models[k].scores[h];
   observedScore=(double)models[k].matrix[pepA][pepB];
-
-  //printf("codonA: %s %s %i %i %.2f %.2f %.2f\n",codonA, codonB, pepA, pepB, observedScore, expectedScore, observedScore-expectedScore );
 
   //return 4.0;
 
@@ -543,13 +558,16 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
     while (results[hssCount].score>=0) hssCount++;
 
     //printf("%.2f\n", results[0].score);
-
+    
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
     
     maxScores[i]=results[0].score;
-        
+
+    freeSk(Sk, (const struct aln **)sampledAln);
+    freeS(S, (const struct aln **)sampledAln);
+       
     freeAln((struct aln**)sampledAln);
-    free(results);
+    freeResults(results);
   }
 
   EVDMaxLikelyFit(maxScores, NULL, sampleN, parMu, parLambda);
@@ -576,7 +594,6 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
   seq_0=alignment[0]->seq;
 
   L=getSeqLength(seq_0);
-
   for (N=0; alignment[N]!=NULL; N++);
 
   // We have one entry for each pair
@@ -588,12 +605,12 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
 
     for (x=0;x<3;x++){
       // indices are 1 based and we mark end with NULL, so we need L+2
-      S[k][x]=(double**)malloc(sizeof(double*)*(L+2));
+      S[k][x]=(double**)malloc(sizeof(double*)*(L+1));
         
-      for (i=0;i<L+2;i++){
+      for (i=0;i<L+1;i++){
         S[k][x][i]=(double*)malloc(sizeof(double)*(L+1));
       }
-      S[k][x][L+1]=NULL;
+      //S[k][x][L+1]=NULL;
 
       for (b=0;b<L+1;b++){
         for (i=0;i<L+1;i++){
@@ -630,7 +647,9 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
 
     for (b=1;b<L+1;b++){
       for (i=b+2;i<L+1;i+=3){
+
         getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+
         
         if (z==0){
           S[k][0][b][i]=S[k][0][b][i-3]+calculateSigma(block_0,block_k,k,models);
@@ -660,19 +679,17 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
                             S[k][0][b][i-3]+Omega);
         
         }
+
       }
     }
   }
 
-  /*
-    for (x=0; x<3;x++){
-    for (i=0;i<L+1;i++){
-    free(S[x][i]);
-    }
-    free(S[x]);
-    }
-  */
-  
+
+  free(block_0);
+  free(block_k);
+  free(map_0);
+  free(map_k);
+
   return(S);
 
 }
@@ -860,5 +877,37 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
 
 }
 
+void freeS (double** S, const struct aln *alignment[]){
+
+  int i,L;
+
+  L=getSeqLength(alignment[0]->seq);
+
+  for (i=0;i<L+1;i++){
+    free(S[i]);
+  }
+
+  free(S);
+
+}
+
+void freeSk (double**** S, const struct aln *alignment[]){
+
+  int L,N,k,i,x;
+
+  L=getSeqLength(alignment[0]->seq);
+  for (N=0; alignment[N]!=NULL; N++);
+
+  for (k=0;k<N;k++){
+    for (x=0;x<3;x++){
+      for (i=0;i<L+1;i++){
+        free(S[k][x][i]);
+      }
+      free(S[k][x]);
+    }
+    free(S[k]);
+  }
+  free(S);
+}
 
 

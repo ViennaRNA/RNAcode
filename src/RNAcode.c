@@ -28,7 +28,7 @@ double Delta=-10.0;
 int main(int argc, char *argv[]){
 
   int i,j,k,L,N,hssCount;
- 
+
   char inputFileName[1024]="STDIN";
   char *tmpSeq, *treeString;
   double kappa, parMu, parLambda;
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
   FILE *inputFile=stdin;
   FILE *outputFile=stdout;
   FILE *debugFile=stdout;
-
+  
   double**** Sk;
   double** S;
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
   struct aln *inputAln[MAX_NUM_NAMES];
   struct aln *inputAlnRev[MAX_NUM_NAMES];
 
-  int sampleN=1000;
+  int sampleN=10;
   int sampleMode=1;
   int outputFormat=0; /* 0: normal list; 1: GTF; 2:compact list (debugging) */
   double cutoff=1.0;
@@ -60,7 +60,6 @@ int main(int argc, char *argv[]){
 
   double printIfBelow=-1.0; 
   double printIfAbove=-1.0;
-
   srand(time(NULL));
 
   ntMap['A']=ntMap['a']=0;
@@ -166,8 +165,6 @@ int main(int argc, char *argv[]){
     
     //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
 
-    //stripGaps((struct aln**)inputAln);
-
     //L=strlen(inputAln[0]->seq);
 
     //if (L<3){
@@ -189,37 +186,57 @@ int main(int argc, char *argv[]){
       fprintf(stderr,"\nFailed to build ML tree.\n");
       continue; 
     }
-  
+
     tree=string2tree(treeString);
     models=getModels(tree,inputAln,kappa);
 
     copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
     revAln((struct aln**)inputAlnRev);
-    
+
     Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
     S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
+
     getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
     results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
-   
+
+    freeSk(Sk, (const struct aln **)inputAln);
+    freeS(S, (const struct aln **)inputAln);
+
     Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAlnRev);
     S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAlnRev);
-    resultsRev=getHSS(S, (const struct aln**)inputAln, '-', parMu, parLambda, cutoff);
+    resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, cutoff);
+
+    freeSk(Sk, (const struct aln **)inputAln);
+    freeS(S, (const struct aln **)inputAln);
 
     hssCount=0;
+
+    allResults=NULL;
+
 
     i=0;
     while (results[i].score > 0.0){
       allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
       allResults[hssCount++]=results[i++];
     }
-
+    
     i=0;
     while (resultsRev[i].score > 0.0){
       allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
       allResults[hssCount++]=resultsRev[i++];
     }
 
-    printResults(outputFile,outputFormat,allResults);
+    if (hssCount==0){
+      allResults=(segmentStats*)malloc(sizeof(segmentStats));
+      allResults[0].pvalue=1.0;
+    }
+    
+    allResults[hssCount].score=-1.0; 
+    
+    //printResults(outputFile,outputFormat,allResults);
+
+    printResults(outputFile,outputFormat,results);
+
 
     //backtrack(Sk, 1, (const struct aln**)inputAln);
     
@@ -244,13 +261,16 @@ int main(int argc, char *argv[]){
     if (args.gfx_given){
       colorAln("color.ps", (const struct aln**)inputAln, results[0]);
     }
-    freeResults(results);
+
     */
+
+  freeResults(allResults);
 
   freeModels(models,N);
   free(treeString);
   freeSeqgenTree(tree);
   freeAln((struct aln**)inputAln);
+  freeAln((struct aln**)inputAlnRev);
 
   
   if ((printIfAbove > -1.0) || (printIfBelow > -1.0)){
@@ -265,7 +285,6 @@ int main(int argc, char *argv[]){
 
 }
 
- 
 
 void usage(void){
   help();

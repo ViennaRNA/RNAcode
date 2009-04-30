@@ -20,46 +20,48 @@ void usage(void);
 void help(void);
 void version(void);
 
+/* Global options */
+
 double sigma=+4.0;
 double omega=-2.0;
 double Omega=-4.0;
 double Delta=-10.0;
 
+FILE *inputFile;
+FILE *outputFile;
+FILE *debugFile;
+int sampleN=1000;
+char limit[10000]="";
+double cutoff=1.0;
+int outputFormat=0; /* 0: normal list; 1: GTF; 2:compact list (debugging) */
+char debugFileName[1024]="";
+char inputFileName[1024]="STDIN";
+
+/* For debugging purposes, set these variable to print out
+   false-positive or false-negatives on test sets of noncoding or
+   coding regions of known  annotation */
+
+double printIfBelow=-1.0; 
+double printIfAbove=-1.0;
+
 int main(int argc, char *argv[]){
 
   int i,j,k,L,N,hssCount;
-
-  char inputFileName[1024]="STDIN";
   char *tmpSeq, *treeString;
   double kappa, parMu, parLambda;
   bgModel* models;
   segmentStats *results, *resultsRev, *allResults;
   TTree* tree;
-  char debugFileName[1024]="";
-  FILE *inputFile=stdin;
-  FILE *outputFile=stdout;
-  FILE *debugFile=stdout;
-  
   double**** Sk;
   double** S;
 
   int (*readFunction)(FILE *clust,struct aln *alignedSeqs[]);
 
-  struct gengetopt_args_info args;
   struct aln *inputAln[MAX_NUM_NAMES];
   struct aln *inputAlnRev[MAX_NUM_NAMES];
 
-  int sampleN=10;
-  int sampleMode=1;
-  int outputFormat=0; /* 0: normal list; 1: GTF; 2:compact list (debugging) */
-  double cutoff=1.0;
+  read_commandline(argc, argv);
 
-  /* For debugging purposes, set these variable to print out
-     false-positive or false-negatives on test sets of noncoding or
-     coding regions of known  annotation */
-
-  double printIfBelow=-1.0; 
-  double printIfAbove=-1.0;
   srand(time(NULL));
 
   ntMap['A']=ntMap['a']=0;
@@ -68,8 +70,213 @@ int main(int argc, char *argv[]){
   ntMap['T']=ntMap['t']=3;
   ntMap['U']=ntMap['u']=3;
 
-  /* Read command line arguments */
+  switch(checkFormat(inputFile)){
+  case CLUSTAL:
+    readFunction=&read_clustal;
+    break;
+  case MAF:
+    readFunction=&read_maf;
+    break;
+  case 0:
+    nrerror("ERROR: Unknown alignment file format. Use Clustal W or MAF format.\n");
+  }
+
+  while (readFunction(inputFile, inputAln)!=0){
+    /* Currently repeat masked regions are ignored and Ns are converted to gaps */
+    /* Fix this */
+    for (i=0; inputAln[i]!=NULL; i++){
+      tmpSeq=inputAln[i]->seq;
+      j=0;
+      while (tmpSeq[j]){
+        tmpSeq[j]=toupper(tmpSeq[j]);
+        if (tmpSeq[j]=='N'){
+          tmpSeq[j]='-';
+        }
+        j++;
+      }
+    }
+    
+    if (!strcmp(limit,"")==0){
+      pruneAln(limit,(struct aln**)inputAln);
+    }
+    
+    //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
+
+    //L=strlen(inputAln[0]->seq);
+
+    //if (L<3){
+    //  continue;
+    //}
+
+    test((const struct aln**)inputAln);
+
+    for (N=0; inputAln[N]!=NULL; N++);   
+
+    /* Currently minimum number of sequences is 3 because BIONJ seg-faults with 2 */
+    /* Fix this that it works with two sequences*/
+
+    if (N<=2){
+      //fprintf(stderr,"There must be at least three sequences in the alignment.\n");
+      continue;
+      //exit(1);
+    }
+
+    if (treeML((const struct aln**)inputAln,&treeString,&kappa)==0){
+      fprintf(stderr,"\nFailed to build ML tree.\n");
+      continue; 
+    }
+
+    tree=string2tree(treeString);
+    models=getModels(tree,inputAln,kappa);
+
+    copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
+    revAln((struct aln**)inputAlnRev);
+
+    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
+    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
+
+    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
+    results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
+    
+    for (k=0;k<N;k++){
+      printf("Sequence %i\n-------\n",k);
+      backtrack(Sk, k, 1, 33,(const struct aln**)inputAln);
+    }
+
+    freeSk(Sk, (const struct aln **)inputAln);
+    freeS(S, (const struct aln **)inputAln);
+
+    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAlnRev);
+    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAlnRev);
+    resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, cutoff);
+
+    freeSk(Sk, (const struct aln **)inputAln);
+    freeS(S, (const struct aln **)inputAln);
+
+    hssCount=0;
+
+    allResults=NULL;
+
+    i=0;
+    while (results[i].score > 0.0){
+      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
+      allResults[hssCount++]=results[i++];
+    }
+    
+    i=0;
+    while (resultsRev[i].score > 0.0){
+      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
+      allResults[hssCount++]=resultsRev[i++];
+    }
+
+    if (hssCount==0){
+      allResults=(segmentStats*)malloc(sizeof(segmentStats));
+      allResults[0].pvalue=1.0;
+    }
+    
+    allResults[hssCount].score=-1.0; 
+    
+    printResults(outputFile,outputFormat,allResults);
+    
+       
+  }
+    
+  //results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
+  //hssCount=0;
+  //while (results[hssCount].score>=0) hssCount++;
+  //qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+  /*
+    if (printIfAbove > -1.0){
+    if (results[0].pvalue > printIfAbove){
+    printAlnMAF(debugFile,(const struct aln**)inputAln,0);
+    }
+    }
+    if (printIfBelow > -1.0){
+      if (results[0].pvalue < printIfBelow){
+        printAlnMAF(debugFile,(const struct aln**)inputAln,0);
+      }
+    }
+    printResults(outputFile,outputFormat,results);
+    if (args.gfx_given){
+      colorAln("color.ps", (const struct aln**)inputAln, results[0]);
+    }
+
+  */
+
+  if ((printIfAbove > -1.0) || (printIfBelow > -1.0)){
+    fclose(debugFile);
+  }
+
+  fclose(inputFile);
+
   
+  freeResults(allResults);
+  freeModels(models,N);
+  free(treeString);
+  freeSeqgenTree(tree);
+  freeAln((struct aln**)inputAln);
+  freeAln((struct aln**)inputAlnRev);
+
+  exit(EXIT_SUCCESS);
+
+}
+
+
+void usage(void){
+  help();
+}
+
+void help(void){
+
+  cmdline_parser_print_version ();
+
+  printf("\nUsage: %s [OPTIONS]... [FILES]\n\n", CMDLINE_PARSER_PACKAGE);
+  printf("%s\n","  -h, --help                       Help screen");
+  printf("%s\n\n","  -V, --version                    Print version");
+}
+
+void version(void){
+  //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
+  printf("RNAcode v Thu Jan 22 15:07:09 2009\n");
+  exit(EXIT_SUCCESS);
+}
+
+
+void test(const struct aln *inputAln[]){
+
+  int N;
+  char *treeString;
+  double kappa;
+  TTree* tree;
+  double**** Sk;
+  double** S;
+  bgModel* models;
+  
+  for (N=0; inputAln[N]!=NULL; N++);   
+
+  if (treeML((const struct aln**)inputAln,&treeString,&kappa)==0){
+    fprintf(stderr,"\nFailed to build ML tree.\n");
+    exit(1);
+  }
+
+  tree=string2tree(treeString);
+  models=getModels(tree,inputAln,kappa);
+
+  Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
+  S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
+
+  //backtrack(S, 1, (const struct aln **)inputAln);
+    
+}
+
+void read_commandline(int argc, char *argv[]){
+
+  struct gengetopt_args_info args;
+
+  inputFile=stdin;
+  outputFile=stdout;
+  debugFile=stdout;
+
   if (cmdline_parser (argc, argv, &args) != 0){
     usage();
     exit(EXIT_FAILURE);
@@ -95,7 +302,6 @@ int main(int argc, char *argv[]){
   if (args.num_samples_given){
     sampleN=args.num_samples_arg;
   }
-
 
   if (args.gtf_given){
     outputFormat=1;
@@ -133,175 +339,6 @@ int main(int argc, char *argv[]){
     exit(EXIT_SUCCESS);
   }
 
-  switch(checkFormat(inputFile)){
-  case CLUSTAL:
-    readFunction=&read_clustal;
-    break;
-  case MAF:
-    readFunction=&read_maf;
-    break;
-  case 0:
-    nrerror("ERROR: Unknown alignment file format. Use Clustal W or MAF format.\n");
-  }
-
-  while (readFunction(inputFile, inputAln)!=0){
-    /* Currently repeat masked regions are ignored and Ns are converted to gaps */
-    /* Fix this */
-    for (i=0; inputAln[i]!=NULL; i++){
-      tmpSeq=inputAln[i]->seq;
-      j=0;
-      while (tmpSeq[j]){
-        tmpSeq[j]=toupper(tmpSeq[j]);
-        if (tmpSeq[j]=='N'){
-          tmpSeq[j]='-';
-        }
-        j++;
-      }
-    }
-
-    if (args.limit_given){
-      pruneAln(args.limit_arg,(struct aln**)inputAln);
-    }
-    
-    //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
-
-    //L=strlen(inputAln[0]->seq);
-
-    //if (L<3){
-    //  continue;
-    //}
-
-    for (N=0; inputAln[N]!=NULL; N++);   
-
-    /* Currently minimum number of sequences is 3 because BIONJ seg-faults with 2 */
-    /* Fix this that it works with two sequences*/
-
-    if (N<=2){
-      //fprintf(stderr,"There must be at least three sequences in the alignment.\n");
-      continue;
-      //exit(1);
-    }
-
-    if (treeML((const struct aln**)inputAln,&treeString,&kappa)==0){
-      fprintf(stderr,"\nFailed to build ML tree.\n");
-      continue; 
-    }
-
-    tree=string2tree(treeString);
-    models=getModels(tree,inputAln,kappa);
-
-    copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
-    revAln((struct aln**)inputAlnRev);
-
-    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
-    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
-
-    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
-    results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
-
-    freeSk(Sk, (const struct aln **)inputAln);
-    freeS(S, (const struct aln **)inputAln);
-
-    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAlnRev);
-    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAlnRev);
-    resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, cutoff);
-
-    freeSk(Sk, (const struct aln **)inputAln);
-    freeS(S, (const struct aln **)inputAln);
-
-    hssCount=0;
-
-    allResults=NULL;
-
-
-    i=0;
-    while (results[i].score > 0.0){
-      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
-      allResults[hssCount++]=results[i++];
-    }
-    
-    i=0;
-    while (resultsRev[i].score > 0.0){
-      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
-      allResults[hssCount++]=resultsRev[i++];
-    }
-
-    if (hssCount==0){
-      allResults=(segmentStats*)malloc(sizeof(segmentStats));
-      allResults[0].pvalue=1.0;
-    }
-    
-    allResults[hssCount].score=-1.0; 
-    
-    //printResults(outputFile,outputFormat,allResults);
-
-    printResults(outputFile,outputFormat,results);
-
-
-    //backtrack(Sk, 1, (const struct aln**)inputAln);
-    
-  }
-    
-  //results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
-  //hssCount=0;
-  //while (results[hssCount].score>=0) hssCount++;
-  //qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
-  /*
-    if (printIfAbove > -1.0){
-    if (results[0].pvalue > printIfAbove){
-    printAlnMAF(debugFile,(const struct aln**)inputAln,0);
-    }
-    }
-    if (printIfBelow > -1.0){
-      if (results[0].pvalue < printIfBelow){
-        printAlnMAF(debugFile,(const struct aln**)inputAln,0);
-      }
-    }
-    printResults(outputFile,outputFormat,results);
-    if (args.gfx_given){
-      colorAln("color.ps", (const struct aln**)inputAln, results[0]);
-    }
-
-    */
-
-  freeResults(allResults);
-
-  freeModels(models,N);
-  free(treeString);
-  freeSeqgenTree(tree);
-  freeAln((struct aln**)inputAln);
-  freeAln((struct aln**)inputAlnRev);
-
-  
-  if ((printIfAbove > -1.0) || (printIfBelow > -1.0)){
-    fclose(debugFile);
-  }
-
-  fclose(inputFile);
-
   cmdline_parser_free(&args);
-  
-  exit(EXIT_SUCCESS);
 
 }
-
-
-void usage(void){
-  help();
-}
-
-void help(void){
-
-  cmdline_parser_print_version ();
-
-  printf("\nUsage: %s [OPTIONS]... [FILES]\n\n", CMDLINE_PARSER_PACKAGE);
-  printf("%s\n","  -h, --help                       Help screen");
-  printf("%s\n\n","  -V, --version                    Print version");
-}
-
-void version(void){
-  //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
-  printf("RNAcode v Thu Jan 22 15:07:09 2009\n");
-  exit(EXIT_SUCCESS);
-}
-

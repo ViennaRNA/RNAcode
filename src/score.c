@@ -444,8 +444,8 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
               /* If CLUSTAL W input without coordinates */
               if ((inputAln[0]->start==0) && (inputAln[0]->length==0)){
               
-                results[hssCount].start=segmentStart*3+frame;
-                results[hssCount].end=segmentEnd*3+frame+2;
+                results[hssCount].start=segmentStart*3+frame+1;
+                results[hssCount].end=segmentEnd*3+frame+3;
 
               } else {
                 
@@ -578,7 +578,6 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
 }
 
 
-
 // Calculates matrix S[k][x][b][i]
 // k ... number of sequence
 // x ... State (0 ... '0', 1 ... '+1', 2 ... '-1')
@@ -684,7 +683,6 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
     }
   }
 
-
   free(block_0);
   free(block_k);
   free(map_0);
@@ -694,10 +692,10 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
 
 }
 
-double* backtrack(double**** S, int k, const struct aln *alignment[]){
+double* backtrack(double**** S, int k, int opt_b, int opt_i, const struct aln *alignment[]){
 
-  double opt_score=0.0;
-  int opt_state, opt_b, opt_i; 
+  double opt_score;
+  int opt_state; 
   int curr_state, prev_state;
   char *display_line1;
   char *display_line2;
@@ -712,38 +710,28 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
   char* seq_0;
   char* seq_k;
 
+  int pos,x,l,z,L, i, b;
+
   seq_0=alignment[0]->seq;
   seq_k=alignment[k]->seq;
   
   char string[1000];
 
-  int pos,i,b,x,l,z,L;
+  opt_score=MINUS_INF;
+  opt_state=-1;
+
+  for (x=0;x<3;x++){
+    if (S[k][x][opt_b][opt_i]>opt_score){
+      opt_score=S[k][x][opt_b][opt_i];
+      opt_state=x;
+    }
+  }
 
   L=getSeqLength(seq_0);
 
-  //for (i=1; S[k][0][i]!=NULL; i++) L++;
-
-  for (b=1;b<L+1;b++){
-    for (i=1;i<L+1;i++){
-      if (i>=b){
-        for (x=0;x<3;x++){
-          if (S[k][x][b][i] > opt_score){
-            opt_score=S[k][0][b][i];
-            opt_i=i;
-            opt_b=b;
-            opt_state=x;
-          }
-        }
-        //printf("%+.0f/%+.0f/%+.0f\t",S[k][0][b][i], S[k][1][b][i], S[k][2][b][i]);
-      } else {
-        //printf("    -   \t");
-      }
-    }
-    //printf("\n\n");
-  }
-
-
-  printf("Max score: %.1f at b=%i, i=%i at state %i\n", opt_score, opt_b, opt_i, opt_state);
+  opt_score=S[k][0][b][i];
+  
+  printf("Max score: %.1f at b=%i, i=%i at state %i\n", opt_score, b, opt_i, opt_state);
 
   states=(int*)malloc(sizeof(int)*(L+3));
       
@@ -761,16 +749,12 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
     map_k[l]=pos2col(seq_k,l);
   }
 
-
-      
   curr_state=opt_state;
   b=opt_b;
   
   for (i=opt_i;i>=opt_b+2;i-=3){
     getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
     
-    printf("%i %i %i %i\n",b, i, z, curr_state);
-
     if (z==0){
       prev_state = curr_state;
     }
@@ -826,7 +810,6 @@ double* backtrack(double**** S, int k, const struct aln *alignment[]){
   printf("\n");
 
   for (i=opt_b+2;i<=opt_i;i+=3){
-    //getBlock(seq_0, seq_k, i, block_0, block_k, &z );
     getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
     printf("%s ",block_k);
   }

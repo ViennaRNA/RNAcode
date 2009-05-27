@@ -306,7 +306,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
         if (results[i].pvalue < 0.001){
           fprintf(outfile, "% 9.1e\n",results[i].pvalue);
         } else {
-          fprintf(outfile, "% 9.2f\n",results[i].pvalue);
+          fprintf(outfile, "% 9.3f\n",results[i].pvalue);
         }
 
         i++;
@@ -351,7 +351,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
     i=0;
 
     while (results[i].score>0){
-      fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f",
+      fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f\t",
               results[i].strand, results[i].frame,
               results[i].endSite-results[i].startSite+1,
               results[i].startSite,results[i].endSite,

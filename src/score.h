@@ -67,11 +67,10 @@ bgModel* getModelMatrix(TTree* tree, struct aln *alignment[], double kappa);
 
 void freeModelMatrix(bgModel* models, int N);
 
-void getExtremeValuePars(TTree* tree, bgModel* models, const struct aln *alignment[], 
+void getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
                          int sampleN, double* parMu, double* parLambda);
 
 segmentStats* getHSS(double** S, const struct aln** inputAln,  char strand, double parMu, double parLambda, double cutoff);
-
 
 
 double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]);
@@ -81,5 +80,8 @@ double* backtrack(double**** S, int k, int from, int to, const struct aln *align
 
 void freeSk (double**** S, const struct aln *alignment[]);
 void freeS (double** S, const struct aln *alignment[]);
+
+segmentStats* scoreAln(const struct aln *alignment[], TTree* tree, double kappa, double parMu, double parLambda);
+
 
 #endif

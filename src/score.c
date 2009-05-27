@@ -6,14 +6,17 @@
 #include "code.h"
 #include "misc.h"
 
-extern double sigma;
 extern double omega;
 extern double Omega;
 extern double Delta;
+extern double sampleN;
+extern double cutoff;
 
 extern int transcode[4][4][4];
 extern int BLOSUM62[24][24];
 
+extern bgModel *models;
+extern bgModel *modelsRev;
 
 /*********************************************************************
   getScoringMatrix
@@ -169,9 +172,6 @@ double probHKY(int i, int j, double d, double freqs[4], double kappa){
 
 }
 
-
-
-
 int compareScores(const void * a, const void * b){
 
   segmentStats* statsA;
@@ -217,7 +217,6 @@ void countFreqsMono(const struct aln *alignment[], double freqs[]){
   }
 
   for (i=0;i<4;i++) freqs[i]/=(double)counter;
-
 }
 
 
@@ -228,7 +227,7 @@ bgModel* getModels(TTree* tree, struct aln *alignment[], double kappa){
   double** distanceMatrix;
   double freqsMono[4];
   bgModel* models;
-
+  
   for (N=0; alignment[N]!=NULL; N++);   
   
   distanceMatrix=getDistanceMatrix(tree,(struct aln**)alignment);
@@ -283,19 +282,14 @@ double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
   int pepA, pepB;
   int i,j,h;
   double currScore,expectedScore, observedScore;
-  
+
+ 
   i=j=0;
   while (block_0[i] != '\0') {
     if (block_0[i] != '-') {
-      codonA[j++]=block_0[i];
-    }
-    i++;
-  }
-
-  i=j=0;
-  while (block_k[i] != '\0') {
-    if (block_k[i]!='-') {
-      codonB[j++]=block_k[i];
+      codonA[j]=block_0[i];
+      codonB[j]=block_k[i];
+      j++;
     }
     i++;
   }
@@ -305,18 +299,13 @@ double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
     return 0.0;
   }
 
-  //printf("%s %s\n", block_0, block_k);
-
   codonA[3]=codonB[3]='\0';
-  
+
   h=hDist(ntMap[codonA[0]], ntMap[codonA[1]], ntMap[codonA[2]],
           ntMap[codonB[0]], ntMap[codonB[1]], ntMap[codonB[2]]);
 
   if (h==0) return 0.0;
 
-  //printf("%s %s\n",codonA, codonB);
-  //printf("%s %s\n", block_0, block_k);
-      
   pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
   pepB=transcode[ntMap[codonB[0]]][ntMap[codonB[1]]][ntMap[codonB[2]]];
 
@@ -356,14 +345,15 @@ double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln
         sum+=MAX3(Sk[k][0][b][i],
                   Sk[k][1][b][i],
                   Sk[k][2][b][i]);
+      }
 
        
-        S[b][i]=MAX3(sum,
-                     S[b][i-1]+Delta,
-                     S[b][i-2]+Delta);
+      S[b][i]=MAX3(sum,
+                   S[b][i-1]+Delta,
+                   S[b][i-2]+Delta)/(N-1);
 
+       
         //printf("%.2f ",S[b][i]);
-      }
     }
     //printf("\n");
   }
@@ -398,8 +388,6 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
       for (j=i;j<sites;j++){
         currEntry=S[i*3+1+frame][j*3+3+frame];
 
-        //printf("-------------------> Frame %i: %i %i %.2f (%i) \n", frame, i,j, currEntry, sites);
-
         if (currEntry>0.0 ||           /* only consider positive entries */
             (i==sites-1 && j==sites-1)){ /* enter on last entry in
                                             any case to report last found
@@ -410,8 +398,6 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
              local maximum (we report on last entry in any case...) */
           if ((currMax>0.0 && segmentEnd<i ) || (i==sites-1 && j==sites-1)){
 
-            //printf("%u,%u:%.2f\n",segmentStart,segmentEnd,currMax);
-          
             /* If both parameters are set to zero, no p-values are
                calculated and all positive scores are reported */
             if (parLambda==0.0 && parMu==0.0){
@@ -419,11 +405,10 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
             } else {
               pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
             }
-
-            //printf("------------------->  %i: %i %i %.2f %.2f \n", frame, segmentStart, segmentEnd, currMax, cutoff);
-            
+           
             if (pvalue<cutoff && segmentEnd-segmentStart>=minSegmentLength){
-             
+
+            
               /* re-allocate for each new result, leave room for last entry */
               results=(segmentStats*)realloc(results,sizeof(segmentStats)*(hssCount+2));
 
@@ -448,13 +433,10 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
                 results[hssCount].end=segmentEnd*3+frame+3;
 
               } else {
-                
                 if (strand=='+'){
                   results[hssCount].start=inputAln[0]->start+segmentStart*3+frame;
                   results[hssCount].end=inputAln[0]->start+segmentEnd*3+frame+2;
-                  
                 } else {
-                    
                   results[hssCount].end=(inputAln[0]->start+inputAln[0]->length-1)-segmentStart*3-frame;
                   results[hssCount].start=(inputAln[0]->start+inputAln[0]->length-1)-segmentEnd*3-frame-2;
                 }
@@ -495,19 +477,17 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
  
 }
 
-
-
-void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignment[], 
+void getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
                          int sampleN, double* parMu, double* parLambda){
-
+  
   int tmpCounter, L, i, j;
   double* freqsMono;
   double kappa;
   double sum, maxSum;
   double* maxScores;
-  double mu, sigma;
+  double mu;
   struct aln *sampledAln[MAX_NUM_NAMES];
-  segmentStats *results;
+  segmentStats *results, *resultsRev, *allResults;
   int sampleWritten=0;
   int hssCount;
   double**** Sk;
@@ -519,7 +499,8 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
   kappa=models[0].kappa;
 
   maxScores=(double*)malloc(sizeof(double)*sampleN);
-
+  
+  //printf("%.2f, %.2f, %.2f, %.2f\n", models[0].freqs[0],models[0].freqs[1],models[0].freqs[2],models[0].freqs[3]);
   //FILE *fp = fopen("scores.dat", "a");
 
   tmpCounter=0;
@@ -535,36 +516,43 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
     reintroduceGaps(alignment, sampledAln);
       
     /* Write one random sampling, debugging */
-    /* if (!sampleWritten){ */
-    /*   int x=0; */
-    /*   FILE *fp = fopen("samples.maf", "a"); */
-    /*   for (x=1; sampledAln[x]!=NULL; ++x){ */
-    /*     sampledAln[x]->strand='+'; */
-    /*   } */
-    /*   printAlnMAF(fp,(const struct aln**)sampledAln,0); */
-    /*   fprintf(fp,"\n"); */
-    /*   fclose(fp); */
-    /*   sampleWritten=1; */
-    /* } */
+    /*
+    if (!sampleWritten){
+      int x=0;
+      FILE *fp = fopen("samples.maf", "a");
+      for (x=1; sampledAln[x]!=NULL; ++x){
+        sampledAln[x]->strand='+';
+      }
+      printAlnMAF(fp,(const struct aln**)sampledAln,0);
+      fprintf(fp,"\n");
+      fclose(fp);
+      sampleWritten=1;
+    }
+    */
 
     //printAlnMAF(stdout,(const struct aln**)sampledAln,0);
 
+    /*
     Sk=getPairwiseScoreMatrix(models,(const struct aln**)sampledAln);
     S=getMultipleScoreMatrix(Sk,models,(const struct aln**)sampledAln);
-
+    
     results=getHSS(S, (const struct aln**)sampledAln, '+', 0.0, 0.0, 1.0);
+    
+    */
 
+    results=scoreAln((const struct aln**)sampledAln, tree, kappa, 0.0, 0.0);
+
+    //fprintf(stderr, "%.2f\n", results[0].score);
+    
     hssCount=0;
     while (results[hssCount].score>=0) hssCount++;
 
-    //printf("%.2f\n", results[0].score);
-    
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
-    
+
     maxScores[i]=results[0].score;
 
-    freeSk(Sk, (const struct aln **)sampledAln);
-    freeS(S, (const struct aln **)sampledAln);
+    //freeSk(Sk, (const struct aln **)sampledAln);
+    //freeS(S, (const struct aln **)sampledAln);
        
     freeAln((struct aln**)sampledAln);
     freeResults(results);
@@ -585,7 +573,7 @@ void getExtremeValuePars(TTree* tree,bgModel* models, const struct aln *alignmen
 
 double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
   
-  int L,N, pos,z,b,i,x, k,l;
+  int L,N, colsN, pos,z,b,i,x, k,l;
   char *block_0, *block_k, *seq_0, *seq_k;
   int *map_0, *map_k;
   double**** S;
@@ -593,6 +581,7 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
   seq_0=alignment[0]->seq;
 
   L=getSeqLength(seq_0);
+  colsN=strlen(seq_0);
   for (N=0; alignment[N]!=NULL; N++);
 
   // We have one entry for each pair
@@ -609,28 +598,21 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
       for (i=0;i<L+1;i++){
         S[k][x][i]=(double*)malloc(sizeof(double)*(L+1));
       }
-      //S[k][x][L+1]=NULL;
 
       for (b=0;b<L+1;b++){
         for (i=0;i<L+1;i++){
-          if (abs(b-i)<3 ){
-            S[k][x][b][i]=0.0;
-          } else {
-            S[k][x][b][i]=0.0;
-          }
+          S[k][x][b][i]=0.0;
         }
       }
     }
   }
+  
+  // Allocate conservatively for full length of sequence + gaps;
+  block_0 = (char*) malloc(sizeof(char)*(colsN+1));
+  block_k = (char*) malloc(sizeof(char)*(colsN+1));
 
-  // Allocate conservatively for full length of sequence;
-  block_0 = (char*) malloc(sizeof(char)*(L+1));
-  block_k = (char*) malloc(sizeof(char)*(L+1));
-
-  //printf("%s <-REF\n",seq_0);
-
-  map_0=(int*)malloc(sizeof(int)*(L+1));
-  map_k=(int*)malloc(sizeof(int)*(L+1));
+  map_0=(int*)malloc(sizeof(int)*(colsN+1));
+  map_k=(int*)malloc(sizeof(int)*(colsN+1));
 
   for (l=1;l<=L;l++){
     map_0[l]=pos2col(seq_0,l);
@@ -648,7 +630,6 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
       for (i=b+2;i<L+1;i+=3){
 
         getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-
         
         if (z==0){
           S[k][0][b][i]=S[k][0][b][i-3]+calculateSigma(block_0,block_k,k,models);
@@ -689,6 +670,80 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
   free(map_k);
 
   return(S);
+}
+
+segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, double kappa, double parMu, double parLambda){
+  
+  struct aln *inputAlnRev[MAX_NUM_NAMES];
+  segmentStats *results, *resultsRev, *allResults;
+  double**** Sk;
+  double** S;
+  int hssCount, i, N;
+  
+  for (N=0; inputAln[N]!=NULL; N++);   
+ 
+  copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
+  revAln((struct aln**)inputAlnRev);
+
+  Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
+  S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
+
+  results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
+
+  /*
+    for (k=1;k<N;k++){
+    printf("Sequence %i\n-------\n",k);
+    backtrack(Sk, k, results[0].start,results[0].end,(const struct aln**)inputAln);
+    }
+  */
+
+  freeSk(Sk, (const struct aln **)inputAln);
+  freeS(S, (const struct aln **)inputAln);
+
+  Sk=getPairwiseScoreMatrix(modelsRev,(const struct aln**)inputAlnRev);
+  S=getMultipleScoreMatrix(Sk,modelsRev,(const struct aln**)inputAlnRev);
+  resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, cutoff);
+
+  freeSk(Sk, (const struct aln **)inputAln);
+  freeS(S, (const struct aln **)inputAln);
+    
+  hssCount=0;
+
+  allResults=NULL;
+
+  i=0;
+  while (results[i].score > 0.0){
+    allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
+    allResults[hssCount]=results[i];
+    allResults[hssCount].name=strdup(results[i].name);
+    hssCount++;
+    i++;
+  }
+
+  i=0;
+  while (resultsRev[i].score > 0.0){
+    allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
+    allResults[hssCount]=resultsRev[i];
+    allResults[hssCount].name=strdup(resultsRev[i].name);
+    hssCount++;
+    i++;
+  }
+  
+  if (hssCount==0){
+    allResults=(segmentStats*)malloc(sizeof(segmentStats));
+    allResults[0].pvalue=1.0;
+  }
+    
+  allResults[hssCount].score=-1.0; 
+
+  freeResults(results);
+  freeResults(resultsRev);
+
+  qsort((segmentStats*) allResults, hssCount,sizeof(segmentStats),compareScores);
+
+  freeAln((struct aln**)inputAlnRev);
+
+  return(allResults);
 
 }
 

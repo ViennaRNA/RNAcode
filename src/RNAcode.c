@@ -22,7 +22,6 @@ void version(void);
 
 /* Global options */
 
-double sigma=+4.0;
 double omega=-2.0;
 double Omega=-4.0;
 double Delta=-10.0;
@@ -30,12 +29,13 @@ double Delta=-10.0;
 FILE *inputFile;
 FILE *outputFile;
 FILE *debugFile;
-int sampleN=1000;
+int sampleN=100;
 char limit[10000]="";
 double cutoff=1.0;
 int outputFormat=0; /* 0: normal list; 1: GTF; 2:compact list (debugging) */
 char debugFileName[1024]="";
 char inputFileName[1024]="STDIN";
+bgModel *models, *modelsRev;
 
 /* For debugging purposes, set these variable to print out
    false-positive or false-negatives on test sets of noncoding or
@@ -44,16 +44,16 @@ char inputFileName[1024]="STDIN";
 double printIfBelow=-1.0; 
 double printIfAbove=-1.0;
 
+void read_commandline(int argc, char *argv[]);
+
 int main(int argc, char *argv[]){
 
   int i,j,k,L,N,hssCount;
   char *tmpSeq, *treeString;
-  double kappa, parMu, parLambda;
-  bgModel* models;
-  segmentStats *results, *resultsRev, *allResults;
+  double kappa;
   TTree* tree;
-  double**** Sk;
-  double** S;
+  segmentStats *results;
+  double parMu, parLambda;
 
   int (*readFunction)(FILE *clust,struct aln *alignedSeqs[]);
 
@@ -101,16 +101,13 @@ int main(int argc, char *argv[]){
     }
     
     //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
-
+    
     //L=strlen(inputAln[0]->seq);
-
     //if (L<3){
-    //  continue;
+    //continue;
     //}
 
-    test((const struct aln**)inputAln);
-
-    for (N=0; inputAln[N]!=NULL; N++);   
+    for (N=0; inputAln[N]!=NULL; N++);
 
     /* Currently minimum number of sequences is 3 because BIONJ seg-faults with 2 */
     /* Fix this that it works with two sequences*/
@@ -125,60 +122,23 @@ int main(int argc, char *argv[]){
       fprintf(stderr,"\nFailed to build ML tree.\n");
       continue; 
     }
-
+    
     tree=string2tree(treeString);
-    models=getModels(tree,inputAln,kappa);
-
+    
     copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
     revAln((struct aln**)inputAlnRev);
-
-    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
-    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
-
-    getExtremeValuePars(tree, models, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
-    results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
     
-    for (k=0;k<N;k++){
-      printf("Sequence %i\n-------\n",k);
-      backtrack(Sk, k, 1, 33,(const struct aln**)inputAln);
-    }
+    models=getModels(tree,inputAln,kappa);
+    modelsRev=getModels(tree,inputAlnRev,kappa);
 
-    freeSk(Sk, (const struct aln **)inputAln);
-    freeS(S, (const struct aln **)inputAln);
+    getExtremeValuePars(tree, (const struct aln**)inputAln, sampleN, &parMu, &parLambda);
+    results=scoreAln((const struct aln**)inputAln, tree, kappa, parMu, parLambda);
+    printResults(outputFile,outputFormat,results);
 
-    Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAlnRev);
-    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAlnRev);
-    resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, cutoff);
-
-    freeSk(Sk, (const struct aln **)inputAln);
-    freeS(S, (const struct aln **)inputAln);
-
-    hssCount=0;
-
-    allResults=NULL;
-
-    i=0;
-    while (results[i].score > 0.0){
-      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
-      allResults[hssCount++]=results[i++];
-    }
-    
-    i=0;
-    while (resultsRev[i].score > 0.0){
-      allResults=(segmentStats*)realloc(allResults,sizeof(segmentStats)*(hssCount+2));
-      allResults[hssCount++]=resultsRev[i++];
-    }
-
-    if (hssCount==0){
-      allResults=(segmentStats*)malloc(sizeof(segmentStats));
-      allResults[0].pvalue=1.0;
-    }
-    
-    allResults[hssCount].score=-1.0; 
-    
-    printResults(outputFile,outputFormat,allResults);
-    
-       
+    freeResults(results);
+    freeModels(models,N);
+    freeModels(modelsRev,N);
+         
   }
     
   //results=getHSS(models, (const struct aln**)inputAln, parMu, parLambda,cutoff);
@@ -203,20 +163,17 @@ int main(int argc, char *argv[]){
 
   */
 
+  
   if ((printIfAbove > -1.0) || (printIfBelow > -1.0)){
     fclose(debugFile);
   }
-
   fclose(inputFile);
 
-  
-  freeResults(allResults);
-  freeModels(models,N);
+
+  //freeResults(results);
   free(treeString);
   freeSeqgenTree(tree);
   freeAln((struct aln**)inputAln);
-  freeAln((struct aln**)inputAlnRev);
-
   exit(EXIT_SUCCESS);
 
 }
@@ -237,7 +194,7 @@ void help(void){
 
 void version(void){
   //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
-  printf("RNAcode v Thu Jan 22 15:07:09 2009\n");
+  printf("RNAcode v Wed May 27 15:00:37 2009\n");
   exit(EXIT_SUCCESS);
 }
 
@@ -261,6 +218,7 @@ void test(const struct aln *inputAln[]){
 
   tree=string2tree(treeString);
   models=getModels(tree,inputAln,kappa);
+
 
   Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
   S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
@@ -320,13 +278,17 @@ void read_commandline(int argc, char *argv[]){
   }
 
   if (args.print_if_below_given){
-      printIfBelow=args.print_if_below_arg; 
-      debugFile = fopen(debugFileName, "w");
+    printIfBelow=args.print_if_below_arg; 
+    debugFile = fopen(debugFileName, "w");
   }
 
   if (args.print_if_above_given){
     printIfAbove=args.print_if_above_arg; 
     debugFile = fopen(debugFileName, "w");
+  }
+
+  if (args.limit_given){
+    strcpy(limit,args.limit_arg);
   }
 
   if (args.help_given){

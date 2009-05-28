@@ -25,6 +25,8 @@ void version(void);
 double omega=-2.0;
 double Omega=-4.0;
 double Delta=-10.0;
+double stopPenalty_0=-9999.0;
+double stopPenalty_k=-8.0;
 
 FILE *inputFile;
 FILE *outputFile;
@@ -194,7 +196,7 @@ void help(void){
 
 void version(void){
   //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
-  printf("RNAcode v Wed May 27 15:00:37 2009\n");
+  printf("RNAcode v Thu May 28 16:31:18 2009\n");
   exit(EXIT_SUCCESS);
 }
 

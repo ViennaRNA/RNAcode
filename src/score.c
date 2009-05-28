@@ -11,6 +11,8 @@ extern double Omega;
 extern double Delta;
 extern double sampleN;
 extern double cutoff;
+extern double stopPenalty_0;
+extern double stopPenalty_k;
 
 extern int transcode[4][4][4];
 extern int BLOSUM62[24][24];
@@ -79,20 +81,56 @@ void calculateBG(bgModel* model){
 
   int a1,a2,a3, b1,b2,b3;
   int pepA, pepB;
-  double f, prob, score;
+  double f, prob, score, probStop;
   double counts[4];
   int h, i;
 
   counts[0]=counts[1]=counts[2]=counts[3]=0.0;
   model->scores[0]=model->scores[1]=model->scores[2]=model->scores[3]=0.0;
 
+  // First calculate probability of pairs with stop
+  probStop=0;
   for (a1=0;a1<4;a1++){
     for (a2=0;a2<4;a2++){
       for (a3=0;a3<4;a3++){
         for (b1=0;b1<4;b1++){
           for (b2=0;b2<4;b2++){
             for (b3=0;b3<4;b3++){
-              
+              pepA=transcode[a1][a2][a3];
+              pepB=transcode[b1][b2][b3];
+              if (pepA!=-1 && pepB!=-1) continue;
+
+              f=(model->freqs[a1])*(model->freqs[a2])*(model->freqs[a3]);
+
+              prob=probHKY(a1,b1,model->dist,model->freqs,model->kappa);
+              prob*=probHKY(a2,b2,model->dist,model->freqs,model->kappa);
+              prob*=probHKY(a3,b3,model->dist,model->freqs,model->kappa);
+
+              prob*=f;
+              probStop+=prob;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Then calculate actual probabilities and expected scores for h=0,1,2,3
+  for (a1=0;a1<4;a1++){
+    for (a2=0;a2<4;a2++){
+      for (a3=0;a3<4;a3++){
+
+        pepA=transcode[a1][a2][a3];
+        if (pepA==-1) continue;
+
+        for (b1=0;b1<4;b1++){
+          for (b2=0;b2<4;b2++){
+            for (b3=0;b3<4;b3++){
+
+              pepB=transcode[b1][b2][b3];
+
+              if (pepB==-1) continue;
+
               h=hDist(a1,a2,a3,b1,b2,b3);
 
               f=(model->freqs[a1])*(model->freqs[a2])*(model->freqs[a3]);
@@ -101,11 +139,9 @@ void calculateBG(bgModel* model){
 
               prob*=probHKY(a2,b2,model->dist,model->freqs,model->kappa);
               prob*=probHKY(a3,b3,model->dist,model->freqs,model->kappa);
-
-              prob*=f;
               
-              pepA=transcode[a1][a2][a3];
-              pepB=transcode[b1][b2][b3];
+              prob*=f;
+              prob/=(1-probStop); //Correct probability for the condition that no stop exists
               
               if (pepA==-1) pepA=23;
               if (pepB==-1) pepB=23;
@@ -282,7 +318,6 @@ double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
   int pepA, pepB;
   int i,j,h;
   double currScore,expectedScore, observedScore;
-
  
   i=j=0;
   while (block_0[i] != '\0') {
@@ -309,9 +344,17 @@ double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
   pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
   pepB=transcode[ntMap[codonB[0]]][ntMap[codonB[1]]][ntMap[codonB[2]]];
 
-  if (pepA==-1) pepA=23;
-  if (pepB==-1) pepB=23;
-  
+  //if (pepA==-1) pepA=23;
+  //if (pepB==-1) pepB=23;
+
+  if (pepA==-1) {
+    return stopPenalty_0;
+  }
+
+  if (pepB==-1) {
+    return stopPenalty_k;
+  }
+
   expectedScore=models[k].scores[h];
   observedScore=(double)models[k].matrix[pepA][pepB];
 

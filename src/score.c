@@ -389,16 +389,11 @@ double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln
                   Sk[k][1][b][i],
                   Sk[k][2][b][i]);
       }
-
-       
+      
       S[b][i]=MAX3(sum,
                    S[b][i-1]+Delta,
                    S[b][i-2]+Delta)/(N-1);
-
-       
-        //printf("%.2f ",S[b][i]);
     }
-    //printf("\n");
   }
   
   return(S);
@@ -618,7 +613,10 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
   
   int L,N, colsN, pos,z,b,i,x, k,l;
   char *block_0, *block_k, *seq_0, *seq_k;
+  char **blocks_0, **blocks_k;
+  int** zs;
   int *map_0, *map_k;
+  double** sigmas;
   double**** S;
 
   seq_0=alignment[0]->seq;
@@ -629,7 +627,7 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
 
   // We have one entry for each pair
   S=(double****)malloc(sizeof(double***)*(N+1));
-  
+
   for (k=0;k<N;k++){
     // We have three states
     S[k]=(double***)malloc(sizeof(double**)*(3));
@@ -653,6 +651,13 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
   // Allocate conservatively for full length of sequence + gaps;
   block_0 = (char*) malloc(sizeof(char)*(colsN+1));
   block_k = (char*) malloc(sizeof(char)*(colsN+1));
+  
+  // Precalculate blocks, z's and sigmas for all i to avoid doing this in the inner loop
+  blocks_0 = (char**) malloc(sizeof(char*)*(L+1));
+  blocks_k = (char**) malloc(sizeof(char*)*(L+1));
+
+  zs = (int**) malloc(sizeof(int*)*k);
+  sigmas = (double**) malloc(sizeof(double*)*k);
 
   map_0=(int*)malloc(sizeof(int)*(colsN+1));
   map_k=(int*)malloc(sizeof(int)*(colsN+1));
@@ -665,17 +670,24 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
 
     seq_k=alignment[k]->seq;
     
+    zs[k]=(int*) malloc(sizeof(int)*(L+1));
+    sigmas[k]=(double*) malloc(sizeof(double)*(L+1));
     for (l=1;l<=L;l++){
       map_k[l]=pos2col(seq_k,l);
+    }
+    for (x=3;x<L+1;x+=1){
+      getBlock(x, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+      blocks_0[x]=strdup(block_0);
+      blocks_k[x]=strdup(block_k);
+      zs[k][x]=z;
+      sigmas[k][x]= calculateSigma(block_0,block_k,k,models);
     }
 
     for (b=1;b<L+1;b++){
       for (i=b+2;i<L+1;i+=3){
-
-        getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-        
+        z=zs[k][i];
         if (z==0){
-          S[k][0][b][i]=S[k][0][b][i-3]+calculateSigma(block_0,block_k,k,models);
+          S[k][0][b][i]=S[k][0][b][i-3]+sigmas[k][i];
           S[k][1][b][i]=S[k][1][b][i-3]+omega;
           S[k][2][b][i]=S[k][2][b][i-3]+omega;
         }
@@ -702,7 +714,6 @@ double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]
                             S[k][0][b][i-3]+Omega);
         
         }
-
       }
     }
   }

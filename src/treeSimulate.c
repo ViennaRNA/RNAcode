@@ -30,7 +30,7 @@ extern int numTaxa;
 char* P;
 
 
-void simulateTree(TTree* tree, double freqs[], double kap, int L){
+void simulateTree(TTree* tree, float freqs[], float kap, int L){
   
   int i,j,k;
   int* tmp;
@@ -39,25 +39,26 @@ void simulateTree(TTree* tree, double freqs[], double kap, int L){
   double freqA, freqC, freqG, freqT;
 
   isNucModel = 1;
-	numStates = 4;
+  numStates = 4;
   model=0; /*0 means HKY, take care model constants are a tricky in
              seqgen and if set to defined constant HKY this does not
              work*/
 
   equalFreqs = 0;
-	equalTstv = 0;
+  equalTstv = 0;
 
-  freqA=nucFreq[0]=freqs[0];
-  freqC=nucFreq[1]=freqs[1];
-  freqG=nucFreq[2]=freqs[2];
-  freqT=nucFreq[3]=freqs[3];
+
+  freqA=nucFreq[0]=(double)freqs[0];
+  freqC=nucFreq[1]=(double)freqs[1];
+  freqG=nucFreq[2]=(double)freqs[2];
+  freqT=nucFreq[3]=(double)freqs[3];
   
   freqR=freqA+freqG;
   freqY=freqC+freqT;
   freqAG=freqA*freqG;
   freqCT=freqC*freqT;
 
-  tstv=kap*(freqAG+freqCT)/(freqR*freqY);
+  tstv=(double)kap*(freqAG+freqCT)/(freqR*freqY);
   
   numSites=L;
 
@@ -95,21 +96,21 @@ TTree* string2tree(char* treeString){
 }
 
 
-double** getDistanceMatrix(TTree* tree, struct aln *alignment[]){
+float** getDistanceMatrix(TTree* tree, struct aln *alignment[]){
 
   TNode* LCA;
   TNode* nodeA=NULL;
   TNode* nodeB=NULL;
-  double sum=0.0;
-  double** matrix;
+  float sum=0.0;
+  float** matrix;
   int N,i,j,k;
 
   for (N=0; alignment[N]!=NULL; N++);
 
-  matrix=(double**)malloc(sizeof(double*)*N);
+  matrix=(float**)malloc(sizeof(float*)*N);
 
   for (i=0;i<N;i++){
-    matrix[i]=(double*)malloc(sizeof(double)*N);
+    matrix[i]=(float*)malloc(sizeof(float)*N);
   }
 
        

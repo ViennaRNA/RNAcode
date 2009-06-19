@@ -20,11 +20,11 @@ int getSeqLength(char *seq);
 
 int hDist(int a1, int a2, int a3, int b1, int b2, int b3);
 
-double avg(double* data, int N);
+float avg(float* data, int N);
 
-double stddev(double* data, int N);
+float stddev(float* data, int N);
 
-double gaussian (const double sigma);
+float gaussian (const float sigma);
 
 void copyAln(struct aln *src[],struct aln *dest[]);
 

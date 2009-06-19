@@ -14,7 +14,7 @@
 
 seq **Get_Seq_local(seq**, option *io,  int rw);
 
-int treeML(const struct aln *alignment[], char** treeString, double* kappa){
+int treeML(const struct aln *alignment[], char** treeString, float* kappa){
 
   int i;
   seq **data;

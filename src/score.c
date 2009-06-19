@@ -3,22 +3,18 @@
 #include <stdlib.h>
 #include <math.h>
 #include "score.h"
+#include "RNAcode.h"
 #include "code.h"
 #include "misc.h"
 
-extern double omega;
-extern double Omega;
-extern double Delta;
-extern double sampleN;
-extern double cutoff;
-extern double stopPenalty_0;
-extern double stopPenalty_k;
+extern parameters pars;
 
 extern int transcode[4][4][4];
 extern int BLOSUM62[24][24];
-
 extern bgModel *models;
 extern bgModel *modelsRev;
+
+extern float**** Sk;
 
 /*********************************************************************
   getScoringMatrix
@@ -81,8 +77,8 @@ void calculateBG(bgModel* model){
 
   int a1,a2,a3, b1,b2,b3;
   int pepA, pepB;
-  double f, prob, score, probStop;
-  double counts[4];
+  float f, prob, score, probStop;
+  float counts[4];
   int h, i;
 
   counts[0]=counts[1]=counts[2]=counts[3]=0.0;
@@ -163,20 +159,26 @@ void calculateBG(bgModel* model){
   }
 }
 
+/*********************************************************************
+  probHKY
 
-double probHKY(int i, int j, double d, double freqs[4], double kappa){
+  Calculates probability of change i -> j given distance d, stationary
+  frequencies freqs[] and ts/tv rate ration kappa under the HKY
+  substitution model
 
-  double piA, piC, piG, piT;
-  double piR, piY, r, l, k1, k2, exp1, exp2, exp22, exp21;
-  double result[4][4];
+*********************************************************************/ 
 
+float probHKY(int i, int j, float d, float freqs[4], float kappa){
+
+  float piA, piC, piG, piT;
+  float piR, piY, r, l, k1, k2, exp1, exp2, exp22, exp21;
+  float result[4][4];
 
   piA=freqs[0];
   piC=freqs[1];
   piG=freqs[2];
   piT=freqs[3];
   
-
   piR=piA+piG;
   piY=piT+piC;
   r=1./(2.*(piA*piC+piC*piG+piA*piT+piG*piT+kappa*(piC*piT+piA*piG)));
@@ -208,6 +210,14 @@ double probHKY(int i, int j, double d, double freqs[4], double kappa){
 
 }
 
+/*********************************************************************
+  compareScores
+
+  compare function for qsort that compares two scores given as pointer
+  to a segmentStats structure.
+
+*********************************************************************/ 
+
 int compareScores(const void * a, const void * b){
 
   segmentStats* statsA;
@@ -216,7 +226,6 @@ int compareScores(const void * a, const void * b){
   statsA=(segmentStats*)a;
   statsB=(segmentStats*)b;
 
-
   if  ( statsA->score < statsB->score) {
     return 1;
   } else {
@@ -224,17 +233,23 @@ int compareScores(const void * a, const void * b){
   }
 
   return 0;
-
 }
 
+/*********************************************************************
+  countFreqsMono
 
-void countFreqsMono(const struct aln *alignment[], double freqs[]){
+  Counts mononucleotide frequencies in alignment aln and writes it to
+  freqs.
+
+*********************************************************************/ 
+
+void countFreqsMono(const struct aln *alignment[], float freqs[]){
 
   int i,k;
   char* currSeq;
   char c;
   unsigned long counter;
-  double sum;
+  float sum;
 
   for (i=0;i<4;i++) freqs[i]=0.0;
 
@@ -252,32 +267,34 @@ void countFreqsMono(const struct aln *alignment[], double freqs[]){
     }
   }
 
-  for (i=0;i<4;i++) freqs[i]/=(double)counter;
+  for (i=0;i<4;i++) freqs[i]/=(float)counter;
 }
 
 
-bgModel* getModels(TTree* tree, struct aln *alignment[], double kappa){
+/*********************************************************************
+  getModels
+
+  Calculates background models for a tree, alignment and ts/tv rate
+  ration kappa. Returns results as pointer to bgModel structure.
+
+*********************************************************************/ 
+
+bgModel* getModels(TTree* tree, struct aln *alignment[], float kappa){
 
   int i,j,N;
   int **scoringMatrix;
-  double** distanceMatrix;
-  double freqsMono[4];
+  float** distanceMatrix;
+  float freqsMono[4];
   bgModel* models;
-  
+
   for (N=0; alignment[N]!=NULL; N++);   
   
   distanceMatrix=getDistanceMatrix(tree,(struct aln**)alignment);
   
-  countFreqsMono((const struct aln**)alignment, (double *) freqsMono);
+  countFreqsMono((const struct aln**)alignment, (float *) freqsMono);
 
   models=(bgModel*)malloc(sizeof(bgModel)*N);
 
-  /*for (i=0;i<N;i++){
-    models[i]=(bgModel*)malloc(sizeof(bgModel)*N);
-  }
-  */
-
-  //i=0;
   for (j=0;j<N;j++){
     scoringMatrix=getScoringMatrix();
     models[j].dist=distanceMatrix[0][j];
@@ -299,6 +316,14 @@ bgModel* getModels(TTree* tree, struct aln *alignment[], double kappa){
   
 }
 
+/*********************************************************************
+  freeModels
+
+  Frees background model, N is the number of sequences in the
+  for which the model was calculated
+
+*********************************************************************/ 
+
 void freeModels(bgModel* models, int N){
 
   int i, j;
@@ -310,15 +335,24 @@ void freeModels(bgModel* models, int N){
   free(models);
 }
 
+/*********************************************************************
+  calculateSigma
 
-double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
+  Calculates sigma scores for two alignment blocks between the 
+  reference sequence and sequence k. The required background model data
+  is given in models. 
+
+*********************************************************************/ 
+
+
+float calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
 
   char codonA[4]="XXX";
   char codonB[4]="XXX";
   int pepA, pepB;
   int i,j,h;
-  double currScore,expectedScore, observedScore;
- 
+  float currScore,expectedScore, observedScore;
+
   i=j=0;
   while (block_0[i] != '\0') {
     if (block_0[i] != '-') {
@@ -344,38 +378,190 @@ double calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
   pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
   pepB=transcode[ntMap[codonB[0]]][ntMap[codonB[1]]][ntMap[codonB[2]]];
 
-  //if (pepA==-1) pepA=23;
-  //if (pepB==-1) pepB=23;
-
   if (pepA==-1) {
-    return stopPenalty_0;
+    return pars.stopPenalty_0;
   }
 
   if (pepB==-1) {
-    return stopPenalty_k;
+    return pars.stopPenalty_k;
   }
 
   expectedScore=models[k].scores[h];
-  observedScore=(double)models[k].matrix[pepA][pepB];
-
-  //return 4.0;
+  observedScore=(float)models[k].matrix[pepA][pepB];
 
   return observedScore-expectedScore;
 }
 
-double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln *alignment[]){
+
+/********************************************************************
+  getPairwiseScoreMatrix
+
+  Calculates the main score matrix for all pairs of the reference
+  sequence with all other sequences. 
+
+  k   ... number of sequence
+  x   ... State (0 ... '0', 1 ... '+1', 2 ... '-1')
+  b,i ... subsequence from b to i
+
+*********************************************************************/ 
+
+void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
+  
+  int L,N, colsN, pos,z,b,i,x, k,l;
+  char *block_0, *block_k, *seq_0, *seq_k;
+  char **blocks_0, **blocks_k;
+  int** zs;
+  int *map_0, *map_k;
+  float** sigmas;
+
+  seq_0=alignment[0]->seq;
+  L=getSeqLength(seq_0);
+
+  colsN=strlen(seq_0);
+  for (N=0; alignment[N]!=NULL; N++);
+
+  // Do this only once
+  if (Sk == NULL){
+  // We have one entry for each pair
+    Sk=(float****)malloc(sizeof(float***)*(N+1));
+
+    for (k=0;k<N;k++){
+      // We have three states
+      Sk[k]=(float***)malloc(sizeof(float**)*(3));
+
+      for (x=0;x<3;x++){
+        // indices are 1 based and we mark end with NULL, so we need L+2
+        Sk[k][x]=(float**)malloc(sizeof(float*)*(L+1));
+        
+        for (i=0;i<L+1;i++){
+          Sk[k][x][i]=(float*)malloc(sizeof(float)*(L+1));
+        }
+      }
+    }
+  }
+  
+  // Allocate conservatively for full length of sequence + gaps;
+  block_0 = (char*) malloc(sizeof(char)*(colsN+1));
+  block_k = (char*) malloc(sizeof(char)*(colsN+1));
+  
+  // Precalculate blocks, z's and sigmas for all i to avoid doing this in the inner loop
+  blocks_0 = (char**) malloc(sizeof(char*)*(colsN+1));
+  blocks_k = (char**) malloc(sizeof(char*)*(colsN+1));
+
+  zs = (int**) malloc(sizeof(int*)*(colsN+1));
+  sigmas = (float**) malloc(sizeof(float*)*(colsN+1));
+
+  map_0=(int*)malloc(sizeof(int)*(colsN+1));
+  map_k=(int*)malloc(sizeof(int)*(colsN+1));
+
+  for (l=1;l<=L;l++){
+    map_0[l]=pos2col(seq_0,l);
+  }
+
+  for (k=1;k<N;k++){
+
+    seq_k=alignment[k]->seq;
+    
+    zs[k]=(int*) malloc(sizeof(int)*(L+1));
+    sigmas[k]=(float*) malloc(sizeof(float)*(L+1));
+    for (l=1;l<=L;l++){
+      map_k[l]=pos2col(seq_k,l);
+    }
+    for (x=3;x<L+1;x+=1){
+      getBlock(x, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+      blocks_0[x]=strdup(block_0);
+      blocks_k[x]=strdup(block_k);
+      zs[k][x]=z;
+      sigmas[k][x]= calculateSigma(block_0,block_k,k,models);
+    }
+
+    for (b=1;b<L+1;b++){
+      for (i=b+2;i<L+1;i+=3){
+        z=zs[k][i];
+
+        if (i-3 < b) {
+          Sk[k][0][b][i-3]=0.0;
+          Sk[k][1][b][i-3]=0.0;
+          Sk[k][2][b][i-3]=0.0;
+        }
+
+        if (z==0){
+          Sk[k][0][b][i]=Sk[k][0][b][i-3]+sigmas[k][i];
+          Sk[k][1][b][i]=Sk[k][1][b][i-3]+pars.omega;
+          Sk[k][2][b][i]=Sk[k][2][b][i-3]+pars.omega;
+        }
+
+        if (z==+1){
+          Sk[k][0][b][i]=MAX(Sk[k][0][b][i-3]+pars.Delta,
+                             Sk[k][2][b][i-3]+pars.Omega);
+          
+          Sk[k][1][b][i]=MAX(Sk[k][0][b][i-3]+pars.Omega,
+                             Sk[k][1][b][i-3]+pars.Delta);
+        
+          Sk[k][2][b][i]=MAX(Sk[k][1][b][i-3]+pars.Omega,
+                             Sk[k][2][b][i-3]+pars.Delta);
+        }
+        
+        if (z==-1){
+          Sk[k][0][b][i]=MAX(Sk[k][0][b][i-3]+pars.Delta,
+                             Sk[k][1][b][i-3]+pars.Omega);
+        
+          Sk[k][1][b][i]=MAX(Sk[k][1][b][i-3]+pars.Delta,
+                             Sk[k][2][b][i-3]+pars.Omega);
+        
+          Sk[k][2][b][i]=MAX(Sk[k][2][b][i-3]+pars.Delta,
+                             Sk[k][0][b][i-3]+pars.Omega);
+          
+        }
+      }
+    }
+
+    for (x=3;x<L+1;x+=1){
+      free(blocks_0[x]);
+      free(blocks_k[x]);
+    }
+
+    free(sigmas[k]);
+    free(zs[k]);
+
+  }
+
+  free(sigmas);
+  free(zs);
+  free(blocks_0);
+  free(blocks_k);
+  free(block_0);
+  free(block_k);
+  free(map_0);
+  free(map_k);
+
+}
+
+
+/*********************************************************************
+  getMultipleScoreMatrix
+
+  Takes the pairwise score matrix Sk and calculates a two dimensional
+  matrix [b,i] which represents the average over all pairs in the
+  alignment.
+  
+*********************************************************************/ 
+
+float** getMultipleScoreMatrix(float**** Sk, bgModel* models, const struct aln *alignment[]){
   
   int L,N,b,i,j,k;
-  double sum, max;
-  double** S;
+  float sum, max;
+  float** S;
+  float s0,s1,s2;
+
 
   for (N=0; alignment[N]!=NULL; N++);
 
   L=getSeqLength(alignment[0]->seq);
 
-  S=(double**)malloc(sizeof(double*)*(L+1));
+  S=(float**)malloc(sizeof(float*)*(L+1));
   for (i=0;i<L+1;i++){
-    S[i]=(double*)malloc(sizeof(double)*(L+1));
+    S[i]=(float*)malloc(sizeof(float)*(L+1));
     for (j=0;j<L+1;j++){
       S[i][j]=0.0;
     }
@@ -383,29 +569,46 @@ double** getMultipleScoreMatrix(double**** Sk, bgModel* models, const struct aln
 
   for (b=1;b<L+1;b++){
     for (i=b+2;i<L+1;i+=3){
+
       sum=0;
       for (k=1;k<N;k++){
         sum+=MAX3(Sk[k][0][b][i],
                   Sk[k][1][b][i],
                   Sk[k][2][b][i]);
       }
+
       
       S[b][i]=MAX3(sum,
-                   S[b][i-1]+Delta,
-                   S[b][i-2]+Delta)/(N-1);
+                   S[b][i-1]+pars.Delta,
+                   S[b][i-2]+pars.Delta)/(N-1);
     }
   }
-  
+
   return(S);
 }
 
-segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, double parMu, double parLambda, double cutoff){
+/*********************************************************************
+  getHSS
+
+  Takes score matrix S as calculated by getMultipleScore matrix and 
+  searches for high scoring segments. 
+
+  S .. score matrix 
+  inputAln ... alignment 
+  strand ... whether inputAln is forward or reverse complement ('+' or '-')
+  parMu, parLambda ... if these parameters describing the extreme value distribution are given
+  
+  
+*********************************************************************/ 
+
+segmentStats* getHSS(float** S, const struct aln** inputAln, 
+                     char strand, float parMu, float parLambda, float cutoff){
 
   segmentStats* results;
   int sites,L, frame;
   int segmentStart, segmentEnd, currPos, hssCount;
-  double currMax, currEntry;
-  double pvalue;
+  float currMax, currEntry;
+  float pvalue;
   int i,j,k,l;
   int minSegmentLength=2;
 
@@ -481,7 +684,7 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
               }
 
               results[hssCount].pvalue=pvalue;
-                        
+              
               hssCount++;
             }
               
@@ -516,24 +719,27 @@ segmentStats* getHSS(double** S, const struct aln** inputAln, char strand, doubl
 }
 
 void getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
-                         int sampleN, double* parMu, double* parLambda){
+                         int sampleN, float* parMu, float* parLambda){
   
   int tmpCounter, L, i, j;
-  double* freqsMono;
-  double kappa;
-  double sum, maxSum;
+  float* freqsMono;
+  float kappa;
+  float sum, maxSum;
   double* maxScores;
-  double mu;
+  double mu,lambda;
+  
   struct aln *sampledAln[MAX_NUM_NAMES];
   segmentStats *results, *resultsRev, *allResults;
   int sampleWritten=0;
   int hssCount;
-  double**** Sk;
-  double** S;
+  //float**** Sk;
+  float** S;
 
   L=strlen(alignment[0]->seq);
 
   freqsMono=models[0].freqs;
+
+  
   kappa=models[0].kappa;
 
   maxScores=(double*)malloc(sizeof(double)*sampleN);
@@ -544,7 +750,7 @@ void getExtremeValuePars(TTree* tree, const struct aln *alignment[],
   tmpCounter=0;
 
   for (i=0;i<sampleN;i++){
-  
+
     simulateTree(tree,freqsMono,kappa,L);
       
     tree2aln(tree,sampledAln);
@@ -588,6 +794,8 @@ void getExtremeValuePars(TTree* tree, const struct aln *alignment[],
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
 
     maxScores[i]=results[0].score;
+    
+    //printf("%.2f\n", maxScores[i]);
 
     //freeSk(Sk, (const struct aln **)sampledAln);
     //freeS(S, (const struct aln **)sampledAln);
@@ -596,142 +804,24 @@ void getExtremeValuePars(TTree* tree, const struct aln *alignment[],
     freeResults(results);
   }
 
-  EVDMaxLikelyFit(maxScores, NULL, sampleN, parMu, parLambda);
-  
+  EVDMaxLikelyFit(maxScores, NULL, sampleN, &mu, &lambda);
+
+  *parMu=mu;
+  *parLambda=lambda;
+
   free(maxScores);
   //fclose(fp);
 
 }
 
 
-// Calculates matrix S[k][x][b][i]
-// k ... number of sequence
-// x ... State (0 ... '0', 1 ... '+1', 2 ... '-1')
-// b,i ... subsequence from b to i
 
-double**** getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
-  
-  int L,N, colsN, pos,z,b,i,x, k,l;
-  char *block_0, *block_k, *seq_0, *seq_k;
-  char **blocks_0, **blocks_k;
-  int** zs;
-  int *map_0, *map_k;
-  double** sigmas;
-  double**** S;
-
-  seq_0=alignment[0]->seq;
-
-  L=getSeqLength(seq_0);
-  colsN=strlen(seq_0);
-  for (N=0; alignment[N]!=NULL; N++);
-
-  // We have one entry for each pair
-  S=(double****)malloc(sizeof(double***)*(N+1));
-
-  for (k=0;k<N;k++){
-    // We have three states
-    S[k]=(double***)malloc(sizeof(double**)*(3));
-
-    for (x=0;x<3;x++){
-      // indices are 1 based and we mark end with NULL, so we need L+2
-      S[k][x]=(double**)malloc(sizeof(double*)*(L+1));
-        
-      for (i=0;i<L+1;i++){
-        S[k][x][i]=(double*)malloc(sizeof(double)*(L+1));
-      }
-
-      for (b=0;b<L+1;b++){
-        for (i=0;i<L+1;i++){
-          S[k][x][b][i]=0.0;
-        }
-      }
-    }
-  }
-  
-  // Allocate conservatively for full length of sequence + gaps;
-  block_0 = (char*) malloc(sizeof(char)*(colsN+1));
-  block_k = (char*) malloc(sizeof(char)*(colsN+1));
-  
-  // Precalculate blocks, z's and sigmas for all i to avoid doing this in the inner loop
-  blocks_0 = (char**) malloc(sizeof(char*)*(L+1));
-  blocks_k = (char**) malloc(sizeof(char*)*(L+1));
-
-  zs = (int**) malloc(sizeof(int*)*k);
-  sigmas = (double**) malloc(sizeof(double*)*k);
-
-  map_0=(int*)malloc(sizeof(int)*(colsN+1));
-  map_k=(int*)malloc(sizeof(int)*(colsN+1));
-
-  for (l=1;l<=L;l++){
-    map_0[l]=pos2col(seq_0,l);
-  }
-
-  for (k=1;k<N;k++){
-
-    seq_k=alignment[k]->seq;
-    
-    zs[k]=(int*) malloc(sizeof(int)*(L+1));
-    sigmas[k]=(double*) malloc(sizeof(double)*(L+1));
-    for (l=1;l<=L;l++){
-      map_k[l]=pos2col(seq_k,l);
-    }
-    for (x=3;x<L+1;x+=1){
-      getBlock(x, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-      blocks_0[x]=strdup(block_0);
-      blocks_k[x]=strdup(block_k);
-      zs[k][x]=z;
-      sigmas[k][x]= calculateSigma(block_0,block_k,k,models);
-    }
-
-    for (b=1;b<L+1;b++){
-      for (i=b+2;i<L+1;i+=3){
-        z=zs[k][i];
-        if (z==0){
-          S[k][0][b][i]=S[k][0][b][i-3]+sigmas[k][i];
-          S[k][1][b][i]=S[k][1][b][i-3]+omega;
-          S[k][2][b][i]=S[k][2][b][i-3]+omega;
-        }
-
-        if (z==+1){
-          S[k][0][b][i]=MAX(S[k][0][b][i-3]+Delta,
-                            S[k][2][b][i-3]+Omega);
-          
-          S[k][1][b][i]=MAX(S[k][0][b][i-3]+Omega,
-                            S[k][1][b][i-3]+Delta);
-        
-          S[k][2][b][i]=MAX(S[k][1][b][i-3]+Omega,
-                            S[k][2][b][i-3]+Delta);
-        }
-        
-        if (z==-1){
-          S[k][0][b][i]=MAX(S[k][0][b][i-3]+Delta,
-                            S[k][1][b][i-3]+Omega);
-        
-          S[k][1][b][i]=MAX(S[k][1][b][i-3]+Delta,
-                            S[k][2][b][i-3]+Omega);
-        
-          S[k][2][b][i]=MAX(S[k][2][b][i-3]+Delta,
-                            S[k][0][b][i-3]+Omega);
-        
-        }
-      }
-    }
-  }
-
-  free(block_0);
-  free(block_k);
-  free(map_0);
-  free(map_k);
-
-  return(S);
-}
-
-segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, double kappa, double parMu, double parLambda){
+segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa, float parMu, float parLambda){
   
   struct aln *inputAlnRev[MAX_NUM_NAMES];
   segmentStats *results, *resultsRev, *allResults;
-  double**** Sk;
-  double** S;
+  //float**** Sk;
+  float** S;
   int hssCount, i, N;
   
   for (N=0; inputAln[N]!=NULL; N++);   
@@ -739,10 +829,10 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, double kappa, 
   copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
   revAln((struct aln**)inputAlnRev);
 
-  Sk=getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
+  getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
   S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
 
-  results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, cutoff);
+  results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, pars.cutoff);
 
   /*
     for (k=1;k<N;k++){
@@ -751,14 +841,14 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, double kappa, 
     }
   */
 
-  freeSk(Sk, (const struct aln **)inputAln);
+  //freeSk(Sk, (const struct aln **)inputAln);
   freeS(S, (const struct aln **)inputAln);
 
-  Sk=getPairwiseScoreMatrix(modelsRev,(const struct aln**)inputAlnRev);
+  getPairwiseScoreMatrix(modelsRev,(const struct aln**)inputAlnRev);
   S=getMultipleScoreMatrix(Sk,modelsRev,(const struct aln**)inputAlnRev);
-  resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, cutoff);
+  resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, pars.cutoff);
 
-  freeSk(Sk, (const struct aln **)inputAln);
+  //freeSk(Sk, (const struct aln **)inputAln);
   freeS(S, (const struct aln **)inputAln);
     
   hssCount=0;
@@ -801,9 +891,10 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, double kappa, 
 
 }
 
-double* backtrack(double**** S, int k, int opt_b, int opt_i, const struct aln *alignment[]){
+/*
+float* backtrack(float**** S, int k, int opt_b, int opt_i, const struct aln *alignment[]){
 
-  double opt_score;
+  float opt_score;
   int opt_state; 
   int curr_state, prev_state;
   char *display_line1;
@@ -924,8 +1015,6 @@ double* backtrack(double**** S, int k, int opt_b, int opt_i, const struct aln *a
   }
   printf("\n");
       
-  /* allocate a string to display annotations 3 times longer than
-     the sequence to allow for spaces between codon in display */
   display_line1 = (char*) malloc(sizeof(char)*(L+1)*3);
   display_line2 = (char*) malloc(sizeof(char)*(L+1)*3);
   display_line3 = (char*) malloc(sizeof(char)*(L+1)*3);
@@ -965,11 +1054,10 @@ double* backtrack(double**** S, int k, int opt_b, int opt_i, const struct aln *a
   printf("%s\n",display_line4);
 
   printf("%i\n", L);
-
-
 }
+*/
 
-void freeS (double** S, const struct aln *alignment[]){
+void freeS (float** S, const struct aln *alignment[]){
 
   int i,L;
 
@@ -983,7 +1071,7 @@ void freeS (double** S, const struct aln *alignment[]){
 
 }
 
-void freeSk (double**** S, const struct aln *alignment[]){
+void freeSk (float**** S, const struct aln *alignment[]){
 
   int L,N,k,i,x;
 

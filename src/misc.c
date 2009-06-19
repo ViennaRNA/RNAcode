@@ -193,10 +193,10 @@ int hDist(int a1, int a2, int a3, int b1, int b2, int b3){
 }
 
 
-double avg(double* data, int N){
+float avg(float* data, int N){
 
   int i;
-  double sum;
+  float sum;
 
   sum=0.0;
 
@@ -204,16 +204,16 @@ double avg(double* data, int N){
     sum+=data[i];
   }
   
-  return sum/(double)N;
+  return sum/(float)N;
 
 }
 
 
-double stddev(double* data, int N){
+float stddev(float* data, int N){
 
   int i;
-  double sum;
-  double mean;
+  float sum;
+  float mean;
 
   sum=0.0;
 
@@ -221,7 +221,7 @@ double stddev(double* data, int N){
     sum+=data[i];
   }
 
-  mean=sum/(double)N;
+  mean=sum/(float)N;
 
   sum=0.0;
 
@@ -229,7 +229,7 @@ double stddev(double* data, int N){
     sum+=(mean-data[i])*(mean-data[i]);
   }
   
-  return sqrt(sum/(double)(N-1));
+  return sqrt(sum/(float)(N-1));
 }
 
 void copyAln(struct aln *src[],struct aln *dest[]){

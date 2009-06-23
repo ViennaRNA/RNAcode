@@ -100,10 +100,12 @@ void calculateBG(bgModel* model){
   float probs[4][4];
   int h, i,j;
 
-  //for (i=0;i<4;i++){
-  //}
+  for (i=0;i<4;i++){
+    for (j=0;j<4;j++){
+      probs[i][j]=probHKY(i,j,model->dist,model->freqs,model->kappa);
+    }
+  }
  
-
   counts[0]=counts[1]=counts[2]=counts[3]=0.0;
   model->scores[0]=model->scores[1]=model->scores[2]=model->scores[3]=0.0;
 
@@ -121,9 +123,7 @@ void calculateBG(bgModel* model){
 
               f=(model->freqs[a1])*(model->freqs[a2])*(model->freqs[a3]);
 
-              prob=probHKY(a1,b1,model->dist,model->freqs,model->kappa);
-              prob*=probHKY(a2,b2,model->dist,model->freqs,model->kappa);
-              prob*=probHKY(a3,b3,model->dist,model->freqs,model->kappa);
+              prob=probs[a1][b1]*probs[a2][b2]*probs[a3][b3];
 
               prob*=f;
               probStop+=prob;
@@ -154,11 +154,8 @@ void calculateBG(bgModel* model){
 
               f=(model->freqs[a1])*(model->freqs[a2])*(model->freqs[a3]);
               
-              prob=probHKY(a1,b1,model->dist,model->freqs,model->kappa);
+              prob=probs[a1][b1]*probs[a2][b2]*probs[a3][b3];
 
-              prob*=probHKY(a2,b2,model->dist,model->freqs,model->kappa);
-              prob*=probHKY(a3,b3,model->dist,model->freqs,model->kappa);
-              
               prob*=f;
               prob/=(1-probStop); //Correct probability for the condition that no stop exists
               

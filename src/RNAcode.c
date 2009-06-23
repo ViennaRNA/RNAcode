@@ -1,3 +1,21 @@
+/*  Copyright 2009, Stefan Washietl
+
+    This file is part of RNAcode.
+
+    RNAcode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    RNAcode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with RNAcode.  If not, see <http://www.gnu.org/licenses/>. */
+
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,16 +39,18 @@
 
 parameters pars; /* user options */
 bgModel *models, *modelsRev; /* Background model data for current alignment*/
-float**** Sk; /* Main score matrix which is allocated only once and re-used*/
+float**** Sk;  /* Main score matrix which is allocated only once and re-used*/
 
 int main(int argc, char *argv[]){
 
-  int i,j,k,x,L,N,hssCount;
+  int i,j,k,x,L,N,hssCount, counter;
   char *tmpSeq, *treeString;
   float kappa;
   TTree* tree;
   segmentStats *results;
   float parMu, parLambda;
+  clock_t startTime;	
+  float runtime;
 
   int (*readFunction)(FILE *clust,struct aln *alignedSeqs[]);
 
@@ -45,6 +65,7 @@ int main(int argc, char *argv[]){
   pars.inputFile=stdin;
   pars.outputFile=stdout;
   pars.debugFile=stdout;
+  pars.bestOnly=0;
   pars.sampleN=100;
   strcpy(pars.limit,"");
   pars.cutoff=1.0;
@@ -73,7 +94,14 @@ int main(int argc, char *argv[]){
     nrerror("ERROR: Unknown alignment file format. Use Clustal W or MAF format.\n");
   }
 
+  counter=0;
+
+  startTime=clock();
+  
   while (readFunction(pars.inputFile, inputAln)!=0){
+  
+    counter++;
+
     /* Currently repeat masked regions are ignored and Ns are converted to gaps */
     /* Fix this */
     for (i=0; inputAln[i]!=NULL; i++){
@@ -93,9 +121,7 @@ int main(int argc, char *argv[]){
     }
     
     //printAlnMAF(stdout,(const struct aln**)inputAln,0); 
-    
-    //L=strlen(inputAln[0]->seq);
-
+   
     L=getSeqLength(inputAln[0]->seq);
     
     for (N=0; inputAln[N]!=NULL; N++);
@@ -159,6 +185,14 @@ int main(int argc, char *argv[]){
 
   }
 
+  if (pars.outputFormat==0){
+
+    runtime = (float)(clock() - startTime) / CLOCKS_PER_SEC;
+
+    fprintf(pars.outputFile,
+            "\n%i alignment(s) scored in %.2f seconds. Parameters used:\nN=%i, Delta=%.2f, Omega=%.2f, omega=%.2f, stop penalty=%.2f\n\n",             counter,runtime,pars.sampleN, pars.Delta,pars.Omega,pars.omega,pars.stopPenalty_k);
+  }
+
   exit(EXIT_SUCCESS);
 
 }
@@ -174,7 +208,7 @@ void help(void){
 
   printf("\nUsage: %s [OPTIONS]... [FILES]\n\n", CMDLINE_PARSER_PACKAGE);
   printf("%s\n","  -h, --help                       Help screen");
-  printf("%s\n\n","  -V, --version                    Print version");
+  printf("%s\n\n","-V, --version                    Print version");
 }
 
 void version(void){
@@ -184,6 +218,8 @@ void version(void){
 }
 
 void read_commandline(int argc, char *argv[]){
+
+  int x;
 
   struct gengetopt_args_info args;
 
@@ -217,9 +253,28 @@ void read_commandline(int argc, char *argv[]){
     pars.outputFormat=1;
   }
 
-  if (args.concise_given){
+  if (args.tabular_given){
     pars.outputFormat=2;
   }
+
+  if (args.pars_given){
+
+    x=sscanf(args.pars_arg,"%f,%f,%f,%f",&pars.Delta,&pars.Omega,&pars.omega, &pars.stopPenalty_0);
+
+    if (!x){
+      fprintf(stderr, "ERROR: Format error in parameter string. Refer to README how to use --pars.\n");
+      exit(1);
+    }
+
+    //printf("%.2f %.2f %.2f %.2f\n",pars.Delta,pars.Omega,pars.omega, pars.stopPenalty_0);
+
+  }
+  
+  if (args.best_only_given){
+    pars.bestOnly=1;
+  }
+
+
 
   if (args.cutoff_given){
     pars.cutoff=args.cutoff_arg;
@@ -227,16 +282,6 @@ void read_commandline(int argc, char *argv[]){
 
   if (args.debug_file_given){
     strcpy(pars.debugFileName,args.debug_file_arg);
-  }
-
-  if (args.print_if_below_given){
-    pars.printIfBelow=args.print_if_below_arg; 
-    pars.debugFile = fopen(pars.debugFileName, "w");
-  }
-
-  if (args.print_if_above_given){
-    pars.printIfAbove=args.print_if_above_arg; 
-    pars.debugFile = fopen(pars.debugFileName, "w");
   }
 
   if (args.limit_given){

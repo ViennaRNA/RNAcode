@@ -1,3 +1,21 @@
+/*  Copyright 2009, Stefan Washietl
+
+    This file is part of RNAcode.
+
+    RNAcode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    RNAcode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with RNAcode.  If not, see <http://www.gnu.org/licenses/>. */
+
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,7 +97,12 @@ void calculateBG(bgModel* model){
   int pepA, pepB;
   float f, prob, score, probStop;
   float counts[4];
-  int h, i;
+  float probs[4][4];
+  int h, i,j;
+
+  //for (i=0;i<4;i++){
+  //}
+ 
 
   counts[0]=counts[1]=counts[2]=counts[3]=0.0;
   model->scores[0]=model->scores[1]=model->scores[2]=model->scores[3]=0.0;
@@ -448,8 +471,8 @@ void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
   blocks_0 = (char**) malloc(sizeof(char*)*(colsN+1));
   blocks_k = (char**) malloc(sizeof(char*)*(colsN+1));
 
-  zs = (int**) malloc(sizeof(int*)*(colsN+1));
-  sigmas = (float**) malloc(sizeof(float*)*(colsN+1));
+  zs = (int**) malloc(sizeof(int*)*N);
+  sigmas = (float**) malloc(sizeof(float*)*N);
 
   map_0=(int*)malloc(sizeof(int)*(colsN+1));
   map_k=(int*)malloc(sizeof(int)*(colsN+1));

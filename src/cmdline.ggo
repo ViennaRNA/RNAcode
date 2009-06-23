@@ -3,15 +3,15 @@
 #
 #gengetopt < cmdline.ggo -F cmdline --unamed-opts --no-handle-version --no-handle-help --no-handle-error
 
-option      "outfile"     o         "Output filename"       string       no
-option      "num-samples" n         "Number of samples"     int          no
-option      "verbose"                      v  "verbose"        flag off
-option      "cutoff"                       e  "e-value cutoff"  float       no
-option      "gtf"                          g  "GTF output"     flag off
-option      "concise"                          t  "Concise output (debugging)"     flag off
-option      "fast-sampling"                          f  "Fast sampling"     flag off
-option      "debug-file"     d         "Debug file"       string       no
-option      "print-if-below"                         z  "Print alignments below p-value cutoff (debugging)"     float   no
-option      "print-if-above"                         y  "Print alignments above p-value cutoff (debugging)"     float   no
-option      "gfx"                          x  "Postscript output"     flag off
-option      "limit"     l         "limit to species"       string       no
+
+option      "outfile"               o         "Output filename"                    string       no
+option      "gtf"                   g         "GTF output"                         flag         off
+option      "tabular"               t         "Tab delimited output"               flag         off
+option      "best-only"             b         "Print only best hit per alignment"  flag         off
+option      "pars"                  c         "String with parameters"             string       no
+option      "num-samples"           n         "Number of samples"                  int          no
+option      "cutoff"                p         "p-value cutoff"                     float        no
+option      "debug-file"            d         "Debug file"                         string       no
+option      "gfx"                   x         "Postscript output"                  flag         off
+option      "limit"                 l         "limit to species"                   string       no
+

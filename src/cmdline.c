@@ -28,20 +28,18 @@ const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [OPTI
 const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help                  Print help and exit",
-  "  -V, --version               Print version and exit",
-  "  -o, --outfile=STRING        Output filename",
-  "  -n, --num-samples=INT       Number of samples",
-  "  -v, --verbose               verbose  (default=off)",
-  "  -e, --cutoff=FLOAT          e-value cutoff",
-  "  -g, --gtf                   GTF output  (default=off)",
-  "  -t, --concise               Concise output (debugging)  (default=off)",
-  "  -f, --fast-sampling         Fast sampling  (default=off)",
-  "  -d, --debug-file=STRING     Debug file",
-  "  -z, --print-if-below=FLOAT  Print alignments below p-value cutoff (debugging)",
-  "  -y, --print-if-above=FLOAT  Print alignments above p-value cutoff (debugging)",
-  "  -x, --gfx                   Postscript output  (default=off)",
-  "  -l, --limit=STRING          limit to species",
+  "  -h, --help               Print help and exit",
+  "  -V, --version            Print version and exit",
+  "  -o, --outfile=STRING     Output filename",
+  "  -g, --gtf                GTF output  (default=off)",
+  "  -t, --tabular            Tab delimited output  (default=off)",
+  "  -b, --best-only          Print only best hit per alignment  (default=off)",
+  "  -c, --pars=STRING        String with parameters",
+  "  -n, --num-samples=INT    Number of samples",
+  "  -p, --cutoff=FLOAT       p-value cutoff",
+  "  -d, --debug-file=STRING  Debug file",
+  "  -x, --gfx                Postscript output  (default=off)",
+  "  -l, --limit=STRING       limit to species",
     0
 };
 
@@ -71,15 +69,13 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
   args_info->outfile_given = 0 ;
-  args_info->num_samples_given = 0 ;
-  args_info->verbose_given = 0 ;
-  args_info->cutoff_given = 0 ;
   args_info->gtf_given = 0 ;
-  args_info->concise_given = 0 ;
-  args_info->fast_sampling_given = 0 ;
+  args_info->tabular_given = 0 ;
+  args_info->best_only_given = 0 ;
+  args_info->pars_given = 0 ;
+  args_info->num_samples_given = 0 ;
+  args_info->cutoff_given = 0 ;
   args_info->debug_file_given = 0 ;
-  args_info->print_if_below_given = 0 ;
-  args_info->print_if_above_given = 0 ;
   args_info->gfx_given = 0 ;
   args_info->limit_given = 0 ;
 }
@@ -89,16 +85,15 @@ void clear_args (struct gengetopt_args_info *args_info)
 {
   args_info->outfile_arg = NULL;
   args_info->outfile_orig = NULL;
-  args_info->num_samples_orig = NULL;
-  args_info->verbose_flag = 0;
-  args_info->cutoff_orig = NULL;
   args_info->gtf_flag = 0;
-  args_info->concise_flag = 0;
-  args_info->fast_sampling_flag = 0;
+  args_info->tabular_flag = 0;
+  args_info->best_only_flag = 0;
+  args_info->pars_arg = NULL;
+  args_info->pars_orig = NULL;
+  args_info->num_samples_orig = NULL;
+  args_info->cutoff_orig = NULL;
   args_info->debug_file_arg = NULL;
   args_info->debug_file_orig = NULL;
-  args_info->print_if_below_orig = NULL;
-  args_info->print_if_above_orig = NULL;
   args_info->gfx_flag = 0;
   args_info->limit_arg = NULL;
   args_info->limit_orig = NULL;
@@ -113,17 +108,15 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->outfile_help = gengetopt_args_info_help[2] ;
-  args_info->num_samples_help = gengetopt_args_info_help[3] ;
-  args_info->verbose_help = gengetopt_args_info_help[4] ;
-  args_info->cutoff_help = gengetopt_args_info_help[5] ;
-  args_info->gtf_help = gengetopt_args_info_help[6] ;
-  args_info->concise_help = gengetopt_args_info_help[7] ;
-  args_info->fast_sampling_help = gengetopt_args_info_help[8] ;
+  args_info->gtf_help = gengetopt_args_info_help[3] ;
+  args_info->tabular_help = gengetopt_args_info_help[4] ;
+  args_info->best_only_help = gengetopt_args_info_help[5] ;
+  args_info->pars_help = gengetopt_args_info_help[6] ;
+  args_info->num_samples_help = gengetopt_args_info_help[7] ;
+  args_info->cutoff_help = gengetopt_args_info_help[8] ;
   args_info->debug_file_help = gengetopt_args_info_help[9] ;
-  args_info->print_if_below_help = gengetopt_args_info_help[10] ;
-  args_info->print_if_above_help = gengetopt_args_info_help[11] ;
-  args_info->gfx_help = gengetopt_args_info_help[12] ;
-  args_info->limit_help = gengetopt_args_info_help[13] ;
+  args_info->gfx_help = gengetopt_args_info_help[10] ;
+  args_info->limit_help = gengetopt_args_info_help[11] ;
   
 }
 
@@ -207,12 +200,12 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   unsigned int i;
   free_string_field (&(args_info->outfile_arg));
   free_string_field (&(args_info->outfile_orig));
+  free_string_field (&(args_info->pars_arg));
+  free_string_field (&(args_info->pars_orig));
   free_string_field (&(args_info->num_samples_orig));
   free_string_field (&(args_info->cutoff_orig));
   free_string_field (&(args_info->debug_file_arg));
   free_string_field (&(args_info->debug_file_orig));
-  free_string_field (&(args_info->print_if_below_orig));
-  free_string_field (&(args_info->print_if_above_orig));
   free_string_field (&(args_info->limit_arg));
   free_string_field (&(args_info->limit_orig));
   
@@ -255,24 +248,20 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "version", 0, 0 );
   if (args_info->outfile_given)
     write_into_file(outfile, "outfile", args_info->outfile_orig, 0);
-  if (args_info->num_samples_given)
-    write_into_file(outfile, "num-samples", args_info->num_samples_orig, 0);
-  if (args_info->verbose_given)
-    write_into_file(outfile, "verbose", 0, 0 );
-  if (args_info->cutoff_given)
-    write_into_file(outfile, "cutoff", args_info->cutoff_orig, 0);
   if (args_info->gtf_given)
     write_into_file(outfile, "gtf", 0, 0 );
-  if (args_info->concise_given)
-    write_into_file(outfile, "concise", 0, 0 );
-  if (args_info->fast_sampling_given)
-    write_into_file(outfile, "fast-sampling", 0, 0 );
+  if (args_info->tabular_given)
+    write_into_file(outfile, "tabular", 0, 0 );
+  if (args_info->best_only_given)
+    write_into_file(outfile, "best-only", 0, 0 );
+  if (args_info->pars_given)
+    write_into_file(outfile, "pars", args_info->pars_orig, 0);
+  if (args_info->num_samples_given)
+    write_into_file(outfile, "num-samples", args_info->num_samples_orig, 0);
+  if (args_info->cutoff_given)
+    write_into_file(outfile, "cutoff", args_info->cutoff_orig, 0);
   if (args_info->debug_file_given)
     write_into_file(outfile, "debug-file", args_info->debug_file_orig, 0);
-  if (args_info->print_if_below_given)
-    write_into_file(outfile, "print-if-below", args_info->print_if_below_orig, 0);
-  if (args_info->print_if_above_given)
-    write_into_file(outfile, "print-if-above", args_info->print_if_above_orig, 0);
   if (args_info->gfx_given)
     write_into_file(outfile, "gfx", 0, 0 );
   if (args_info->limit_given)
@@ -520,21 +509,19 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
         { "outfile",	1, NULL, 'o' },
-        { "num-samples",	1, NULL, 'n' },
-        { "verbose",	0, NULL, 'v' },
-        { "cutoff",	1, NULL, 'e' },
         { "gtf",	0, NULL, 'g' },
-        { "concise",	0, NULL, 't' },
-        { "fast-sampling",	0, NULL, 'f' },
+        { "tabular",	0, NULL, 't' },
+        { "best-only",	0, NULL, 'b' },
+        { "pars",	1, NULL, 'c' },
+        { "num-samples",	1, NULL, 'n' },
+        { "cutoff",	1, NULL, 'p' },
         { "debug-file",	1, NULL, 'd' },
-        { "print-if-below",	1, NULL, 'z' },
-        { "print-if-above",	1, NULL, 'y' },
         { "gfx",	0, NULL, 'x' },
         { "limit",	1, NULL, 'l' },
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVo:n:ve:gtfd:z:y:xl:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVo:gtbc:n:p:d:xl:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -580,6 +567,48 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             goto failure;
         
           break;
+        case 'g':	/* GTF output.  */
+        
+        
+          if (update_arg((void *)&(args_info->gtf_flag), 0, &(args_info->gtf_given),
+              &(local_args_info.gtf_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "gtf", 'g',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 't':	/* Tab delimited output.  */
+        
+        
+          if (update_arg((void *)&(args_info->tabular_flag), 0, &(args_info->tabular_given),
+              &(local_args_info.tabular_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "tabular", 't',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'b':	/* Print only best hit per alignment.  */
+        
+        
+          if (update_arg((void *)&(args_info->best_only_flag), 0, &(args_info->best_only_given),
+              &(local_args_info.best_only_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "best-only", 'b',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'c':	/* String with parameters.  */
+        
+        
+          if (update_arg( (void *)&(args_info->pars_arg), 
+               &(args_info->pars_orig), &(args_info->pars_given),
+              &(local_args_info.pars_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "pars", 'c',
+              additional_error))
+            goto failure;
+        
+          break;
         case 'n':	/* Number of samples.  */
         
         
@@ -592,54 +621,14 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             goto failure;
         
           break;
-        case 'v':	/* verbose.  */
-        
-        
-          if (update_arg((void *)&(args_info->verbose_flag), 0, &(args_info->verbose_given),
-              &(local_args_info.verbose_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "verbose", 'v',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'e':	/* e-value cutoff.  */
+        case 'p':	/* p-value cutoff.  */
         
         
           if (update_arg( (void *)&(args_info->cutoff_arg), 
                &(args_info->cutoff_orig), &(args_info->cutoff_given),
               &(local_args_info.cutoff_given), optarg, 0, 0, ARG_FLOAT,
               check_ambiguity, override, 0, 0,
-              "cutoff", 'e',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'g':	/* GTF output.  */
-        
-        
-          if (update_arg((void *)&(args_info->gtf_flag), 0, &(args_info->gtf_given),
-              &(local_args_info.gtf_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "gtf", 'g',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 't':	/* Concise output (debugging).  */
-        
-        
-          if (update_arg((void *)&(args_info->concise_flag), 0, &(args_info->concise_given),
-              &(local_args_info.concise_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "concise", 't',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'f':	/* Fast sampling.  */
-        
-        
-          if (update_arg((void *)&(args_info->fast_sampling_flag), 0, &(args_info->fast_sampling_given),
-              &(local_args_info.fast_sampling_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "fast-sampling", 'f',
+              "cutoff", 'p',
               additional_error))
             goto failure;
         
@@ -652,30 +641,6 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.debug_file_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "debug-file", 'd',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'z':	/* Print alignments below p-value cutoff (debugging).  */
-        
-        
-          if (update_arg( (void *)&(args_info->print_if_below_arg), 
-               &(args_info->print_if_below_orig), &(args_info->print_if_below_given),
-              &(local_args_info.print_if_below_given), optarg, 0, 0, ARG_FLOAT,
-              check_ambiguity, override, 0, 0,
-              "print-if-below", 'z',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'y':	/* Print alignments above p-value cutoff (debugging).  */
-        
-        
-          if (update_arg( (void *)&(args_info->print_if_above_arg), 
-               &(args_info->print_if_above_orig), &(args_info->print_if_above_given),
-              &(local_args_info.print_if_above_given), optarg, 0, 0, ARG_FLOAT,
-              check_ambiguity, override, 0, 0,
-              "print-if-above", 'y',
               additional_error))
             goto failure;
         

@@ -4,7 +4,7 @@
 #include "extreme_fit.h"
 #include "lm.h"
 
-/* Code from HMMER package */
+/* Code from HMMER package copyright S.R. Eddy  */
 
 void Lawless416(double *x, int *y, int n, double lambda, double *ret_f, double *ret_df);
 void Lawless422(double *x, int *y, int n, int z, double c, double lambda, double *ret_f, double *ret_df);

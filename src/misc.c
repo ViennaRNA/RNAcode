@@ -1,8 +1,29 @@
+/*  Copyright 2009, Stefan Washietl
+
+    This file is part of RNAcode.
+
+    RNAcode is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    RNAcode is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with RNAcode.  If not, see <http://www.gnu.org/licenses/>. */
+
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "RNAcode.h"
 #include "misc.h"
+
+extern parameters pars;
 
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]){
 
@@ -283,7 +304,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
   if (outputFormat==0){
 
     if (results[0].score<0.0){
-      fprintf(outfile,"No significant coding regions found.\n");
+      fprintf(outfile,"\nNo significant coding regions found.\n");
     } else {
 
       fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
@@ -296,25 +317,35 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
       while (results[i].score>0){
 
         fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
-                results[i].strand, results[i].frame,
+                results[i].strand, results[i].frame+1,
                 results[i].endSite-results[i].startSite+1,
-                results[i].startSite,results[i].endSite,
+                results[i].startSite+1,results[i].endSite+1,
                 results[i].name,
                 results[i].start,results[i].end,
                 results[i].score);
 
         if (results[i].pvalue < 0.001){
-          fprintf(outfile, "% 9.1e\n",results[i].pvalue);
+          /*Seems to be the minimum number I can get, don't know why
+            we don't get down to 1e-37 which should be the limit for
+            floats.
+           */
+          if (results[i].pvalue < 10e-16){
+            fprintf(outfile, "   <1e-16\n");
+          } else {
+            fprintf(outfile, "% 9.1e\n",results[i].pvalue);
+          }
+
         } else {
           fprintf(outfile, "% 9.3f\n",results[i].pvalue);
         }
-
         i++;
+
+        if ((pars.bestOnly) &&  (i > 0)) break;
+
       }
     }
   }
 
-  
   if (outputFormat==1){
     i=0;
     while (results[i].score>0){
@@ -341,8 +372,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
               results[i].strand, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
       i++;
 
-      /* GTF, currently only outputs highest scoring hit */
-      if (i > 0) break;
+      if ((pars.bestOnly) &&  (i > 0)) break;
     }
   }
 
@@ -352,9 +382,9 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
 
     while (results[i].score>0){
       fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f\t",
-              results[i].strand, results[i].frame,
+              results[i].strand, results[i].frame+1,
               results[i].endSite-results[i].startSite+1,
-              results[i].startSite,results[i].endSite,
+              results[i].startSite+1,results[i].endSite+1,
               results[i].name,
               results[i].start,results[i].end,
               results[i].score);
@@ -364,8 +394,8 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
       } else {
         fprintf(outfile, "% 9.3f\n",results[i].pvalue);
       }
-      break;
       i++;
+      if ((pars.bestOnly) &&  (i > 0)) break;
     }
   }
 }

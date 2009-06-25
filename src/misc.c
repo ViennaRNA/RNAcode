@@ -25,6 +25,34 @@
 
 extern parameters pars;
 
+
+/*********************************************************************
+  compareScores
+
+  compare function for qsort that compares two scores given as pointer
+  to a segmentStats structure.
+
+*********************************************************************/ 
+
+int compareScores(const void * a, const void * b){
+
+  segmentStats* statsA;
+  segmentStats* statsB;
+
+  statsA=(segmentStats*)a;
+  statsB=(segmentStats*)b;
+
+  if  ( statsA->score < statsB->score) {
+    return 1;
+  } else {
+    return -1;
+  }
+
+  return 0;
+}
+
+
+
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]){
 
   int i,j,k;

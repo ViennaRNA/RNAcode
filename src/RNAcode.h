@@ -39,6 +39,7 @@ struct _parameters{
   char limit[10000];
   float cutoff;
   int outputFormat;
+  int stopEarly;
   int bestOnly;
   char debugFileName[1024];
   char inputFileName[1024];

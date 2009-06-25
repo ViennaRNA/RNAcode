@@ -230,30 +230,6 @@ float probHKY(int i, int j, float d, float freqs[4], float kappa){
 
 }
 
-/*********************************************************************
-  compareScores
-
-  compare function for qsort that compares two scores given as pointer
-  to a segmentStats structure.
-
-*********************************************************************/ 
-
-int compareScores(const void * a, const void * b){
-
-  segmentStats* statsA;
-  segmentStats* statsB;
-
-  statsA=(segmentStats*)a;
-  statsB=(segmentStats*)b;
-
-  if  ( statsA->score < statsB->score) {
-    return 1;
-  } else {
-    return -1;
-  }
-
-  return 0;
-}
 
 /*********************************************************************
   countFreqsMono
@@ -622,7 +598,7 @@ float** getMultipleScoreMatrix(float**** Sk, bgModel* models, const struct aln *
 *********************************************************************/ 
 
 segmentStats* getHSS(float** S, const struct aln** inputAln, 
-                     char strand, float parMu, float parLambda, float cutoff){
+                     char strand){
 
   segmentStats* results;
   int sites,L, frame;
@@ -661,14 +637,15 @@ segmentStats* getHSS(float** S, const struct aln** inputAln,
 
             /* If both parameters are set to zero, no p-values are
                calculated and all positive scores are reported */
-            if (parLambda==0.0 && parMu==0.0){
-              pvalue=0.0;
-            } else {
-              pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
-            }
+            //if (parLambda==0.0 && parMu==0.0){
+            //  pvalue=0.0;
+            //} else {
+            //  pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
+            //}
            
-            if (pvalue<cutoff && segmentEnd-segmentStart>=minSegmentLength){
+            //if (pvalue<cutoff && segmentEnd-segmentStart>=minSegmentLength){
 
+            if (segmentEnd-segmentStart>=minSegmentLength){
             
               /* re-allocate for each new result, leave room for last entry */
               results=(segmentStats*)realloc(results,sizeof(segmentStats)*(hssCount+2));
@@ -738,10 +715,10 @@ segmentStats* getHSS(float** S, const struct aln** inputAln,
  
 }
 
-void getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
-                         int sampleN, float* parMu, float* parLambda){
+int getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
+                         int sampleN, float maxNativeScore, float* parMu, float* parLambda){
   
-  int tmpCounter, L, i, j;
+  int L, i, j, betterThanNative, stopCutoff;
   float* freqsMono;
   float kappa;
   float sum, maxSum;
@@ -752,23 +729,20 @@ void getExtremeValuePars(TTree* tree, const struct aln *alignment[],
   segmentStats *results, *resultsRev, *allResults;
   int sampleWritten=0;
   int hssCount;
-  //float**** Sk;
   float** S;
+
+  stopCutoff = (int)(pars.cutoff*pars.sampleN);
 
   L=strlen(alignment[0]->seq);
 
   freqsMono=models[0].freqs;
 
-  
   kappa=models[0].kappa;
 
   maxScores=(double*)malloc(sizeof(double)*sampleN);
+
+  betterThanNative=0;
   
-  //printf("%.2f, %.2f, %.2f, %.2f\n", models[0].freqs[0],models[0].freqs[1],models[0].freqs[2],models[0].freqs[3]);
-  //FILE *fp = fopen("scores.dat", "a");
-
-  tmpCounter=0;
-
   for (i=0;i<sampleN;i++){
 
     simulateTree(tree,freqsMono,kappa,L);
@@ -794,32 +768,25 @@ void getExtremeValuePars(TTree* tree, const struct aln *alignment[],
     }
     */
 
-    //printAlnMAF(stdout,(const struct aln**)sampledAln,0);
+    results=scoreAln((const struct aln**)sampledAln, tree, kappa);
 
-    /*
-    Sk=getPairwiseScoreMatrix(models,(const struct aln**)sampledAln);
-    S=getMultipleScoreMatrix(Sk,models,(const struct aln**)sampledAln);
-    
-    results=getHSS(S, (const struct aln**)sampledAln, '+', 0.0, 0.0, 1.0);
-    
-    */
-
-    results=scoreAln((const struct aln**)sampledAln, tree, kappa, 0.0, 0.0);
-
-    //fprintf(stderr, "%.2f\n", results[0].score);
-    
     hssCount=0;
     while (results[hssCount].score>=0) hssCount++;
 
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
 
+    if (results[0].score > maxNativeScore) {
+      betterThanNative++;
+      printf("Random score %.2f is better than %.2f\n", results[0].score, maxNativeScore);
+    }
+
+    if ((pars.stopEarly) && (betterThanNative > stopCutoff )) {
+      printf("%i random scores better than native %.2f. cutoff: %i Stop.\n", betterThanNative, maxNativeScore, stopCutoff);
+      return -1;
+    }
+
     maxScores[i]=results[0].score;
     
-    //printf("%.2f\n", maxScores[i]);
-
-    //freeSk(Sk, (const struct aln **)sampledAln);
-    //freeS(S, (const struct aln **)sampledAln);
-       
     freeAln((struct aln**)sampledAln);
     freeResults(results);
   }
@@ -832,15 +799,16 @@ void getExtremeValuePars(TTree* tree, const struct aln *alignment[],
   free(maxScores);
   //fclose(fp);
 
+  return 1;
+
 }
 
 
 
-segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa, float parMu, float parLambda){
+segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
   
   struct aln *inputAlnRev[MAX_NUM_NAMES];
   segmentStats *results, *resultsRev, *allResults;
-  //float**** Sk;
   float** S;
   int hssCount, i, N;
   
@@ -852,23 +820,14 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa, f
   getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
   S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
 
-  results=getHSS(S, (const struct aln**)inputAln, '+', parMu, parLambda, pars.cutoff);
+  results=getHSS(S, (const struct aln**)inputAln, '+');
 
-  /*
-    for (k=1;k<N;k++){
-    printf("Sequence %i\n-------\n",k);
-    backtrack(Sk, k, results[0].start,results[0].end,(const struct aln**)inputAln);
-    }
-  */
-
-  //freeSk(Sk, (const struct aln **)inputAln);
   freeS(S, (const struct aln **)inputAln);
 
   getPairwiseScoreMatrix(modelsRev,(const struct aln**)inputAlnRev);
   S=getMultipleScoreMatrix(Sk,modelsRev,(const struct aln**)inputAlnRev);
-  resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-', parMu, parLambda, pars.cutoff);
+  resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-');
 
-  //freeSk(Sk, (const struct aln **)inputAln);
   freeS(S, (const struct aln **)inputAln);
     
   hssCount=0;
@@ -903,7 +862,7 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa, f
   freeResults(results);
   freeResults(resultsRev);
 
-  qsort((segmentStats*) allResults, hssCount,sizeof(segmentStats),compareScores);
+  //qsort((segmentStats*) allResults, hssCount,sizeof(segmentStats),compareScores);
 
   freeAln((struct aln**)inputAlnRev);
 

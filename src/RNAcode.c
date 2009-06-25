@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
 
   int i,j,k,x,L,N,hssCount, counter;
   char *tmpSeq, *treeString;
-  float kappa;
+  float kappa, maxScore;
   TTree* tree;
   segmentStats *results;
   float parMu, parLambda;
@@ -66,6 +66,7 @@ int main(int argc, char *argv[]){
   pars.outputFile=stdout;
   pars.debugFile=stdout;
   pars.bestOnly=0;
+  pars.stopEarly=0;
   pars.sampleN=100;
   strcpy(pars.limit,"");
   pars.cutoff=1.0;
@@ -154,9 +155,25 @@ int main(int argc, char *argv[]){
 
     Sk=NULL;
 
-    getExtremeValuePars(tree, (const struct aln**)inputAln, pars.sampleN, &parMu, &parLambda);
-    
-    results=scoreAln((const struct aln**)inputAln, tree, kappa, parMu, parLambda);
+    results=scoreAln((const struct aln**)inputAln, tree, kappa);
+
+    hssCount = 0;
+    while (results[hssCount++].score > 0.0);
+
+    qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+
+    maxScore=results[0].score;
+
+    if (getExtremeValuePars(tree, (const struct aln**)inputAln, pars.sampleN, maxScore, &parMu, &parLambda) == 1){
+      for (i=0;i<hssCount;i++){
+        results[i].pvalue=1-exp((-1)*exp((-1)*parLambda*(results[i].score-parMu)));
+      }
+    } else {
+      for (i=0;i<hssCount;i++){
+        results[i].pvalue=1.0;
+      }
+    }
+
     printResults(pars.outputFile,pars.outputFormat,results);
 
     //getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
@@ -281,6 +298,9 @@ void read_commandline(int argc, char *argv[]){
     pars.bestOnly=1;
   }
 
+  if (args.stop_early_given){
+    pars.stopEarly=1;    
+  }
 
 
   if (args.cutoff_given){

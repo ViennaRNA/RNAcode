@@ -70,8 +70,6 @@ void freeScoringMatrix(int** matrix);
 
 void calculateBG(bgModel* models);
 
-int compareScores(const void * a, const void * b);
-
 void stripGaps(struct aln* AS[]);
 
 void countFreqsMono(const struct aln *alignment[], float freqs[]);
@@ -84,11 +82,10 @@ bgModel* getModelMatrix(TTree* tree, struct aln *alignment[], float kappa);
 
 void freeModelMatrix(bgModel* models, int N);
 
-void getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
-                         int sampleN, float* parMu, float* parLambda);
+int getExtremeValuePars(TTree* tree, const struct aln *alignment[], 
+                        int sampleN, float maxNativeScore, float* parMu, float* parLambda);
 
-segmentStats* getHSS(float** S, const struct aln** inputAln,  char strand, float parMu, float parLambda, float cutoff);
-
+segmentStats* getHSS(float** S, const struct aln** inputAln,  char strand);
 
 void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]);
 float** getMultipleScoreMatrix(float**** Sk, bgModel* models, const struct aln *alignment[]);
@@ -98,7 +95,7 @@ float* backtrack(float**** S, int k, int from, int to, const struct aln *alignme
 void freeSk (float**** S, const struct aln *alignment[]);
 void freeS (float** S, const struct aln *alignment[]);
 
-segmentStats* scoreAln(const struct aln *alignment[], TTree* tree, float kappa, float parMu, float parLambda);
+segmentStats* scoreAln(const struct aln *alignment[], TTree* tree, float kappa);
 
 bgModel* getModels(TTree* tree, struct aln *alignment[], float kappa);
 

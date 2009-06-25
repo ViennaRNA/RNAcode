@@ -22,6 +22,9 @@
 #include "code.h"
 #include "rnaz_utils.h"
 
+
+int compareScores(const void * a, const void * b);
+
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]);
 
 void sortAln(const struct aln* origAln[], struct aln* sampledAln[]);

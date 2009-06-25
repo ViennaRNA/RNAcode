@@ -46,6 +46,8 @@ struct gengetopt_args_info
   char * pars_arg;	/**< @brief String with parameters.  */
   char * pars_orig;	/**< @brief String with parameters original value given at command line.  */
   const char *pars_help; /**< @brief String with parameters help description.  */
+  int stop_early_flag;	/**< @brief Don't calculate p-values if below cutoff (default=off).  */
+  const char *stop_early_help; /**< @brief Don't calculate p-values if below cutoff help description.  */
   int num_samples_arg;	/**< @brief Number of samples.  */
   char * num_samples_orig;	/**< @brief Number of samples original value given at command line.  */
   const char *num_samples_help; /**< @brief Number of samples help description.  */
@@ -68,6 +70,7 @@ struct gengetopt_args_info
   unsigned int tabular_given ;	/**< @brief Whether tabular was given.  */
   unsigned int best_only_given ;	/**< @brief Whether best-only was given.  */
   unsigned int pars_given ;	/**< @brief Whether pars was given.  */
+  unsigned int stop_early_given ;	/**< @brief Whether stop-early was given.  */
   unsigned int num_samples_given ;	/**< @brief Whether num-samples was given.  */
   unsigned int cutoff_given ;	/**< @brief Whether cutoff was given.  */
   unsigned int debug_file_given ;	/**< @brief Whether debug-file was given.  */

@@ -35,6 +35,7 @@ const char *gengetopt_args_info_help[] = {
   "  -t, --tabular            Tab delimited output  (default=off)",
   "  -b, --best-only          Print only best hit per alignment  (default=off)",
   "  -c, --pars=STRING        String with parameters",
+  "  -s, --stop-early         Don't calculate p-values if below cutoff  \n                             (default=off)",
   "  -n, --num-samples=INT    Number of samples",
   "  -p, --cutoff=FLOAT       p-value cutoff",
   "  -d, --debug-file=STRING  Debug file",
@@ -73,6 +74,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->tabular_given = 0 ;
   args_info->best_only_given = 0 ;
   args_info->pars_given = 0 ;
+  args_info->stop_early_given = 0 ;
   args_info->num_samples_given = 0 ;
   args_info->cutoff_given = 0 ;
   args_info->debug_file_given = 0 ;
@@ -90,6 +92,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->best_only_flag = 0;
   args_info->pars_arg = NULL;
   args_info->pars_orig = NULL;
+  args_info->stop_early_flag = 0;
   args_info->num_samples_orig = NULL;
   args_info->cutoff_orig = NULL;
   args_info->debug_file_arg = NULL;
@@ -112,11 +115,12 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->tabular_help = gengetopt_args_info_help[4] ;
   args_info->best_only_help = gengetopt_args_info_help[5] ;
   args_info->pars_help = gengetopt_args_info_help[6] ;
-  args_info->num_samples_help = gengetopt_args_info_help[7] ;
-  args_info->cutoff_help = gengetopt_args_info_help[8] ;
-  args_info->debug_file_help = gengetopt_args_info_help[9] ;
-  args_info->gfx_help = gengetopt_args_info_help[10] ;
-  args_info->limit_help = gengetopt_args_info_help[11] ;
+  args_info->stop_early_help = gengetopt_args_info_help[7] ;
+  args_info->num_samples_help = gengetopt_args_info_help[8] ;
+  args_info->cutoff_help = gengetopt_args_info_help[9] ;
+  args_info->debug_file_help = gengetopt_args_info_help[10] ;
+  args_info->gfx_help = gengetopt_args_info_help[11] ;
+  args_info->limit_help = gengetopt_args_info_help[12] ;
   
 }
 
@@ -256,6 +260,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "best-only", 0, 0 );
   if (args_info->pars_given)
     write_into_file(outfile, "pars", args_info->pars_orig, 0);
+  if (args_info->stop_early_given)
+    write_into_file(outfile, "stop-early", 0, 0 );
   if (args_info->num_samples_given)
     write_into_file(outfile, "num-samples", args_info->num_samples_orig, 0);
   if (args_info->cutoff_given)
@@ -513,6 +519,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "tabular",	0, NULL, 't' },
         { "best-only",	0, NULL, 'b' },
         { "pars",	1, NULL, 'c' },
+        { "stop-early",	0, NULL, 's' },
         { "num-samples",	1, NULL, 'n' },
         { "cutoff",	1, NULL, 'p' },
         { "debug-file",	1, NULL, 'd' },
@@ -521,7 +528,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVo:gtbc:n:p:d:xl:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVo:gtbc:sn:p:d:xl:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -605,6 +612,16 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.pars_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "pars", 'c',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 's':	/* Don't calculate p-values if below cutoff.  */
+        
+        
+          if (update_arg((void *)&(args_info->stop_early_flag), 0, &(args_info->stop_early_given),
+              &(local_args_info.stop_early_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "stop-early", 's',
               additional_error))
             goto failure;
         

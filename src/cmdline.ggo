@@ -9,6 +9,7 @@ option      "gtf"                   g         "GTF output"                      
 option      "tabular"               t         "Tab delimited output"               flag         off
 option      "best-only"             b         "Print only best hit per alignment"  flag         off
 option      "pars"                  c         "String with parameters"             string       no
+option      "stop-early"            s         "Don't calculate p-values if below cutoff"  flag  off
 option      "num-samples"           n         "Number of samples"                  int          no
 option      "cutoff"                p         "p-value cutoff"                     float        no
 option      "debug-file"            d         "Debug file"                         string       no

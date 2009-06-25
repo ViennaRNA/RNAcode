@@ -1,1 +1,53 @@
-Code for our current working paper.
+RNAcode -- Analyze the protein coding potential in multiple sequence alignments
+
+0. About RNAcode
+================
+
+The purpose of RNA code is to detect protein coding regions in a set
+of homologous nucleotide sequences. RNAcode relies on evolutionary
+signatures, mainly synonymous/conservative mutations and conservation
+of the reading frame. These characteristics indicate negative
+selection acting on an encoded protein and allow sensitive and
+specific detection of coding regions. 
+
+RNAcode does not rely on any species specific sequence characteristics
+whatsoever and does not use any machine learning techniques. The only
+input required for RNAcode is a multiple sequence alignment either in
+MAF or Clustal W format. RNAcode reports local regions of unusual high
+coding potential and an associated p-value.
+
+
+1. Installation
+===============
+
+You can compile and install RNAcode like this:
+
+# ./configure
+# make
+# make install (as root)
+
+See INSTALL for details and more advanced installation options.
+
+
+2. Usage
+========
+
+2.1 Synopsis
+------------
+
+Analyze alignment data.aln with standard options 
+
+# RNAcode data.aln    
+
+
+
+
+
+
+--outfile -o     Output file  (default: stdout)
+--gtf -g         Format output as GTF
+--tabular -t     Format output as tab delimited fields 
+--best-only -b   Show only best hit for each input alignment
+--num-samples -n Number of samples to calculate p-value (default: 100)
+--cutoff -p      p-value cutoff (default: 1.0)
+--pars -c        Parameters as comma separated string (see README for details)

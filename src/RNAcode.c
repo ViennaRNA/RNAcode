@@ -206,9 +206,16 @@ void help(void){
 
   cmdline_parser_print_version ();
 
-  printf("\nUsage: %s [OPTIONS]... [FILES]\n\n", CMDLINE_PARSER_PACKAGE);
-  printf("%s\n","  -h, --help                       Help screen");
-  printf("%s\n\n","-V, --version                    Print version");
+  printf("\nUsage: %s [OPTIONS]... [FILE]\n\n", CMDLINE_PARSER_PACKAGE);
+  printf("--outfile     -o  Output file  (default: stdout)\n");
+  printf("--gtf         -g  Format output as GTF\n");
+  printf("--tabular     -t  Format output as tab delimited fields\n");
+  printf("--best-only   -b  Show only best hit for each input alignment\n");
+  printf("--num-samples -n  Number of samples to calculate p-value (default: 100)\n");
+  printf("--cutoff      -p  p-value cutoff (default: 1.0)\n");
+  printf("--pars        -c  Parameters as comma separated string (see README for details)\n");
+  printf("--help        -h  Print this help screen\n");
+  printf("--version     -v  Print version\n\n");
 }
 
 void version(void){

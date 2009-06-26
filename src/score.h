@@ -54,6 +54,7 @@ struct _segmentStats {
   char *name;
   float score;
   float pvalue;
+  int hide;
   
 };
 

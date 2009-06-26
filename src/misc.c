@@ -51,6 +51,33 @@ int compareScores(const void * a, const void * b){
   return 0;
 }
 
+/*********************************************************************
+  compareLocation
+
+  compare function for qsort that compares start positions given as
+  pointer to a segmentStats structure.
+
+*********************************************************************/ 
+
+int compareLocation(const void * a, const void * b){
+
+  segmentStats* statsA;
+  segmentStats* statsB;
+
+  statsA=(segmentStats*)a;
+  statsB=(segmentStats*)b;
+
+  if  ( statsA->startSite > statsB->startSite) {
+    return +1;
+  } else {
+    return -1;
+  }
+
+  return 0;
+}
+
+
+
 
 
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]){
@@ -303,9 +330,6 @@ void copyAln(struct aln *src[],struct aln *dest[]){
 
 
 
-
-
-
 void printAlnClustal(FILE *out, const struct aln* AS[]){
 
   int i;
@@ -323,60 +347,95 @@ void printAlnClustal(FILE *out, const struct aln* AS[]){
 
 void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
 
-  int i,k;
+  int i,k, hssCount, currHSS, nextHSS;
   char c;
   char name[1024]="";
   char prefix[1024]="";
   char suffix[1024]="";
 
-  if (outputFormat==0){
-
-    if (results[0].score<0.0){
-      fprintf(outfile,"\nNo significant coding regions found.\n");
-    } else {
-
-      fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
-              "Frame","Length","From","To","Name","Start","End", "Score","P");
+  hssCount = 0;
+  while (results[hssCount].score > 0.0){
+    results[hssCount++].hide=0;
+  }
+    
+  if (pars.bestOnly){
   
-      fprintf(outfile, "==============================================================================\n");
-
-      i=0;
-
-      while (results[i].score>0){
-
-        fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
-                results[i].strand, results[i].frame+1,
-                results[i].endSite-results[i].startSite+1,
-                results[i].startSite+1,results[i].endSite+1,
-                results[i].name,
-                results[i].start,results[i].end,
-                results[i].score);
-
-        if (results[i].pvalue < 0.001){
-          /*Seems to be the minimum number I can get, don't know why
-            we don't get down to 1e-37 which should be the limit for
-            floats.
-           */
-          if (results[i].pvalue < 10e-16){
-            fprintf(outfile, "   <1e-16\n");
-          } else {
-            fprintf(outfile, "% 9.1e\n",results[i].pvalue);
-          }
-
+    /* First sort by start position */
+    qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareLocation);
+    currHSS=0;
+    nextHSS=1;
+    while (nextHSS<=hssCount) {
+    
+      /* the two HSS overlap */
+      if (!(results[currHSS].endSite <= results[nextHSS].startSite)){
+      
+        /* Hide the HSS with lower score */
+        if (results[currHSS].score > results[nextHSS].score){
+          results[nextHSS].hide=1;
+          nextHSS++;
         } else {
-          fprintf(outfile, "% 9.3f\n",results[i].pvalue);
+          results[currHSS].hide=1;
+          currHSS=nextHSS;
+          nextHSS++;
         }
-        i++;
-
-        if ((pars.bestOnly) &&  (i > 0)) break;
-
+      } else {
+        currHSS=nextHSS;
+        nextHSS++;
       }
     }
   }
 
-  if (outputFormat==1){
-    i=0;
-    while (results[i].score>0){
+  qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
+
+
+  if (results[0].score<0.0){
+    fprintf(outfile,"\nNo significant coding regions found.\n");
+    return;
+  } 
+
+  if (outputFormat==0){
+    fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
+            "Frame","Length","From","To","Name","Start","End", "Score","P");
+    fprintf(outfile, "==============================================================================\n");
+  }
+
+  
+  i=0;
+  while (results[i].score>0){
+
+    if (results[i].hide) {
+      i++;
+      continue;
+    }
+    
+    if (outputFormat==0){
+
+      fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
+              results[i].strand, results[i].frame+1,
+              results[i].endSite-results[i].startSite+1,
+              results[i].startSite+1,results[i].endSite+1,
+              results[i].name,
+              results[i].start,results[i].end,
+              results[i].score);
+
+      if (results[i].pvalue < 0.001){
+        /*Seems to be the minimum number I can get, don't know why
+          we don't get down to 1e-37 which should be the limit for
+          floats.
+        */
+        if (results[i].pvalue < 10e-16){
+          fprintf(outfile, "   <1e-16\n");
+        } else {
+          fprintf(outfile, "% 9.1e\n",results[i].pvalue);
+        }
+
+      } else {
+        fprintf(outfile, "% 9.3f\n",results[i].pvalue);
+      }
+      i++;
+    }
+
+    if (outputFormat==1){
       /* if name is of the form hg18.chromX than only display chromX */
       k=0;
       while (1){
@@ -399,16 +458,11 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
               results[i].pvalue,
               results[i].strand, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
       i++;
-
-      if ((pars.bestOnly) &&  (i > 0)) break;
+      
     }
-  }
+  
+    if (outputFormat==2){
 
-  if (outputFormat==2){
-
-    i=0;
-
-    while (results[i].score>0){
       fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f\t",
               results[i].strand, results[i].frame+1,
               results[i].endSite-results[i].startSite+1,
@@ -416,14 +470,13 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
               results[i].name,
               results[i].start,results[i].end,
               results[i].score);
-
+      
       if (results[i].pvalue < 0.001){
         fprintf(outfile, "% 9.3e\n",results[i].pvalue);
       } else {
         fprintf(outfile, "% 9.3f\n",results[i].pvalue);
       }
-      i++;
-      if ((pars.bestOnly) &&  (i > 0)) break;
     }
+    i++;
   }
 }

@@ -1,4 +1,4 @@
-AC_INIT(RNAcode, 0.1, wash@tbi.univie.ac.at, RNAcode)
+AC_INIT(RNAcode, 0.2beta, wash@tbi.univie.ac.at, RNAcode)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC

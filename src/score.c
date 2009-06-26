@@ -366,9 +366,15 @@ float calculateSigma(char* block_0, char* block_k, int k, bgModel* models){
 
   codonA[3]=codonB[3]='\0';
 
+  if (codonA[0] == 'N' || codonA[1] == 'N' || codonA[2] == 'N' ||
+      codonB[0] == 'N' || codonB[1] == 'N' || codonB[2] == 'N'
+      ) {
+    return 0.0;
+  }
+
   h=hDist(ntMap[codonA[0]], ntMap[codonA[1]], ntMap[codonA[2]],
           ntMap[codonB[0]], ntMap[codonB[1]], ntMap[codonB[2]]);
-
+  
   if (h==0) return 0.0;
 
   pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];

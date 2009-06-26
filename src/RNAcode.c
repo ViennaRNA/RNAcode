@@ -103,16 +103,13 @@ int main(int argc, char *argv[]){
   
     counter++;
 
-    /* Currently repeat masked regions are ignored and Ns are converted to gaps */
+    /* Currently repeat masked regions are ignored*/
     /* Fix this */
     for (i=0; inputAln[i]!=NULL; i++){
       tmpSeq=inputAln[i]->seq;
       j=0;
       while (tmpSeq[j]){
         tmpSeq[j]=toupper(tmpSeq[j]);
-        if (tmpSeq[j]=='N'){
-          tmpSeq[j]='-';
-        }
         j++;
       }
     }
@@ -227,7 +224,7 @@ void help(void){
   printf("--outfile     -o  Output file  (default: stdout)\n");
   printf("--gtf         -g  Format output as GTF\n");
   printf("--tabular     -t  Format output as tab delimited fields\n");
-  printf("--best-only   -b  Show only best hit for each input alignment\n");
+  printf("--best-only   -b  Show only best non-overlapping hits\n");
   printf("--num-samples -n  Number of samples to calculate p-value (default: 100)\n");
   printf("--cutoff      -p  p-value cutoff (default: 1.0)\n");
   printf("--pars        -c  Parameters as comma separated string (see README for details)\n");

@@ -225,6 +225,7 @@ void help(void){
   printf("--gtf         -g  Format output as GTF\n");
   printf("--tabular     -t  Format output as tab delimited fields\n");
   printf("--best-only   -b  Show only best non-overlapping hits\n");
+  printf("--stop-early  -s  Don't calculate p-values for hits likely to be above cutoff\n");
   printf("--num-samples -n  Number of samples to calculate p-value (default: 100)\n");
   printf("--cutoff      -p  p-value cutoff (default: 1.0)\n");
   printf("--pars        -c  Parameters as comma separated string (see README for details)\n");

@@ -3,7 +3,6 @@
 #
 #gengetopt < cmdline.ggo -F cmdline --unamed-opts --no-handle-version --no-handle-help --no-handle-error
 
-
 option      "outfile"               o         "Output filename"                    string       no
 option      "gtf"                   g         "GTF output"                         flag         off
 option      "tabular"               t         "Tab delimited output"               flag         off

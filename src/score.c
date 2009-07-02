@@ -783,11 +783,11 @@ int getExtremeValuePars(TTree* tree, const struct aln *alignment[],
 
     if (results[0].score > maxNativeScore) {
       betterThanNative++;
-      printf("Random score %.2f is better than %.2f\n", results[0].score, maxNativeScore);
+      //printf("Random score %.2f is better than %.2f\n", results[0].score, maxNativeScore);
     }
 
     if ((pars.stopEarly) && (betterThanNative > stopCutoff )) {
-      printf("%i random scores better than native %.2f. cutoff: %i Stop.\n", betterThanNative, maxNativeScore, stopCutoff);
+      //printf("%i random scores better than native %.2f. cutoff: %i Stop.\n", betterThanNative, maxNativeScore, stopCutoff);
       return -1;
     }
 

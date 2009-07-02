@@ -155,8 +155,9 @@ int main(int argc, char *argv[]){
     results=scoreAln((const struct aln**)inputAln, tree, kappa);
 
     hssCount = 0;
-    while (results[hssCount++].score > 0.0);
-
+    while (results[hssCount++].score > 0.0){
+      //printf("Outer: %.2f\n", results[hssCount].score);
+    }
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
 
     maxScore=results[0].score;
@@ -167,7 +168,7 @@ int main(int argc, char *argv[]){
       }
     } else {
       for (i=0;i<hssCount;i++){
-        results[i].pvalue=1.0;
+        results[i].pvalue=99.0;
       }
     }
 
@@ -235,7 +236,7 @@ void help(void){
 
 void version(void){
   //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
-  printf("RNAcode v Fri Jun 19 12:05:51 2009\n");
+  printf("RNAcode v Thu Jul  2 14:57:52 2009\n");
   exit(EXIT_SUCCESS);
 }
 

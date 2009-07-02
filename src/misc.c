@@ -355,7 +355,9 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
 
   hssCount = 0;
   while (results[hssCount].score > 0.0){
-    results[hssCount++].hide=0;
+    results[hssCount].hide=0;
+    //printf("Inner %.2f (%i)\n", results[hssCount].score, results[hssCount].hide);
+    hssCount++;
   }
     
   if (pars.bestOnly){
@@ -387,9 +389,10 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
 
   qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
 
-
-  if (results[0].score<0.0){
-    fprintf(outfile,"\nNo significant coding regions found.\n");
+  if (results[0].score<0.0 || results[0].pvalue > pars.cutoff){
+    if (outputFormat==0){
+      fprintf(outfile,"\nNo significant coding regions found.\n");
+    }
     return;
   } 
 
@@ -401,7 +404,10 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
 
   
   i=0;
-  while (results[i].score>0){
+
+  while (results[i].score>0.0 && results[i].pvalue < pars.cutoff){
+
+    //printf("InnerInner %i %.2f (%i)\n", i, results[i].score, results[i].hide);
 
     if (results[i].hide) {
       i++;
@@ -418,21 +424,21 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
               results[i].start,results[i].end,
               results[i].score);
 
-      if (results[i].pvalue < 0.001){
-        /*Seems to be the minimum number I can get, don't know why
-          we don't get down to 1e-37 which should be the limit for
-          floats.
-        */
-        if (results[i].pvalue < 10e-16){
-          fprintf(outfile, "   <1e-16\n");
-        } else {
-          fprintf(outfile, "% 9.1e\n",results[i].pvalue);
-        }
+        if (results[i].pvalue < 0.001){
+          /*Seems to be the minimum number I can get, don't know why
+            we don't get down to 1e-37 which should be the limit for
+            floats.
+          */
+          if (results[i].pvalue < 10e-16){
+            fprintf(outfile, "   <1e-16\n");
+          } else {
+            fprintf(outfile, "% 9.1e\n",results[i].pvalue);
+          }
 
-      } else {
-        fprintf(outfile, "% 9.3f\n",results[i].pvalue);
-      }
-      i++;
+        } else {
+          fprintf(outfile, "% 9.3f\n",results[i].pvalue);
+        }
+        //i++;
     }
 
     if (outputFormat==1){
@@ -457,8 +463,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
               results[i].score,
               results[i].pvalue,
               results[i].strand, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
-      i++;
-      
+      //i++;
     }
   
     if (outputFormat==2){

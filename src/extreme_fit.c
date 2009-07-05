@@ -200,7 +200,7 @@ EVDMaxLikelyFit(double *x, int *c, int n, double *ret_mu, double *ret_lambda)
           do {
             left -= 0.1;
             if (left < 0.) { 
-              printf("EVDMaxLikelyFit(): failed to bracket root"); 
+              /* printf("EVDMaxLikelyFit(): failed to bracket root"); */
               return 0; 
             }
             Lawless416(x, c, n, left, &fx, &dfx);
@@ -212,7 +212,7 @@ EVDMaxLikelyFit(double *x, int *c, int n, double *ret_mu, double *ret_lambda)
             right += 0.1;
             Lawless416(x, c, n, right, &fx, &dfx);
             if (right > 100.) {
-              printf("EVDMaxLikelyFit(): failed to bracket root"); 
+              /* printf("EVDMaxLikelyFit(): failed to bracket root"); */
               return 0; 
             }
           } while (fx > 0.);
@@ -227,7 +227,7 @@ EVDMaxLikelyFit(double *x, int *c, int n, double *ret_mu, double *ret_lambda)
           else          right = mid;
         }
       if (i == 100) { 
-        printf("EVDMaxLikelyFit(): even the bisection search failed"); 
+        /* printf("EVDMaxLikelyFit(): even the bisection search failed"); */
         return 0; 
       }
       lambda = mid;

@@ -408,7 +408,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
   while (results[i].score>0.0 && results[i].pvalue < pars.cutoff){
 
     //printf("InnerInner %i %.2f (%i)\n", i, results[i].score, results[i].hide);
-
+    
     if (results[i].hide) {
       i++;
       continue;

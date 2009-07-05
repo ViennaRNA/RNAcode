@@ -783,29 +783,32 @@ int getExtremeValuePars(TTree* tree, const struct aln *alignment[],
 
     if (results[0].score > maxNativeScore) {
       betterThanNative++;
-      //printf("Random score %.2f is better than %.2f\n", results[0].score, maxNativeScore);
     }
 
     if ((pars.stopEarly) && (betterThanNative > stopCutoff )) {
-      //printf("%i random scores better than native %.2f. cutoff: %i Stop.\n", betterThanNative, maxNativeScore, stopCutoff);
       return -1;
     }
 
     maxScores[i]=results[0].score;
-    
+
+
     freeAln((struct aln**)sampledAln);
     freeResults(results);
   }
 
-  EVDMaxLikelyFit(maxScores, NULL, sampleN, &mu, &lambda);
-
-  *parMu=mu;
-  *parLambda=lambda;
-
-  free(maxScores);
-  //fclose(fp);
-
-  return 1;
+  if (EVDMaxLikelyFit(maxScores, NULL, sampleN, &mu, &lambda) == 1){
+    *parMu=mu;
+    *parLambda=lambda;
+    free(maxScores);
+    return 1;
+  } else {
+    /* On failure of fit return -1, which means that downstream all
+       hits in this alignment are considered insignificant, should be
+       enough error handling as the fit usually only fails for
+       pathological cases that do not contain real hits.*/
+    free(maxScores);
+    return -1;
+  }
 
 }
 

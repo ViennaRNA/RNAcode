@@ -1,3 +1,4 @@
+
 /*  Copyright 2009, Stefan Washietl
 
     This file is part of RNAcode.
@@ -14,7 +15,6 @@
 
     You should have received a copy of the GNU General Public License
     along with RNAcode.  If not, see <http://www.gnu.org/licenses/>. */
-
 
 #include <time.h>
 #include <stdio.h>
@@ -57,11 +57,11 @@ int main(int argc, char *argv[]){
   struct aln *inputAln[MAX_NUM_NAMES];
   struct aln *inputAlnRev[MAX_NUM_NAMES];
 
-  pars.omega=-2.0;
-  pars.Omega=-4.0;
   pars.Delta=-10.0;
-  pars.stopPenalty_0=-9999.0;
+  pars.Omega=-4.0;
+  pars.omega=-2.0;
   pars.stopPenalty_k=-8.0;
+  pars.stopPenalty_0=-9999.0;
   pars.inputFile=stdin;
   pars.outputFile=stdout;
   pars.debugFile=stdout;
@@ -143,6 +143,8 @@ int main(int argc, char *argv[]){
     }
 
     tree=string2tree(treeString);
+
+    free(treeString);
     
     copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
     revAln((struct aln**)inputAlnRev);

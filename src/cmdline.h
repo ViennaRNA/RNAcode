@@ -64,6 +64,9 @@ struct gengetopt_args_info
   char * limit_arg;	/**< @brief limit to species.  */
   char * limit_orig;	/**< @brief limit to species original value given at command line.  */
   const char *limit_help; /**< @brief limit to species help description.  */
+  int blosum_arg;	/**< @brief BLOSUM matrix version.  */
+  char * blosum_orig;	/**< @brief BLOSUM matrix version original value given at command line.  */
+  const char *blosum_help; /**< @brief BLOSUM matrix version help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -79,6 +82,7 @@ struct gengetopt_args_info
   unsigned int debug_file_given ;	/**< @brief Whether debug-file was given.  */
   unsigned int gfx_given ;	/**< @brief Whether gfx was given.  */
   unsigned int limit_given ;	/**< @brief Whether limit was given.  */
+  unsigned int blosum_given ;	/**< @brief Whether blosum was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

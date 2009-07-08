@@ -68,6 +68,7 @@ int main(int argc, char *argv[]){
   pars.bestRegion=0;
   pars.stopEarly=0;
   pars.sampleN=100;
+  pars.blosum=62;
   strcpy(pars.limit,"");
   pars.cutoff=1.0;
   pars.outputFormat=0; /* 0: normal list; 1: GTF; 2:compact list (debugging) */
@@ -275,6 +276,15 @@ void read_commandline(int argc, char *argv[]){
 
   if (args.num_samples_given){
     pars.sampleN=args.num_samples_arg;
+  }
+
+  if (args.blosum_given){
+    if (args.blosum_arg !=62 && args.blosum_arg !=90){
+      fprintf(stderr, "ERROR: Currently only BLOSUM62 and BLOSUM90 are supported.\n");
+      exit(1);
+    } else {
+      pars.blosum=args.blosum_arg;
+    }
   }
 
   if (args.gtf_given){

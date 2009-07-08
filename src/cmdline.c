@@ -42,6 +42,7 @@ const char *gengetopt_args_info_help[] = {
   "  -d, --debug-file=STRING  Debug file",
   "  -x, --gfx                Postscript output  (default=off)",
   "  -l, --limit=STRING       limit to species",
+  "  -m, --blosum=INT         BLOSUM matrix version",
     0
 };
 
@@ -82,6 +83,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->debug_file_given = 0 ;
   args_info->gfx_given = 0 ;
   args_info->limit_given = 0 ;
+  args_info->blosum_given = 0 ;
 }
 
 static
@@ -103,6 +105,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->gfx_flag = 0;
   args_info->limit_arg = NULL;
   args_info->limit_orig = NULL;
+  args_info->blosum_orig = NULL;
   
 }
 
@@ -125,6 +128,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->debug_file_help = gengetopt_args_info_help[11] ;
   args_info->gfx_help = gengetopt_args_info_help[12] ;
   args_info->limit_help = gengetopt_args_info_help[13] ;
+  args_info->blosum_help = gengetopt_args_info_help[14] ;
   
 }
 
@@ -216,6 +220,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->debug_file_orig));
   free_string_field (&(args_info->limit_arg));
   free_string_field (&(args_info->limit_orig));
+  free_string_field (&(args_info->blosum_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -278,6 +283,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "gfx", 0, 0 );
   if (args_info->limit_given)
     write_into_file(outfile, "limit", args_info->limit_orig, 0);
+  if (args_info->blosum_given)
+    write_into_file(outfile, "blosum", args_info->blosum_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -532,10 +539,11 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "debug-file",	1, NULL, 'd' },
         { "gfx",	0, NULL, 'x' },
         { "limit",	1, NULL, 'l' },
+        { "blosum",	1, NULL, 'm' },
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVo:gtbrc:sn:p:d:xl:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVo:gtbrc:sn:p:d:xl:m:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -697,6 +705,18 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.limit_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "limit", 'l',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'm':	/* BLOSUM matrix version.  */
+        
+        
+          if (update_arg( (void *)&(args_info->blosum_arg), 
+               &(args_info->blosum_orig), &(args_info->blosum_given),
+              &(local_args_info.blosum_given), optarg, 0, 0, ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "blosum", 'm',
               additional_error))
             goto failure;
         

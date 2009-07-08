@@ -15,4 +15,5 @@ option      "cutoff"                p         "p-value cutoff"                  
 option      "debug-file"            d         "Debug file"                         string       no
 option      "gfx"                   x         "Postscript output"                  flag         off
 option      "limit"                 l         "limit to species"                   string       no
+option      "blosum"                m         "BLOSUM matrix version"              int          no
 

@@ -29,6 +29,7 @@ extern parameters pars;
 
 extern int transcode[4][4][4];
 extern int BLOSUM62[24][24];
+extern int BLOSUM90[24][24];
 extern bgModel *models;
 extern bgModel *modelsRev;
 
@@ -54,7 +55,14 @@ int** getScoringMatrix(){
   
   for (i=0;i<24;i++){
     for (j=0;j<24;j++){
-      matrix[i][j]=BLOSUM62[i][j];
+
+      if (pars.blosum == 62){
+        matrix[i][j]=BLOSUM62[i][j];
+      }
+
+      if (pars.blosum == 90){
+        matrix[i][j]=BLOSUM90[i][j];
+      }
     }
   }
 

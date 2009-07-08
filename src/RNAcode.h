@@ -42,6 +42,7 @@ struct _parameters{
   int stopEarly;
   int bestOnly;
   int bestRegion;
+  int blosum;
   char debugFileName[1024];
   char inputFileName[1024];
   float printIfBelow; 

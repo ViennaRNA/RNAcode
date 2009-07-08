@@ -38,6 +38,7 @@ struct _bgModel {
   float dist;
   float freqs[4];
   int** matrix;
+  float weight;
 
 };
 

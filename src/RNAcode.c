@@ -1,4 +1,3 @@
-
 /*  Copyright 2009, Stefan Washietl
 
     This file is part of RNAcode.
@@ -143,6 +142,8 @@ int main(int argc, char *argv[]){
     }
 
     tree=string2tree(treeString);
+
+    //printf("--> %s\n", treeString);
 
     free(treeString);
     

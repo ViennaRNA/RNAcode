@@ -282,11 +282,29 @@ bgModel* getModels(TTree* tree, struct aln *alignment[], float kappa){
   float** distanceMatrix;
   float freqsMono[4];
   bgModel* models;
+  float* w;
 
   for (N=0; alignment[N]!=NULL; N++);   
   
   distanceMatrix=getDistanceMatrix(tree,(struct aln**)alignment);
-  
+
+  w = weights(distanceMatrix,N);
+
+  for (i=0;i<N;i++){
+    for (j=0;j<N;j++){
+      //printf("%.2f ",w[i]);
+      //printf("%.2f ",distanceMatrix[i][j]);
+    }
+    //printf("\n");
+  }
+  //printf("\n");
+
+  for (j=0;j<N;j++){
+    //printf("%.2f ",w[j]);
+  }
+  //printf("\n");
+
+
   countFreqsMono((const struct aln**)alignment, (float *) freqsMono);
 
   models=(bgModel*)malloc(sizeof(bgModel)*N);

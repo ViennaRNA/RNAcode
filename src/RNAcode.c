@@ -65,6 +65,7 @@ int main(int argc, char *argv[]){
   pars.outputFile=stdout;
   pars.debugFile=stdout;
   pars.bestOnly=0;
+  pars.bestRegion=0;
   pars.stopEarly=0;
   pars.sampleN=100;
   strcpy(pars.limit,"");
@@ -228,7 +229,8 @@ void help(void){
   printf("--outfile     -o  Output file  (default: stdout)\n");
   printf("--gtf         -g  Format output as GTF\n");
   printf("--tabular     -t  Format output as tab delimited fields\n");
-  printf("--best-only   -b  Show only best non-overlapping hits\n");
+  printf("--best-only   -b  Show only best hit\n");
+  printf("--best-region -r  Show only best non-overlapping hits\n");
   printf("--stop-early  -s  Don't calculate p-values for hits likely to be above cutoff\n");
   printf("--num-samples -n  Number of samples to calculate p-value (default: 100)\n");
   printf("--cutoff      -p  p-value cutoff (default: 1.0)\n");
@@ -239,7 +241,7 @@ void help(void){
 
 void version(void){
   //printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
-  printf("RNAcode v Thu Jul  2 14:57:52 2009\n");
+  printf("RNAcode v Wed Jul  8 12:38:37 2009\n");
   exit(EXIT_SUCCESS);
 }
 
@@ -298,6 +300,10 @@ void read_commandline(int argc, char *argv[]){
   
   if (args.best_only_given){
     pars.bestOnly=1;
+  }
+
+  if (args.best_region_given){
+    pars.bestRegion=1;
   }
 
   if (args.stop_early_given){

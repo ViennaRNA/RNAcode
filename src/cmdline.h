@@ -43,6 +43,8 @@ struct gengetopt_args_info
   const char *tabular_help; /**< @brief Tab delimited output help description.  */
   int best_only_flag;	/**< @brief Print only best hit per alignment (default=off).  */
   const char *best_only_help; /**< @brief Print only best hit per alignment help description.  */
+  int best_region_flag;	/**< @brief Print all best non-overlapping hits per alignment (default=off).  */
+  const char *best_region_help; /**< @brief Print all best non-overlapping hits per alignment help description.  */
   char * pars_arg;	/**< @brief String with parameters.  */
   char * pars_orig;	/**< @brief String with parameters original value given at command line.  */
   const char *pars_help; /**< @brief String with parameters help description.  */
@@ -69,6 +71,7 @@ struct gengetopt_args_info
   unsigned int gtf_given ;	/**< @brief Whether gtf was given.  */
   unsigned int tabular_given ;	/**< @brief Whether tabular was given.  */
   unsigned int best_only_given ;	/**< @brief Whether best-only was given.  */
+  unsigned int best_region_given ;	/**< @brief Whether best-region was given.  */
   unsigned int pars_given ;	/**< @brief Whether pars was given.  */
   unsigned int stop_early_given ;	/**< @brief Whether stop-early was given.  */
   unsigned int num_samples_given ;	/**< @brief Whether num-samples was given.  */

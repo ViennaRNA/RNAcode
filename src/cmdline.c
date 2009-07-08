@@ -34,6 +34,7 @@ const char *gengetopt_args_info_help[] = {
   "  -g, --gtf                GTF output  (default=off)",
   "  -t, --tabular            Tab delimited output  (default=off)",
   "  -b, --best-only          Print only best hit per alignment  (default=off)",
+  "  -r, --best-region        Print all best non-overlapping hits per alignment  \n                             (default=off)",
   "  -c, --pars=STRING        String with parameters",
   "  -s, --stop-early         Don't calculate p-values if below cutoff  \n                             (default=off)",
   "  -n, --num-samples=INT    Number of samples",
@@ -73,6 +74,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->gtf_given = 0 ;
   args_info->tabular_given = 0 ;
   args_info->best_only_given = 0 ;
+  args_info->best_region_given = 0 ;
   args_info->pars_given = 0 ;
   args_info->stop_early_given = 0 ;
   args_info->num_samples_given = 0 ;
@@ -90,6 +92,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->gtf_flag = 0;
   args_info->tabular_flag = 0;
   args_info->best_only_flag = 0;
+  args_info->best_region_flag = 0;
   args_info->pars_arg = NULL;
   args_info->pars_orig = NULL;
   args_info->stop_early_flag = 0;
@@ -114,13 +117,14 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->gtf_help = gengetopt_args_info_help[3] ;
   args_info->tabular_help = gengetopt_args_info_help[4] ;
   args_info->best_only_help = gengetopt_args_info_help[5] ;
-  args_info->pars_help = gengetopt_args_info_help[6] ;
-  args_info->stop_early_help = gengetopt_args_info_help[7] ;
-  args_info->num_samples_help = gengetopt_args_info_help[8] ;
-  args_info->cutoff_help = gengetopt_args_info_help[9] ;
-  args_info->debug_file_help = gengetopt_args_info_help[10] ;
-  args_info->gfx_help = gengetopt_args_info_help[11] ;
-  args_info->limit_help = gengetopt_args_info_help[12] ;
+  args_info->best_region_help = gengetopt_args_info_help[6] ;
+  args_info->pars_help = gengetopt_args_info_help[7] ;
+  args_info->stop_early_help = gengetopt_args_info_help[8] ;
+  args_info->num_samples_help = gengetopt_args_info_help[9] ;
+  args_info->cutoff_help = gengetopt_args_info_help[10] ;
+  args_info->debug_file_help = gengetopt_args_info_help[11] ;
+  args_info->gfx_help = gengetopt_args_info_help[12] ;
+  args_info->limit_help = gengetopt_args_info_help[13] ;
   
 }
 
@@ -258,6 +262,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "tabular", 0, 0 );
   if (args_info->best_only_given)
     write_into_file(outfile, "best-only", 0, 0 );
+  if (args_info->best_region_given)
+    write_into_file(outfile, "best-region", 0, 0 );
   if (args_info->pars_given)
     write_into_file(outfile, "pars", args_info->pars_orig, 0);
   if (args_info->stop_early_given)
@@ -518,6 +524,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "gtf",	0, NULL, 'g' },
         { "tabular",	0, NULL, 't' },
         { "best-only",	0, NULL, 'b' },
+        { "best-region",	0, NULL, 'r' },
         { "pars",	1, NULL, 'c' },
         { "stop-early",	0, NULL, 's' },
         { "num-samples",	1, NULL, 'n' },
@@ -528,7 +535,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVo:gtbc:sn:p:d:xl:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVo:gtbrc:sn:p:d:xl:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -600,6 +607,16 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           if (update_arg((void *)&(args_info->best_only_flag), 0, &(args_info->best_only_given),
               &(local_args_info.best_only_given), optarg, 0, 0, ARG_FLAG,
               check_ambiguity, override, 1, 0, "best-only", 'b',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'r':	/* Print all best non-overlapping hits per alignment.  */
+        
+        
+          if (update_arg((void *)&(args_info->best_region_flag), 0, &(args_info->best_region_given),
+              &(local_args_info.best_region_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "best-region", 'r',
               additional_error))
             goto failure;
         

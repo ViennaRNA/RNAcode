@@ -103,15 +103,19 @@ samples score better than the original alignment, the process is
 stopped and all hits in the original alignment are reported as p>0.05
 (or by convention as 1.0 in gtf and tabular output).
 
---best-only -b   Show only best hit for each input alignment
+--best-region -r   Show only best non-overlapping hits 
 
 By default all positive scoring segments are shown in the output if
 they fall below the given p-value cutoff. If two hits overlap
-(different frame or different strand) and --best-only is given only
+(different frame or different strand) and --best-region is given only
 the hit with the highest score is shown. Strong coding regions often
 lead to statistically significant signals also in other frames. These
 hits are suppressed by this option and only the correct reading frame
 is reported.
+
+--best-only -b   Show only best hit
+
+This options shows only the one single best hit for each alignment.
 
 --pars -c        
 

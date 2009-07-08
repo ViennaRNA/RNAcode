@@ -41,6 +41,7 @@ struct _parameters{
   int outputFormat;
   int stopEarly;
   int bestOnly;
+  int bestRegion;
   char debugFileName[1024];
   char inputFileName[1024];
   float printIfBelow; 

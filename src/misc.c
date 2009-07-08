@@ -360,7 +360,7 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
     hssCount++;
   }
     
-  if (pars.bestOnly){
+  if (pars.bestRegion){
   
     /* First sort by start position */
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareLocation);
@@ -438,7 +438,6 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
         } else {
           fprintf(outfile, "% 9.3f\n",results[i].pvalue);
         }
-        //i++;
     }
 
     if (outputFormat==1){
@@ -463,7 +462,6 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
               results[i].score,
               results[i].pvalue,
               results[i].strand, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
-      //i++;
     }
   
     if (outputFormat==2){
@@ -483,5 +481,8 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
       }
     }
     i++;
+
+    if (pars.bestOnly) break;
+
   }
 }

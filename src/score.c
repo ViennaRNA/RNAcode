@@ -667,16 +667,6 @@ segmentStats* getHSS(float** S, const struct aln** inputAln,
              local maximum (we report on last entry in any case...) */
           if ((currMax>0.0 && segmentEnd<i ) || (i==sites-1 && j==sites-1)){
 
-            /* If both parameters are set to zero, no p-values are
-               calculated and all positive scores are reported */
-            //if (parLambda==0.0 && parMu==0.0){
-            //  pvalue=0.0;
-            //} else {
-            //  pvalue=1-exp((-1)*exp((-1)*parLambda*(currMax-parMu)));
-            //}
-           
-            //if (pvalue<cutoff && segmentEnd-segmentStart>=minSegmentLength){
-
             if (segmentEnd-segmentStart>=minSegmentLength){
             
               /* re-allocate for each new result, leave room for last entry */
@@ -724,8 +714,9 @@ segmentStats* getHSS(float** S, const struct aln** inputAln,
           /* current potential maximal segment overlaps with
              previously found segment */
           else { 
-            /* set new maximum if curr entry is larger */
-            if (currEntry>currMax){ 
+            /* set new maximum if curr entry has better score or if the score is the same and it is longer */
+            if (currEntry>currMax ||
+                ((fabs(currEntry-currMax) < 0.0001)  && ((j-i)>=(segmentEnd-segmentStart)))){ 
               currMax=currEntry; 
               segmentStart=i; 
               segmentEnd=j; 

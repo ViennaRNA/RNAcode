@@ -77,9 +77,6 @@ int compareLocation(const void * a, const void * b){
 }
 
 
-
-
-
 void reintroduceGaps(const struct aln* origAln[], struct aln* sampledAln[]){
 
   int i,j,k;

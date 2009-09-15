@@ -582,7 +582,6 @@ float** getMultipleScoreMatrix(float**** Sk, bgModel* models, const struct aln *
   float** S;
   float s0,s1,s2;
 
-
   for (N=0; alignment[N]!=NULL; N++);
 
   L=getSeqLength(alignment[0]->seq);
@@ -830,7 +829,6 @@ int getExtremeValuePars(TTree* tree, const struct aln *alignment[],
 }
 
 
-
 segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
   
   struct aln *inputAlnRev[MAX_NUM_NAMES];
@@ -899,7 +897,7 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
 /*
 float* backtrack(float**** S, int k, int opt_b, int opt_i, const struct aln *alignment[]){
 
-  float opt_score;
+float opt_score;
   int opt_state; 
   int curr_state, prev_state;
   char *display_line1;

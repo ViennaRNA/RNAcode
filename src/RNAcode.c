@@ -183,6 +183,7 @@ int main(int argc, char *argv[]){
     //getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
     //results=scoreAln((const struct aln**)inputAln, tree, kappa, 0.0, 0.0);
 
+    colorAln("color.ps",(const struct aln**)inputAln, results);
     
     for (k=0;k<N;k++){
       for (x=0;x<3;x++){
@@ -192,7 +193,7 @@ int main(int argc, char *argv[]){
         free(Sk[k][x]);
       }
       free(Sk[k]);
-      } 
+    } 
     free(Sk);
     Sk=NULL;
 

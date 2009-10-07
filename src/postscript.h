@@ -4,9 +4,9 @@
 #include "rnaz_utils.h"
 #include "code.h"
 
-int colorAln(const char *filename, const struct aln *alignment[],segmentStats* region);
+int colorAln(const char *filename, const struct aln *alignment[],segmentStats region);
 
-void colorHSS(const char *filename, const struct aln *alignment[],segmentStats *region, int b, int i);
+void colorHSS(const char *filename, const struct aln *alignment[], backtrackData *bt, const char* label, int b, int i);
 
 void setParameters();
 

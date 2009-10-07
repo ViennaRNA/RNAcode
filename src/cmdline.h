@@ -59,8 +59,14 @@ struct gengetopt_args_info
   char * debug_file_arg;	/**< @brief Debug file.  */
   char * debug_file_orig;	/**< @brief Debug file original value given at command line.  */
   const char *debug_file_help; /**< @brief Debug file help description.  */
-  int gfx_flag;	/**< @brief Postscript output (default=off).  */
-  const char *gfx_help; /**< @brief Postscript output help description.  */
+  int eps_flag;	/**< @brief Postscript output (default=off).  */
+  const char *eps_help; /**< @brief Postscript output help description.  */
+  float eps_cutoff_arg;	/**< @brief Postscript output p-value cutoff.  */
+  char * eps_cutoff_orig;	/**< @brief Postscript output p-value cutoff original value given at command line.  */
+  const char *eps_cutoff_help; /**< @brief Postscript output p-value cutoff help description.  */
+  char * eps_dir_arg;	/**< @brief Postscript directory.  */
+  char * eps_dir_orig;	/**< @brief Postscript directory original value given at command line.  */
+  const char *eps_dir_help; /**< @brief Postscript directory help description.  */
   char * limit_arg;	/**< @brief limit to species.  */
   char * limit_orig;	/**< @brief limit to species original value given at command line.  */
   const char *limit_help; /**< @brief limit to species help description.  */
@@ -80,7 +86,9 @@ struct gengetopt_args_info
   unsigned int num_samples_given ;	/**< @brief Whether num-samples was given.  */
   unsigned int cutoff_given ;	/**< @brief Whether cutoff was given.  */
   unsigned int debug_file_given ;	/**< @brief Whether debug-file was given.  */
-  unsigned int gfx_given ;	/**< @brief Whether gfx was given.  */
+  unsigned int eps_given ;	/**< @brief Whether eps was given.  */
+  unsigned int eps_cutoff_given ;	/**< @brief Whether eps-cutoff was given.  */
+  unsigned int eps_dir_given ;	/**< @brief Whether eps-dir was given.  */
   unsigned int limit_given ;	/**< @brief Whether limit was given.  */
   unsigned int blosum_given ;	/**< @brief Whether blosum was given.  */
 

@@ -47,6 +47,10 @@ struct _parameters{
   char inputFileName[1024];
   float printIfBelow; 
   float printIfAbove;
+  int postscript;
+  float postscript_cutoff;
+  char postscriptDir[1024];
+
 };
 
 #endif

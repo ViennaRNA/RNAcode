@@ -20,10 +20,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include "RNAcode.h"
 #include "misc.h"
 
 extern parameters pars;
+
+extern long int hitCounter;
+
+float**** allocateSk(int N, int L){
+
+  float**** S;
+  int i, k, x;
+  
+  // We have one entry for each pair
+  S=(float****)malloc(sizeof(float***)*(N+1));
+
+  for (k=0;k<N;k++){
+    // We have three states
+    S[k]=(float***)malloc(sizeof(float**)*(3));
+    
+    for (x=0;x<3;x++){
+      // indices are 1 based and we mark end with NULL, so we need L+2
+      S[k][x]=(float**)malloc(sizeof(float*)*(L+1));
+      
+      for (i=0;i<L+1;i++){
+        S[k][x][i]=(float*)malloc(sizeof(float)*(L+1));
+      }
+    }
+  }
+  return S;
+}
+
+void copySk(float**** from, float**** to, int N, int L){
+
+  int i, j, k, x;
+  
+  for (k=0;k<N;k++){
+    for (x=0;x<3;x++){
+      for (i=0;i<L+1;i++){
+        for (j=0;j<L+1;j++){
+          to[k][x][i][j] = from[k][x][i][j];
+        }
+      }
+    }
+  }
+
+}
+
+
 
 
 /*********************************************************************
@@ -342,11 +388,12 @@ void printAlnClustal(FILE *out, const struct aln* AS[]){
 }
 
 
-void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
+void printResults(FILE* outfile, int outputFormat, const struct aln* inputAln[], segmentStats results[]){
 
   int i,k, hssCount, currHSS, nextHSS;
   char c;
   char name[1024]="";
+  char fileName[2048]="";
   char prefix[1024]="";
   char suffix[1024]="";
 
@@ -394,31 +441,47 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
   } 
 
   if (outputFormat==0){
-    fprintf(outfile, "\n%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
-            "Frame","Length","From","To","Name","Start","End", "Score","P");
-    fprintf(outfile, "==============================================================================\n");
+    fprintf(outfile, "\n%6s%5s%7s%6s%6s%12s%12s%12s%9s%9s\n",
+            " HSS # ", "Frame","Length","From","To","Name","Start","End", "Score","P");
+    fprintf(outfile, "======================================================================================\n");
   }
 
   
   i=0;
 
   while (results[i].score>0.0 && results[i].pvalue < pars.cutoff){
-
-    //printf("InnerInner %i %.2f (%i)\n", i, results[i].score, results[i].hide);
     
     if (results[i].hide) {
       i++;
       continue;
     }
-    
+
+
+    if (pars.postscript){
+      if (results[i].pvalue < pars.postscript_cutoff){
+        struct stat stat_p;	
+        
+        if (stat (pars.postscriptDir, &stat_p) != 0){
+          if (mkdir(pars.postscriptDir, S_IRWXU|S_IROTH|S_IRGRP ) !=0){
+            fprintf(stderr, "WARNING: Could not create directory: %s", pars.postscriptDir);
+          }
+        }
+        
+        sprintf(fileName,"%s/hss-%li.eps", pars.postscriptDir,hitCounter); 
+        colorAln(fileName,(const struct aln**)inputAln, results[i]);
+      }
+    }
+
+
     if (outputFormat==0){
 
-      fprintf(outfile, "%4c%i%7i%6i%6i%12s%12i%12i%9.2f",
+      fprintf(outfile, "%6li %4c%i%7i%6i%6i%12s%12i%12i%9.2f",
+              hitCounter,
               results[i].strand, results[i].frame+1,
               results[i].endSite-results[i].startSite+1,
               results[i].startSite+1,results[i].endSite+1,
               results[i].name,
-              results[i].start,results[i].end,
+              results[i].startGenomic,results[i].endGenomic,
               results[i].score);
 
         if (results[i].pvalue < 0.001){
@@ -453,22 +516,23 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
         strcpy(name,results[i].name+k+1);
       }
 
-      fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2f|%.2e\t%c\t%c\t%s\n",
+      fprintf(outfile,"%s\t%s\t%s\t%i\t%i\t%.2f|%.2e\t%c\t%c\t%s%li%s\n",
               name, "RNAcode","CDS",
-              results[i].start+1,results[i].end+1,
+              results[i].startGenomic+1,results[i].endGenomic+1,
               results[i].score,
               results[i].pvalue,
-              results[i].strand, '.',"gene_id \"Gene 0\"; transcript_id \"transcript 0\";");
+              results[i].strand, '.',"gene_id \"Gene", hitCounter ,"\"; transcript_id \"transcript 0\";");
     }
   
     if (outputFormat==2){
 
-      fprintf(outfile, "%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f\t",
+      fprintf(outfile, "%li\t%c\t%i\t%i\t%i\t%i\t%s\t%i\t%i\t%7.3f\t",
+              hitCounter,
               results[i].strand, results[i].frame+1,
               results[i].endSite-results[i].startSite+1,
               results[i].startSite+1,results[i].endSite+1,
               results[i].name,
-              results[i].start,results[i].end,
+              results[i].startGenomic,results[i].endGenomic,
               results[i].score);
       
       if (results[i].pvalue < 0.001){
@@ -481,5 +545,86 @@ void printResults(FILE* outfile, int outputFormat, segmentStats results[]){
 
     if (pars.bestOnly) break;
 
+    hitCounter++;
+
   }
+}
+
+
+int extendRegion(const struct aln* alignment[], int pos, int direction){
+
+  int *map_0, *map_k;
+  int N, k, x, z, L, l, colsN;
+  char *block_0, *block_k, *seq;
+  int pepA;
+  int ii, jj;
+  char codonA[4];
+  
+  seq = alignment[0]->seq;
+
+  L=getSeqLength(seq);
+  colsN=strlen(seq);
+
+  block_0 = (char*) malloc(sizeof(char)*(colsN+1));
+  block_k = (char*) malloc(sizeof(char)*(colsN+1));
+  
+  map_0=(int*)malloc(sizeof(int)*(colsN+1));
+  map_k=(int*)malloc(sizeof(int)*(colsN+1));
+
+  //printf("Pos %i L %i\n", pos, L);
+
+  for (l=1;l<=L;l++){
+    map_0[l]=pos2col(seq,l);
+    map_k[l]=pos2col(alignment[1]->seq,l);
+  }
+  
+  if (direction == 0 ){
+    x=pos+2;
+  } else {
+    x=pos;
+  }
+
+  while (1){
+    
+    getBlock(x, seq, alignment[1]->seq, map_0, map_k, block_0, block_k, &z );
+
+    ii=jj=0;
+      
+    while (block_0[ii] != '\0') {
+      if (block_0[ii] != '-') {
+        codonA[jj]=block_0[ii];
+        jj++;
+      }
+      ii++;
+    }
+
+    pepA=transcode[ntMap[codonA[0]]][ntMap[codonA[1]]][ntMap[codonA[2]]];
+
+    if (pepA == -1) break;
+
+    if (direction == 0){
+      if (x-3<3) break;
+      x-=3;
+
+    } else {
+      if (x+3 > L) break;
+      x+=3;
+    }
+  }
+
+  free(block_0);
+  free(block_k);
+  free(map_0);
+  free(map_k);
+
+
+
+
+  if (direction == 0){
+    return x-2;
+  } else {
+    return x;
+  }
+
+
 }

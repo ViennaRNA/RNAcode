@@ -39,8 +39,10 @@ const char *gengetopt_args_info_help[] = {
   "  -s, --stop-early         Don't calculate p-values if below cutoff  \n                             (default=off)",
   "  -n, --num-samples=INT    Number of samples",
   "  -p, --cutoff=FLOAT       p-value cutoff",
-  "  -d, --debug-file=STRING  Debug file",
-  "  -x, --gfx                Postscript output  (default=off)",
+  "  -z, --debug-file=STRING  Debug file",
+  "  -e, --eps                Postscript output  (default=off)",
+  "  -i, --eps-cutoff=FLOAT   Postscript output p-value cutoff",
+  "  -d, --eps-dir=STRING     Postscript directory",
   "  -l, --limit=STRING       limit to species",
   "  -m, --blosum=INT         BLOSUM matrix version",
     0
@@ -81,7 +83,9 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->num_samples_given = 0 ;
   args_info->cutoff_given = 0 ;
   args_info->debug_file_given = 0 ;
-  args_info->gfx_given = 0 ;
+  args_info->eps_given = 0 ;
+  args_info->eps_cutoff_given = 0 ;
+  args_info->eps_dir_given = 0 ;
   args_info->limit_given = 0 ;
   args_info->blosum_given = 0 ;
 }
@@ -102,7 +106,10 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->cutoff_orig = NULL;
   args_info->debug_file_arg = NULL;
   args_info->debug_file_orig = NULL;
-  args_info->gfx_flag = 0;
+  args_info->eps_flag = 0;
+  args_info->eps_cutoff_orig = NULL;
+  args_info->eps_dir_arg = NULL;
+  args_info->eps_dir_orig = NULL;
   args_info->limit_arg = NULL;
   args_info->limit_orig = NULL;
   args_info->blosum_orig = NULL;
@@ -126,9 +133,11 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->num_samples_help = gengetopt_args_info_help[9] ;
   args_info->cutoff_help = gengetopt_args_info_help[10] ;
   args_info->debug_file_help = gengetopt_args_info_help[11] ;
-  args_info->gfx_help = gengetopt_args_info_help[12] ;
-  args_info->limit_help = gengetopt_args_info_help[13] ;
-  args_info->blosum_help = gengetopt_args_info_help[14] ;
+  args_info->eps_help = gengetopt_args_info_help[12] ;
+  args_info->eps_cutoff_help = gengetopt_args_info_help[13] ;
+  args_info->eps_dir_help = gengetopt_args_info_help[14] ;
+  args_info->limit_help = gengetopt_args_info_help[15] ;
+  args_info->blosum_help = gengetopt_args_info_help[16] ;
   
 }
 
@@ -218,6 +227,9 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->cutoff_orig));
   free_string_field (&(args_info->debug_file_arg));
   free_string_field (&(args_info->debug_file_orig));
+  free_string_field (&(args_info->eps_cutoff_orig));
+  free_string_field (&(args_info->eps_dir_arg));
+  free_string_field (&(args_info->eps_dir_orig));
   free_string_field (&(args_info->limit_arg));
   free_string_field (&(args_info->limit_orig));
   free_string_field (&(args_info->blosum_orig));
@@ -279,8 +291,12 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "cutoff", args_info->cutoff_orig, 0);
   if (args_info->debug_file_given)
     write_into_file(outfile, "debug-file", args_info->debug_file_orig, 0);
-  if (args_info->gfx_given)
-    write_into_file(outfile, "gfx", 0, 0 );
+  if (args_info->eps_given)
+    write_into_file(outfile, "eps", 0, 0 );
+  if (args_info->eps_cutoff_given)
+    write_into_file(outfile, "eps-cutoff", args_info->eps_cutoff_orig, 0);
+  if (args_info->eps_dir_given)
+    write_into_file(outfile, "eps-dir", args_info->eps_dir_orig, 0);
   if (args_info->limit_given)
     write_into_file(outfile, "limit", args_info->limit_orig, 0);
   if (args_info->blosum_given)
@@ -536,14 +552,16 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "stop-early",	0, NULL, 's' },
         { "num-samples",	1, NULL, 'n' },
         { "cutoff",	1, NULL, 'p' },
-        { "debug-file",	1, NULL, 'd' },
-        { "gfx",	0, NULL, 'x' },
+        { "debug-file",	1, NULL, 'z' },
+        { "eps",	0, NULL, 'e' },
+        { "eps-cutoff",	1, NULL, 'i' },
+        { "eps-dir",	1, NULL, 'd' },
         { "limit",	1, NULL, 'l' },
         { "blosum",	1, NULL, 'm' },
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVo:gtbrc:sn:p:d:xl:m:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVo:gtbrc:sn:p:z:ei:d:l:m:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -675,24 +693,48 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             goto failure;
         
           break;
-        case 'd':	/* Debug file.  */
+        case 'z':	/* Debug file.  */
         
         
           if (update_arg( (void *)&(args_info->debug_file_arg), 
                &(args_info->debug_file_orig), &(args_info->debug_file_given),
               &(local_args_info.debug_file_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
-              "debug-file", 'd',
+              "debug-file", 'z',
               additional_error))
             goto failure;
         
           break;
-        case 'x':	/* Postscript output.  */
+        case 'e':	/* Postscript output.  */
         
         
-          if (update_arg((void *)&(args_info->gfx_flag), 0, &(args_info->gfx_given),
-              &(local_args_info.gfx_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "gfx", 'x',
+          if (update_arg((void *)&(args_info->eps_flag), 0, &(args_info->eps_given),
+              &(local_args_info.eps_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "eps", 'e',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'i':	/* Postscript output p-value cutoff.  */
+        
+        
+          if (update_arg( (void *)&(args_info->eps_cutoff_arg), 
+               &(args_info->eps_cutoff_orig), &(args_info->eps_cutoff_given),
+              &(local_args_info.eps_cutoff_given), optarg, 0, 0, ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "eps-cutoff", 'i',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'd':	/* Postscript directory.  */
+        
+        
+          if (update_arg( (void *)&(args_info->eps_dir_arg), 
+               &(args_info->eps_dir_orig), &(args_info->eps_dir_given),
+              &(local_args_info.eps_dir_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "eps-dir", 'd',
               additional_error))
             goto failure;
         

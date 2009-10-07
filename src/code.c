@@ -15,7 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with RNAcode.  If not, see <http://www.gnu.org/licenses/>. */
 
-
+#include <stdlib.h>
+#include <string.h>
 #include "code.h"
 
 /* Data structure holds encoded amino acid for codon of three encoded nucleic acids  */ 
@@ -119,6 +120,8 @@ char* translateSeq(char* seq){
   }
   
   peptideSeq[j]='\0';
+
+  free(encodedSeq);
 
   return peptideSeq;
 

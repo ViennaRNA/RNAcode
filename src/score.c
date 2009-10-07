@@ -34,6 +34,8 @@ extern bgModel *models;
 extern bgModel *modelsRev;
 
 extern float**** Sk;
+extern float**** Sk_native;   
+extern float**** Sk_native_rev;  
 
 /*********************************************************************
   getScoringMatrix
@@ -296,7 +298,7 @@ bgModel* getModels(TTree* tree, struct aln *alignment[], float kappa){
   
   distanceMatrix=getDistanceMatrix(tree,(struct aln**)alignment);
 
-  w = weights(distanceMatrix,N);
+  //w = weights(distanceMatrix,N);
 
   for (i=0;i<N;i++){
     for (j=0;j<N;j++){
@@ -450,22 +452,7 @@ void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
 
   // Do this only once
   if (Sk == NULL){
-  // We have one entry for each pair
-    Sk=(float****)malloc(sizeof(float***)*(N+1));
-
-    for (k=0;k<N;k++){
-      // We have three states
-      Sk[k]=(float***)malloc(sizeof(float**)*(3));
-
-      for (x=0;x<3;x++){
-        // indices are 1 based and we mark end with NULL, so we need L+2
-        Sk[k][x]=(float**)malloc(sizeof(float*)*(L+1));
-        
-        for (i=0;i<L+1;i++){
-          Sk[k][x][i]=(float*)malloc(sizeof(float)*(L+1));
-        }
-      }
-    }
+    Sk = allocateSk(N, L);
   }
   
   // Allocate conservatively for full length of sequence + gaps;
@@ -506,7 +493,7 @@ void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
     for (b=1;b<L+1;b++){
       for (i=b+2;i<L+1;i+=3){
         z=zs[k][i];
-
+        
         if (i-3 < b) {
           Sk[k][0][b][i-3]=0.0;
           Sk[k][1][b][i-3]=0.0;
@@ -564,6 +551,249 @@ void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]){
   free(map_k);
 
 }
+
+backtrackData* backtrack(int opt_b, int opt_i, float**** SSk , const struct aln *alignment[]){
+
+  float opt_score;
+  int opt_state; 
+  int curr_state, prev_state;
+  char *display_line1;
+  char *display_line2;
+  char *display_line3;
+  char *display_line4;
+
+  char* block_0;
+  char* block_k;
+  int* states;
+  int *map_0, *map_k;
+  
+  char* seq_0;
+  char* seq_k;
+
+  int pos,x,l,z,L, i, b,k, N, colsN;
+  backtrackData* output;
+  int transition;
+  int* transitions;
+
+  for (N=0; alignment[N]!=NULL; N++);
+  
+  seq_0=alignment[0]->seq;
+  
+  L=getSeqLength(seq_0);
+  colsN=strlen(seq_0);
+  
+  output = (backtrackData*) malloc(sizeof(backtrackData)*N);
+
+  for (k = 1; k < N; ++k){
+
+    output[k].states = (int*)  malloc(sizeof(int) * (colsN+1));
+    output[k].z =      (int*)  malloc(sizeof(int) * (colsN+1));
+    output[k].transitions = (int*)  malloc(sizeof(int) * (colsN+1));
+    output[k].scores = (int*)  malloc(sizeof(float) * (colsN+1));
+    
+    seq_k=alignment[k]->seq;
+  
+    char string[1000];
+
+    opt_score=MINUS_INF;
+    opt_state=-1;
+
+    //printf("INHERE: %i %i\n", opt_b, opt_i);
+
+    for (x=0;x<3;x++){
+      //printf("%.2f\n",SSk[k][x][opt_b][opt_i]);
+      if (SSk[k][x][opt_b][opt_i]>opt_score){
+        opt_score=SSk[k][x][opt_b][opt_i];
+        opt_state=x;
+      }
+    }
+
+    //return NULL;
+
+    //opt_score=SSk[k][0][b][i];
+  
+    //printf("Max score: %.1f at b=%i, i=%i at state %i\n", opt_score, opt_b, opt_i, opt_state);
+
+    states=(int*)malloc(sizeof(int)*(L+3));
+      
+    for (i=0;i<=L+1;i++) states[i]=-1;
+  
+    // Allocate conservatively for full length of sequence;
+    block_0 = (char*) malloc(sizeof(char)*(colsN+1));
+    block_k = (char*) malloc(sizeof(char)*(colsN+1));
+
+    map_0=(int*)malloc(sizeof(int)*(colsN+1));
+    map_k=(int*)malloc(sizeof(int)*(colsN+1));
+
+    for (l=1;l<=L;l++){
+      map_0[l]=pos2col(seq_0,l);
+      map_k[l]=pos2col(seq_k,l);
+    }
+
+    curr_state=opt_state;
+    b=opt_b;
+  
+    for (i=opt_i;i>=opt_b+2;i-=3){
+      getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+
+      if (z==0){
+        prev_state = curr_state;
+        transition=0;
+      }
+
+      if (z==+1){
+        
+        if (curr_state == 0){
+          if (CMP(SSk[k][0][b][i],SSk[k][0][b][i-3]+pars.Delta)){
+            transition=2;
+            prev_state=0;
+          }
+          
+          if (CMP(SSk[k][0][b][i],SSk[k][2][b][i-3]+pars.Omega)){
+            transition=1;
+            prev_state=2;
+          }
+        }
+          
+        if (curr_state == 1){
+          if (CMP(SSk[k][1][b][i],SSk[k][0][b][i-3]+pars.Omega)){
+            transition=1;
+            prev_state=0;
+          }
+          if (CMP(SSk[k][1][b][i],SSk[k][1][b][i-3]+pars.Delta)){
+            transition=1;
+            prev_state=1;
+          }
+        }
+
+        if (curr_state == 2){
+          if (CMP(SSk[k][2][b][i],SSk[k][1][b][i-3]+pars.Omega)){
+            transition=1;
+            prev_state=1;
+          }
+          if (CMP(SSk[k][2][b][i],SSk[k][2][b][i-3]+pars.Delta)){
+            transition=2;
+            prev_state=2;
+          }
+        }
+      }
+
+        
+      if (z==-1){
+        if (curr_state == 0){
+          if (CMP(SSk[k][0][b][i],SSk[k][0][b][i-3]+pars.Delta)){
+            transition=2;
+            prev_state=0;
+          }
+          if (CMP(SSk[k][0][b][i],SSk[k][1][b][i-3]+pars.Omega)){
+            transition=1;
+            prev_state=1;
+          }
+        }
+          
+        if (curr_state == 1){
+          if (CMP(SSk[k][1][b][i],SSk[k][1][b][i-3]+pars.Delta)){
+            transition=2;
+            prev_state=1;
+          }
+          if (CMP(SSk[k][1][b][i],SSk[k][2][b][i-3]+pars.Omega)){
+            transition=1;
+            prev_state=2;
+          }
+        }
+
+        if (curr_state == 2){
+          if (CMP(SSk[k][2][b][i],SSk[k][2][b][i-3]+pars.Delta)){
+            transition=2;
+            prev_state=2;
+          }
+          if (CMP(SSk[k][2][b][i],SSk[k][0][b][i-3]+pars.Omega)){
+            transition=1;
+            prev_state=0;
+          }
+        }
+      }
+
+      states[i]=curr_state;
+
+      
+      output[k].states[i]=curr_state;
+      output[k].transitions[i]=transition;
+      output[k].z[i]=z;
+
+      curr_state=prev_state;
+
+    }
+
+    /*
+
+    
+    for (i=opt_b+2;i<=opt_i;i+=3){
+      getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+      //printf("%s ",block_0);
+    }
+
+    //printf("\n");
+
+    for (i=opt_b+2;i<=opt_i;i+=3){
+      getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+      //printf("%s ",block_k);
+    }
+
+    display_line1 = (char*) malloc(sizeof(char)*(L+1)*3);
+    display_line2 = (char*) malloc(sizeof(char)*(L+1)*3);
+    display_line3 = (char*) malloc(sizeof(char)*(L+1)*3);
+    display_line4 = (char*) malloc(sizeof(char)*(L+1)*3);
+  
+    for (i=0;i<(L+1)*3;i++){
+      display_line1[i]=' ';
+      display_line2[i]=' ';
+      display_line3[i]=' ';
+      display_line4[i]=' ';
+    }
+  
+    display_line1[(L+1)*3-1]='\0';
+    display_line2[(L+1)*3-1]='\0';
+    display_line3[(L+1)*3-1]='\0';
+    display_line4[(L+1)*3-1]='\0';
+
+    pos=0;
+    for (i=opt_b+2;i<=opt_i;i+=3){
+      getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
+      //sprintf(string, "%i  ", states[i]);
+      strncpy(display_line1+pos,string,strlen(string));
+      //sprintf(string, "%+.0f  ", SSk[k][0][opt_b][i]);
+      strncpy(display_line2+pos,string,strlen(string));
+      //sprintf(string, "%+.0f  ", SSk[k][1][opt_b][i]);
+      strncpy(display_line3+pos,string,strlen(string));
+      //sprintf(string, "%+.0f  ", SSk[k][2][opt_b][i]);
+      strncpy(display_line4+pos,string,strlen(string));
+        
+      pos+=strlen(block_0)+1;
+    }
+  
+    //printf("%s\n",display_line1);
+    //printf("%s\n",display_line2);
+    //printf("%s\n",display_line3);
+    //printf("%s\n",display_line4);
+
+    //printf("%i\n", L);
+
+    */
+    free(states);
+    free(block_0);
+    free(block_k);
+    free(map_0);
+    free(map_k);
+
+  }
+
+
+  return output;
+
+}
+
+
 
 
 /*********************************************************************
@@ -685,19 +915,22 @@ segmentStats* getHSS(float** S, const struct aln** inputAln,
               results[hssCount].endSite=segmentEnd;
               results[hssCount].score=currMax;
 
+              results[hssCount].start=segmentStart*3+frame+1;
+              results[hssCount].end=segmentEnd*3+frame+3;
+
               /* If CLUSTAL W input without coordinates */
               if ((inputAln[0]->start==0) && (inputAln[0]->length==0)){
               
-                results[hssCount].start=segmentStart*3+frame+1;
-                results[hssCount].end=segmentEnd*3+frame+3;
+                results[hssCount].startGenomic=results[hssCount].start;
+                results[hssCount].endGenomic=results[hssCount].end;
 
               } else {
                 if (strand=='+'){
-                  results[hssCount].start=inputAln[0]->start+segmentStart*3+frame;
-                  results[hssCount].end=inputAln[0]->start+segmentEnd*3+frame+2;
+                  results[hssCount].startGenomic=inputAln[0]->start+segmentStart*3+frame;
+                  results[hssCount].endGenomic=inputAln[0]->start+segmentEnd*3+frame+2;
                 } else {
-                  results[hssCount].end=(inputAln[0]->start+inputAln[0]->length-1)-segmentStart*3-frame;
-                  results[hssCount].start=(inputAln[0]->start+inputAln[0]->length-1)-segmentEnd*3-frame-2;
+                  results[hssCount].endGenomic=(inputAln[0]->start+inputAln[0]->length-1)-segmentStart*3-frame;
+                  results[hssCount].startGenomic=(inputAln[0]->start+inputAln[0]->length-1)-segmentEnd*3-frame-2;
                 }
               }
 
@@ -790,7 +1023,7 @@ int getExtremeValuePars(TTree* tree, const struct aln *alignment[],
     }
     */
 
-    results=scoreAln((const struct aln**)sampledAln, tree, kappa);
+    results=scoreAln((const struct aln**)sampledAln, tree, kappa, 0);
 
     hssCount=0;
     while (results[hssCount].score>=0) hssCount++;
@@ -806,7 +1039,6 @@ int getExtremeValuePars(TTree* tree, const struct aln *alignment[],
     }
 
     maxScores[i]=results[0].score;
-
 
     freeAln((struct aln**)sampledAln);
     freeResults(results);
@@ -829,20 +1061,30 @@ int getExtremeValuePars(TTree* tree, const struct aln *alignment[],
 }
 
 
-segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
+segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa, int backtrack){
   
   struct aln *inputAlnRev[MAX_NUM_NAMES];
   segmentStats *results, *resultsRev, *allResults;
   float** S;
-  int hssCount, i, N;
+  int hssCount, i, N, L;
   
   for (N=0; inputAln[N]!=NULL; N++);   
- 
+
+  L = getSeqLength(inputAln[0]->seq);
+
   copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
   revAln((struct aln**)inputAlnRev);
 
   getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
   S=getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
+
+  if (backtrack){
+    if (Sk_native == NULL){
+      Sk_native = allocateSk(N,L);
+      Sk_native_rev = allocateSk(N,L);
+    }
+    copySk(Sk, Sk_native, N, L);
+  }
 
   results=getHSS(S, (const struct aln**)inputAln, '+');
 
@@ -850,6 +1092,11 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
 
   getPairwiseScoreMatrix(modelsRev,(const struct aln**)inputAlnRev);
   S=getMultipleScoreMatrix(Sk,modelsRev,(const struct aln**)inputAlnRev);
+
+  if (backtrack){
+    copySk(Sk, Sk_native_rev, N, L);
+  }
+
   resultsRev=getHSS(S, (const struct aln**)inputAlnRev, '-');
 
   freeS(S, (const struct aln **)inputAln);
@@ -883,6 +1130,8 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
     
   allResults[hssCount].score=-1.0; 
 
+
+
   freeResults(results);
   freeResults(resultsRev);
 
@@ -894,171 +1143,6 @@ segmentStats* scoreAln(const struct aln *inputAln[], TTree* tree, float kappa){
 
 }
 
-/*
-float* backtrack(float**** S, int k, int opt_b, int opt_i, const struct aln *alignment[]){
-
-float opt_score;
-  int opt_state; 
-  int curr_state, prev_state;
-  char *display_line1;
-  char *display_line2;
-  char *display_line3;
-  char *display_line4;
-
-  char* block_0;
-  char* block_k;
-  int* states;
-  int *map_0, *map_k;
-  
-  char* seq_0;
-  char* seq_k;
-
-  int pos,x,l,z,L, i, b;
-
-  seq_0=alignment[0]->seq;
-  seq_k=alignment[k]->seq;
-  
-  char string[1000];
-
-  opt_score=MINUS_INF;
-  opt_state=-1;
-
-  for (x=0;x<3;x++){
-    if (S[k][x][opt_b][opt_i]>opt_score){
-      opt_score=S[k][x][opt_b][opt_i];
-      opt_state=x;
-    }
-  }
-
-  L=getSeqLength(seq_0);
-
-  opt_score=S[k][0][b][i];
-  
-  printf("Max score: %.1f at b=%i, i=%i at state %i\n", opt_score, b, opt_i, opt_state);
-
-  states=(int*)malloc(sizeof(int)*(L+3));
-      
-  for (i=0;i<=L+1;i++) states[i]=-1;
-  
-  // Allocate conservatively for full length of sequence;
-  block_0 = (char*) malloc(sizeof(char)*(L+1));
-  block_k = (char*) malloc(sizeof(char)*(L+1));
-
-  map_0=(int*)malloc(sizeof(int)*(L+1));
-  map_k=(int*)malloc(sizeof(int)*(L+1));
-
-  for (l=1;l<=L;l++){
-    map_0[l]=pos2col(seq_0,l);
-    map_k[l]=pos2col(seq_k,l);
-  }
-
-  curr_state=opt_state;
-  b=opt_b;
-  
-  for (i=opt_i;i>=opt_b+2;i-=3){
-    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-    
-    if (z==0){
-      prev_state = curr_state;
-    }
-        
-    if (z==+1){
-      
-      if (curr_state == 0){
-        if (S[k][0][b][i]==S[k][0][b][i-3]+Delta) prev_state=0;
-        if (S[k][0][b][i]==S[k][2][b][i-3]+Omega) prev_state=2;
-      }
-          
-      if (curr_state == 1){
-        if (S[k][1][b][i]==S[k][0][b][i-3]+Omega) prev_state=0;
-        if (S[k][1][b][i]==S[k][1][b][i-3]+Delta) prev_state=1;
-      }
-
-      if (curr_state == 2){
-        if (S[k][1][b][i]==S[k][1][b][i-3]+Omega) prev_state=1;
-        if (S[k][1][b][i]==S[k][2][b][i-3]+Delta) prev_state=2;
-      }
-    }
-
-        
-    if (z==-1){
-
-      if (curr_state == 0){
-        if (S[k][0][b][i]==S[k][0][b][i-3]+Delta) prev_state=0;
-        if (S[k][0][b][i]==S[k][1][b][i-3]+Omega) prev_state=1;
-      }
-          
-      if (curr_state == 1){
-        if (S[k][1][b][i]==S[k][1][b][i-3]+Delta) prev_state=1;
-        if (S[k][1][b][i]==S[k][2][b][i-3]+Omega) prev_state=2;
-      }
-
-      if (curr_state == 2){
-        if (S[k][1][b][i]==S[k][2][b][i-3]+Delta) prev_state=2;
-        if (S[k][1][b][i]==S[k][0][b][i-3]+Omega) prev_state=0;
-      }
-    }
-        
-    states[i]=curr_state;
-
-    curr_state=prev_state;
-                
-  }
-
-  for (i=opt_b+2;i<=opt_i;i+=3){
-    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-    printf("%s ",block_0);
-  }
-
-  printf("\n");
-
-  for (i=opt_b+2;i<=opt_i;i+=3){
-    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-    printf("%s ",block_k);
-  }
-  printf("\n");
-      
-  display_line1 = (char*) malloc(sizeof(char)*(L+1)*3);
-  display_line2 = (char*) malloc(sizeof(char)*(L+1)*3);
-  display_line3 = (char*) malloc(sizeof(char)*(L+1)*3);
-  display_line4 = (char*) malloc(sizeof(char)*(L+1)*3);
-  
-  for (i=0;i<(L+1)*3;i++){
-    display_line1[i]=' ';
-    display_line2[i]=' ';
-    display_line3[i]=' ';
-    display_line4[i]=' ';
-  }
-  
-  display_line1[(L+1)*3-1]='\0';
-  display_line2[(L+1)*3-1]='\0';
-  display_line3[(L+1)*3-1]='\0';
-  display_line4[(L+1)*3-1]='\0';
-
-  pos=0;
-  for (i=opt_b+2;i<=opt_i;i+=3){
-    //getBlock(seq_0, seq_k, i, block_0, block_k, &z );
-    getBlock(i, seq_0, seq_k, map_0, map_k, block_0, block_k, &z );
-    sprintf(string, "%i  ", states[i]);
-    strncpy(display_line1+pos,string,strlen(string));
-    sprintf(string, "%+.0f  ", S[k][0][opt_b][i]);
-    strncpy(display_line2+pos,string,strlen(string));
-    sprintf(string, "%+.0f  ", S[k][1][opt_b][i]);
-    strncpy(display_line3+pos,string,strlen(string));
-    sprintf(string, "%+.0f  ", S[k][2][opt_b][i]);
-    strncpy(display_line4+pos,string,strlen(string));
-        
-    pos+=strlen(block_0)+1;
-  }
-  
-  printf("%s\n",display_line1);
-  printf("%s\n",display_line2);
-  printf("%s\n",display_line3);
-  printf("%s\n",display_line4);
-
-  printf("%i\n", L);
-}
-*/
 
 void freeS (float** S, const struct aln *alignment[]){
 

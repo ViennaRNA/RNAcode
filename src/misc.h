@@ -22,6 +22,8 @@
 #include "code.h"
 #include "rnaz_utils.h"
 
+float**** allocateSk(int N, int L);
+void copySk(float**** from, float**** to, int N, int L);
 
 int compareScores(const void * a, const void * b);
 
@@ -50,6 +52,8 @@ void copyAln(struct aln *src[],struct aln *dest[]);
 
 void printAlnClustal(FILE *out, const struct aln* AS[]);
 
-void printResults(FILE* outfile, int outputFormat, segmentStats results[]);
+void printResults(FILE* outfile, int outputFormat, const struct aln* AS[], segmentStats results[]);
+
+int extendRegion(const struct aln* alignment[], int pos, int direction);
 
 #endif

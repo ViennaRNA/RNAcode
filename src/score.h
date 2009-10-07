@@ -27,6 +27,7 @@
 
 #define MAX(x,y)       (((x)>(y)) ? (x) : (y))
 #define MAX3(x,y,z)    (MAX(  (MAX((x),(y))) ,(z)))
+#define CMP(x,y)       (((x) > (y) ? ((x)-(y)) : ((y)-(x))) < 0.00001)
 
 typedef struct _bgModel bgModel;
 
@@ -45,19 +46,34 @@ struct _bgModel {
 typedef struct _segmentStats segmentStats;
 
 struct _segmentStats {
-
-  int startSite;
-  int endSite;
-  int strand;
-  int frame;
-  int start;
+  
+  int start; /* Relative start position (nt) */
   int end;
+  int startGenomic; /* Absolute genomic start/end position when MAF is given */
+  int endGenomic;  
+  int startSite; /* Relative start/end in amino acids */
+  int endSite;
+  int strand;   /* Strand '+' or '-' */
+  int frame;    /* Frame 1,2,3 */
   char *name;
   float score;
   float pvalue;
   int hide;
-  
+ 
 };
+
+typedef struct _backtrackData backtrackData;
+
+struct _backtrackData {
+  float* scores;
+  int* z;
+  int* states; 
+  int *transitions; // 0 stay the same, 1 ... Omega, 2 ... Delta;
+};
+
+
+
+
 
 /* Values set in main() */
 int ntMap[256]; 
@@ -92,12 +108,12 @@ segmentStats* getHSS(float** S, const struct aln** inputAln,  char strand);
 void getPairwiseScoreMatrix(bgModel* models, const struct aln *alignment[]);
 float** getMultipleScoreMatrix(float**** Sk, bgModel* models, const struct aln *alignment[]);
 
-float* backtrack(float**** S, int k, int from, int to, const struct aln *alignment[]);
+backtrackData* backtrack(int opt_b, int opt_i, float**** SSk , const struct aln *alignment[]);
 
 void freeSk (float**** S, const struct aln *alignment[]);
 void freeS (float** S, const struct aln *alignment[]);
 
-segmentStats* scoreAln(const struct aln *alignment[], TTree* tree, float kappa);
+segmentStats* scoreAln(const struct aln *alignment[], TTree* tree, float kappa, int backtrack);
 
 bgModel* getModels(TTree* tree, struct aln *alignment[], float kappa);
 

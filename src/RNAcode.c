@@ -40,9 +40,15 @@ parameters pars; /* user options */
 bgModel *models, *modelsRev; /* Background model data for current alignment*/
 float**** Sk;  /* Main score matrix which is allocated only once and re-used*/
 
+/* Save matrix for native alignment for backtracking afterwards */ 
+float**** Sk_native;   
+float**** Sk_native_rev;  
+
+long int hitCounter;
+
 int main(int argc, char *argv[]){
 
-  int i,j,k,x,L,N,hssCount, counter;
+  int i,j,k,x,L,N,hssCount, alnCounter;
   char *tmpSeq, *treeString;
   float kappa, maxScore;
   TTree* tree;
@@ -67,6 +73,9 @@ int main(int argc, char *argv[]){
   pars.bestOnly=0;
   pars.bestRegion=0;
   pars.stopEarly=0;
+  pars.postscript=0;
+  pars.postscript_cutoff=0.05;
+  strcpy(pars.postscriptDir, "eps");
   pars.sampleN=100;
   pars.blosum=62;
   strcpy(pars.limit,"");
@@ -96,13 +105,13 @@ int main(int argc, char *argv[]){
     nrerror("ERROR: Unknown alignment file format. Use Clustal W or MAF format.\n");
   }
 
-  counter=0;
-
+  alnCounter=0;
+  hitCounter=0;
   startTime=clock();
   
   while (readFunction(pars.inputFile, inputAln)!=0){
   
-    counter++;
+    alnCounter++;
 
     /* Currently repeat masked regions are ignored*/
     /* Fix this */
@@ -144,9 +153,6 @@ int main(int argc, char *argv[]){
     }
 
     tree=string2tree(treeString);
-
-    //printf("--> %s\n", treeString);
-
     free(treeString);
     
     copyAln((struct aln**)inputAln,(struct aln**)inputAlnRev);
@@ -156,13 +162,14 @@ int main(int argc, char *argv[]){
     modelsRev=getModels(tree,inputAlnRev,kappa);
 
     Sk=NULL;
+    Sk_native=NULL;
+    Sk_native_rev=NULL;
 
-    results=scoreAln((const struct aln**)inputAln, tree, kappa);
-
+    results=scoreAln((const struct aln**)inputAln, tree, kappa, 1);
+    
     hssCount = 0;
-    while (results[hssCount++].score > 0.0){
-      //printf("Outer: %.2f\n", results[hssCount].score);
-    }
+    while (results[hssCount++].score > 0.0);
+
     qsort((segmentStats*) results, hssCount,sizeof(segmentStats),compareScores);
 
     maxScore=results[0].score;
@@ -177,25 +184,29 @@ int main(int argc, char *argv[]){
       }
     }
 
-    printResults(pars.outputFile,pars.outputFormat,results);
+    printResults(pars.outputFile,pars.outputFormat,(const struct aln**)inputAln, results);
 
-    //getPairwiseScoreMatrix(models,(const struct aln**)inputAln);
-    //getMultipleScoreMatrix(Sk,models,(const struct aln**)inputAln);
-    //results=scoreAln((const struct aln**)inputAln, tree, kappa, 0.0, 0.0);
-
-    colorAln("color.ps",(const struct aln**)inputAln, results);
-    
     for (k=0;k<N;k++){
       for (x=0;x<3;x++){
         for (i=0;i<L+1;i++){
           free(Sk[k][x][i]);
+          free(Sk_native[k][x][i]);
+          free(Sk_native_rev[k][x][i]);
         }
         free(Sk[k][x]);
+        free(Sk_native[k][x]);
+        free(Sk_native_rev[k][x]);
       }
       free(Sk[k]);
+      free(Sk_native[k]);
+      free(Sk_native_rev[k]);
     } 
     free(Sk);
+    free(Sk_native);
+    free(Sk_native_rev);
     Sk=NULL;
+    Sk_native=NULL;
+    Sk_native_rev=NULL;
 
     freeSeqgenTree(tree);
     freeResults(results);
@@ -211,7 +222,7 @@ int main(int argc, char *argv[]){
     runtime = (float)(clock() - startTime) / CLOCKS_PER_SEC;
 
     fprintf(pars.outputFile,
-            "\n%i alignment(s) scored in %.2f seconds. Parameters used:\nN=%i, Delta=%.2f, Omega=%.2f, omega=%.2f, stop penalty=%.2f\n\n",             counter,runtime,pars.sampleN, pars.Delta,pars.Omega,pars.omega,pars.stopPenalty_k);
+            "\n%i alignment(s) scored in %.2f seconds. Parameters used:\nN=%i, Delta=%.2f, Omega=%.2f, omega=%.2f, stop penalty=%.2f\n\n", alnCounter,runtime,pars.sampleN, pars.Delta,pars.Omega,pars.omega,pars.stopPenalty_k);
   }
 
   exit(EXIT_SUCCESS);
@@ -237,6 +248,9 @@ void help(void){
   printf("--num-samples -n  Number of samples to calculate p-value (default: 100)\n");
   printf("--cutoff      -p  p-value cutoff (default: 1.0)\n");
   printf("--pars        -c  Parameters as comma separated string (see README for details)\n");
+  printf("--eps         -e  Create colored plots in EPS format\n");
+  printf("--eps-cutoff  -i  Create plots only if p better than this cutoff (default: 0.05)\n");
+  printf("--eps-dir     -d  Create plots only if p better than this cutoff (default: 0.05)\n");
   printf("--help        -h  Print this help screen\n");
   printf("--version     -v  Print version\n\n");
 }
@@ -275,6 +289,7 @@ void read_commandline(int argc, char *argv[]){
     }
   }
 
+
   if (args.num_samples_given){
     pars.sampleN=args.num_samples_arg;
   }
@@ -304,9 +319,6 @@ void read_commandline(int argc, char *argv[]){
       fprintf(stderr, "ERROR: Format error in parameter string. Refer to README how to use --pars.\n");
       exit(1);
     }
-
-    //printf("%.2f %.2f %.2f %.2f\n",pars.Delta,pars.Omega,pars.omega, pars.stopPenalty_0);
-
   }
   
   if (args.best_only_given){
@@ -321,9 +333,20 @@ void read_commandline(int argc, char *argv[]){
     pars.stopEarly=1;    
   }
 
-
   if (args.cutoff_given){
     pars.cutoff=args.cutoff_arg;
+  }
+
+  if (args.eps_cutoff_given){
+    pars.postscript_cutoff = args.eps_cutoff_arg;
+  }
+
+  if (args.eps_given){
+    pars.postscript = 1;
+  }
+
+  if (args.eps_dir_given){
+    strcpy(pars.postscriptDir, args.eps_dir_arg);
   }
 
   if (args.debug_file_given){

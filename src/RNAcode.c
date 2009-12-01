@@ -256,7 +256,7 @@ void help(void){
 }
 
 void version(void){
-  printf("RNAcode v Wed Dec 10 14:53:47 2008" PACKAGE_VERSION "\n");
+  printf("RNAcode v " PACKAGE_VERSION " Tue Dec  1 15:27:18 2009\n");
   exit(EXIT_SUCCESS);
 }
 

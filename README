@@ -44,6 +44,10 @@ cutoff of 0.01 in gtf format:
 
 # RNAcode --outfile results.gtf --gtf --best-only --cutoff 0.01
 
+Create color annotations for high scoring coding segments:
+
+# RNAcode --eps data.aln
+
 
 2.2 Input alignment
 -------------------
@@ -119,8 +123,12 @@ This options shows only the one single best hit for each alignment.
 
 --pars -c        
 
-Scoring parameters as comma separated string. [TODO: add docs for
-parameters]
+Scoring parameters as comma separated string:
+
+"DELTA,OMEGA,omega,stop_penalty" 
+
+See the appendix of the Paper for an explanation for the meaning of
+these parameters. Default: "-10.0,-4.0,-2.0,-8.0"
 
 --gtf -g
 --tabular -t
@@ -128,36 +136,60 @@ parameters]
 Changes the default output to two different machine readable formats
 (see next section).
 
+--eps -e  
+
+Create colored plots in EPS format. The generated plots are resolution
+independent vector graphics that can be included in any graphics
+software. For each high scoring segment below a given cutoff (see
+--eps-cutoff) a file named hss-N.eps is created (N is the running
+number of the high scoring segment).
+
+--eps-cutoff -i  
+
+Create plots only for high scoring segments with p better than this
+cutoff (default: 0.05)
+
+--eps-dir -d  
+
+Directory to save EPS files in. Default: "eps"
+
+
+
 2.4. Output format
 ------------------
 
-In the default output each prediction is reported on one line by 9 fields. 
+In the default output each prediction is reported on one line by 10 fields. 
 
-1. Frame:    The reading frame phasing relative to the starting
+
+1. HSS id    Unique running number for each high scoring segment
+             predicted in one RNAcode call
+             
+
+2. Frame:    The reading frame phasing relative to the starting
              nucleotide position in the reference sequence. +1 means
              that the first nucleotide in the reference sequence is in
              the same frame as the predicted coding region. Negative
              frames indicate that the predicted regions are on the
              reverse complement strand.
 
-2. Length:   The length of the predicted region in amino acids
+3. Length:   The length of the predicted region in amino acids
 
-3. From:     The position of the first/last amino acid in the translated
-4. To:       nucleotide sequence of the reference sequence starting
+4. From:     The position of the first/last amino acid in the translated
+5. To:       nucleotide sequence of the reference sequence starting
              with 1.
 
-5. Name      The name of the reference sequence as given in the input alignment.
+6. Name      The name of the reference sequence as given in the input alignment.
   
-6. Start     The nucleotide position in the reference sequence of the
+7. Start     The nucleotide position in the reference sequence of the
 
-7. End       predicted coding region. If no genomic coordinates are given
+8. End       predicted coding region. If no genomic coordinates are given
              (if you provide a CLUSTAL W as input) the first nucleotide position in
              the references sequence is set to 1, otherwise the positions are the
              1-based genomic coordinates as given in the input MAF file.
 
-8. Score     The coding potential score. High scores indicate high coding potential. 
+9.  Score    The coding potential score. High scores indicate high coding potential. 
 
-9.           P The p-value associated with the score. This is the probability
+10. P        The p-value associated with the score. This is the probability
              that a random alignment with same properties contains an equally good
              or better hit.
 
@@ -166,7 +198,15 @@ without header or any other output. With --gtf the output is formated
 as GTF genome annotation file.
 
 
+4. Citing RNAcode
+=================
+
+RNAcode: robust prediction of protein coding regions in comparative genomics data. 
+Stefan Washietl, Ivo L. Hofacker, Peter F. Stadler, Sven Findeiss, Nick Goldman
+Submitted.
+
+
 3. Author
 =========
 
-Stefan Washietl <washietl@ebi.ac.uk>
+Stefan Washietl <wash@mit.edu>

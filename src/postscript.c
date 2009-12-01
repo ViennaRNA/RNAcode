@@ -190,7 +190,7 @@ int colorAln(const char *filename, const struct aln *alignment[],segmentStats re
       
       fprintf(outfile, "(%s) %.1f %.1f string\n", alignment[i]->name,namesX,currY);
 
-      fprintf(outfile, "(%s) %.1f %.1f string\n", tmpBuffer,seqsX,currY);
+      //fprintf(outfile, "(%s) %.1f %.1f string\n", tmpBuffer,seqsX,currY);
 
       //for (j = 0; j < columnWidth; j++){
       //fprintf(outfile, "(%c) %.1f %.1f string\n", tmpBuffer[j],seqsX+j*fontWidth,currY);
@@ -354,7 +354,8 @@ void colorHSS(const char *filename, const struct aln *alignment[], backtrackData
   float *scores;
 
   char * colorMatrix[2][6] = {
-    {"0.0 0.15", "0.0 0.2",  "0.0 0.4", "0.0 0.6", "0.0 0.8",  "0.0 1"},  /* red    */
+    //{"0.0 0.15", "0.0 0.2",  "0.0 0.4", "0.0 0.6", "0.0 0.8",  "0.0 1"},  /* red    */
+    {"0.0 0.0", "0.0 0.2",  "0.0 0.4", "0.0 0.6", "0.0 0.8",  "0.0 1"},  /* red    */
     {"0.32 0.1", "0.32 0.2",  "0.32 0.4", "0.32 0.6", "0.32 0.8",  "0.32 1"},  /* green    */
   };
 
@@ -438,22 +439,25 @@ void colorHSS(const char *filename, const struct aln *alignment[], backtrackData
         if (strcmp(codonA, codonB) !=0){
           currSum+=currScore;
           currN++;
-          //printf("score: %i ", currScore);
-        }
+          //printf("  %s %s %i\n", codonA, codonB, currScore);
         
-        if (pepA == pepB){
-          if (strcmp(codonA, codonB)!=0){
-            syn_count++;
-          }
-        } else {
-          if (currScore<0){
-            non_syn_count++;
+        
+          if (pepA == pepB){
+            if (strcmp(codonA, codonB)!=0){
+              syn_count++;
+            }
+          } else {
+            if (currScore<0){
+              non_syn_count++;
+            }
           }
         }
       } else {
         non_syn_count++;
       }
     }
+
+    //printf("%i: %i vs %i\n", x, syn_count, non_syn_count);
 
     syn[x] = syn_count;
     non_syn[x] = non_syn_count;
@@ -585,7 +589,7 @@ void colorHSS(const char *filename, const struct aln *alignment[], backtrackData
         /* In frame states */
         if (k > 0 && bt[k].states[x]==0 && bt[k].transitions[x] == 0) {
 
-          if (currScore>0){
+          if (currScore>=0){
 
             /* Synonymous mutations */
             if (strcmp(codonA,codonB)!=0){

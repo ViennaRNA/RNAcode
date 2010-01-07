@@ -250,7 +250,7 @@ void help(void){
   printf("--pars        -c  Parameters as comma separated string (see README for details)\n");
   printf("--eps         -e  Create colored plots in EPS format\n");
   printf("--eps-cutoff  -i  Create plots only if p better than this cutoff (default: 0.05)\n");
-  printf("--eps-dir     -d  Create plots only if p better than this cutoff (default: 0.05)\n");
+  printf("--eps-dir     -d  Directory to put eps-files (default: eps)\n");
   printf("--help        -h  Print this help screen\n");
   printf("--version     -v  Print version\n\n");
 }

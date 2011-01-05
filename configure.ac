@@ -1,4 +1,4 @@
-AC_INIT(RNAcode, 0.3pre, wash@mit.edu, RNAcode)
+AC_INIT(RNAcode, 0.3, wash@mit.edu, RNAcode)
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
@@ -31,6 +31,6 @@ AC_PROG_INSTALL
 
 AC_CONFIG_HEADERS(config.h) 
 
-AC_OUTPUT([Makefile phyml/Makefile levmar/Makefile seqgen/Makefile src/Makefile librna/Makefile])
+AC_OUTPUT([Makefile phyml/Makefile levmar/Makefile seqgen/Makefile src/Makefile librna/Makefile examples/Makefile])
 
 

@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage[a4paper,bottom=3cm,top=3cm,left=2.5cm,right=2.5cm]{geometry} 
+\usepackage{graphicx}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{palatino}
+
+% paragraph
+\setlength\parindent{0pt} 
+\parskip2ex
+
+\begin{document}
+
+\title{RNAcode: Getting started}
+\maketitle
+
+\section{Installing RNAcode on Unix like systems (Linux/OS X)}
+
+\texttt{RNAcode} is distributed as \texttt{tar.gz} compressed
+archive. Download the package to your machine and uncompress it, e.g.
+
+\begin{verbatim}
+# tar -xzf RNAcode-0.3.tar.gz
+\end{verbatim}
+
+\texttt{RNAcode} uses the standard GNU installation system. So you can easily
+install it by running the following commands:
+
+\begin{verbatim}
+# ./configure
+# make
+# make install (requires root privileges)
+\end{verbatim}
+
+This will install \texttt{RNAcode} in the \texttt{/usr/local/} tree. To install
+somewhere else run configure like that:
+
+\begin{verbatim}
+# ./configure --prefix=/home/stefan/programs
+\end{verbatim}
+
+To test if \texttt{RNAcode} was successfully installed, run 
+
+\begin{verbatim}
+# RNAcode -V
+\end{verbatim}
+
+\section{Obtaining multiple sequence alignments}
+
+To identify a coding region in your sequence of interest, you need one
+or more homologous sequences and create a multiple sequence
+alignment. The more sequences in your alignment the better the
+accuracy. However, if sequences are too similar ($>90$\%) identity
+they only contribute little new information. Our benchmarks showed
+that alginments with 5--10 sequences and amean pairwise identity
+$<90$\% give good results.
+
+There are different possible scenarios how to obtain alignments for
+your sequences.
+
+\subsection{Download pre-made alignments}
+
+These days, for many organisms the complete genomic sequence is
+known. Moreover, for many organisms also related species have been
+sequenced and pre-calculated multiple alignments are available for
+download. Well known resources for major model organism are for
+example \url{genome.ucsc.edu} or \url{ensemble.org}, but also many
+independent smaller genome projects provide multiple alignments.
+
+\subsection{Create alignments of long genomic regions}
+
+If you want to analyze longer genomic regions ($>1kb$) but cannot find
+pre-made alignments, we recommend using the \texttt{MultiZ} program
+suite to create alignments. It can be downloaded here
+\url{http://www.bx.psu.edu/miller_lab/dist} and comes with excellent
+documentation. 
+
+You will need homologous genomic sequences for your region in other
+species. For example, you can align the complete genomes of bacteria
+or align homologous loci in the megabase range of higher organisms
+with \texttt{MultiZ}.
+
+\subsection{Create alignments of individual short regions}
+
+If your sequence of interest is relatively short (a few hundred
+nucleotides) we recommend using a simple global alignment program like
+for example \texttt{ClustalW}. Use \texttt{Blast} to find homologous
+sequences in a sequence database (e.g. GenBank,
+\url{www.ncbi.nlm.nih.gov/genbank/}). Collect the significant hits
+that match to your region of interest and align the sequences
+afterwards with an alignment program.
+
+\section{Formatting the alignments}
+
+\texttt{RNAcode} can process alignments in two different formats: MAF
+and CLUSTAL W. You have to make sure that your alignment is in one of
+these formats before you can use \texttt{RNAcode}.
+
+The MAF format was popularized by the USCS genome browser and is very
+useful to represent genome-wide alignments. The detailed specification
+can be found here: \url{http://genome.ucsc.edu/FAQ/FAQformat.html}. If
+you download alignments from an UCSC resource it is usually formatted
+as MAF. Also if you align your sequences using \texttt{MultiZ} the
+default output format is MAF.
+
+For shorter alignments of individual regions, the CLUSTAL W format is
+useful. Apart from CLUSTAL W, many other alignment programs output
+their alignments in this format.
+
+\section{Pre-processing alignments}
+
+If your alignments contain blocks of long genomic regions it is
+usually no reasonable to score these long regions as a whole. The
+\texttt{tar.gz} package contains a script \texttt{breakMAF.pl} that
+allows you to easily pre-process your MAF files:
+
+\begin{verbatim}
+# scripts/breakMAF.pl examples/genomic.maf > genomic-preprocessed.maf
+\end{verbatim}
+
+This command breaks blocks longer than 400 in shorter blocks of an
+average size of 200.
+
+\section{Running RNAcode}
+
+Analyze alignment with standard options and print detailed results
+page:
+
+\begin{verbatim}
+
+# RNAcode examples/coding.aln
+
+\end{verbatim}
+
+Analyze alignment and show best non-overlapping hits below a $p$-value
+cutoff of 0.01 in gtf format:
+
+\begin{verbatim}
+# RNAcode --outfile out.gtf --gtf --best-only --cutoff 0.01 genomic-preprocessed.maf
+\end{verbatim}
+
+Create color annotations for high scoring coding segments:
+
+\begin{verbatim}
+
+# RNAcode --eps coding.aln
+
+\end{verbatim}
+
+Please refer to the more detailed README file that explains all
+options of \texttt{RNAcode} and how to interpret the results.
+
+For details on the methodology refer to the paper:
+
+\textbf{RNAcode: robust discrimination of coding and noncoding regions in
+comparative sequence data}\\
+Washietl S, Findei\ss\ S, M{\"u}ller S, Kalkhof S, von~Bergen M, Hofacker IL, Stadler PF, Goldman N\\
+\emph{RNA} (2011), in revision
+
+\end{document}

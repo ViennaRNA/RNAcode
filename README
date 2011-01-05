@@ -142,7 +142,8 @@ Create colored plots in EPS format. The generated plots are resolution
 independent vector graphics that can be included in any graphics
 software. For each high scoring segment below a given cutoff (see
 --eps-cutoff) a file named hss-N.eps is created (N is the running
-number of the high scoring segment).
+number of the high scoring segment). See documents/color-legend.pdf
+for an explanation of the color scheme.
 
 --eps-cutoff -i  
 
@@ -201,12 +202,12 @@ as GTF genome annotation file.
 4. Citing RNAcode
 =================
 
-RNAcode: robust prediction of protein coding regions in comparative genomics data. 
-Stefan Washietl, Ivo L. Hofacker, Peter F. Stadler, Sven Findeiss, Nick Goldman
-Submitted.
+RNAcode: robust discrimination of coding and noncoding regions in
+comparative sequence data
+Washietl S, Findeiss S, Muller S, Kalkhof S, von Bergen M, Hofacker IL, Stadler PF, Goldman N
+RNA (2011), in revision
 
-
-3. Author
-=========
+3. Contact
+==========
 
 Stefan Washietl <wash@mit.edu>

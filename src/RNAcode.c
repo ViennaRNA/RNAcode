@@ -33,6 +33,7 @@
 #include "extreme_fit.h"
 #include "postscript.h"
 #include "misc.h"
+#include "utils.h"
 
 /* Global variables shared troughout the application */
 
@@ -45,6 +46,8 @@ float**** Sk_native;
 float**** Sk_native_rev;  
 
 long int hitCounter;
+
+void freeModels(bgModel* models, int N);
 
 int main(int argc, char *argv[]){
 

@@ -24,6 +24,7 @@
 #include <errno.h>
 #include "RNAcode.h"
 #include "misc.h"
+#include "postscript.h"
 
 extern parameters pars;
 

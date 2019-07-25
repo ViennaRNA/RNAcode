@@ -56,10 +56,10 @@ PRIVATE void  encode_seq(const char *sequence);
 PRIVATE void backtrack(const char *sequence, int s);
 PRIVATE int fill_arrays(const char *sequence);
 /*@unused@*/
-inline PRIVATE  int oldLoopEnergy(int i, int j, int p, int q, int type, int type_2);
-inline int  LoopEnergy(int n1, int n2, int type, int type_2,
+inline PRIVATE int oldLoopEnergy(int i, int j, int p, int q, int type, int type_2);
+inline PRIVATE int  LoopEnergy(int n1, int n2, int type, int type_2,
 			 int si1, int sj1, int sp1, int sq1);
-inline int  HairpinE(int size, int type, int si1, int sj1, const char *string);
+inline PRIVATE int  HairpinE(int size, int type, int si1, int sj1, const char *string);
 
 #define MAXSECTORS      500     /* dimension for a backtrack array */
 #define LOCALITY        0.      /* locality parameter for base-pairs */
@@ -797,7 +797,7 @@ char *backtrack_fold_from_pair(char *sequence, int i, int j) {
 }
 /*---------------------------------------------------------------------------*/
 
-inline int HairpinE(int size, int type, int si1, int sj1, const char *string) {
+inline PRIVATE int HairpinE(int size, int type, int si1, int sj1, const char *string) {
   int energy;
   energy = (size <= 30) ? P->hairpin[size] :
     P->hairpin[30]+(int)(P->lxc*log((size)/30.));
@@ -867,7 +867,7 @@ inline PRIVATE int oldLoopEnergy(int i, int j, int p, int q, int type, int type_
 
 /*--------------------------------------------------------------------------*/
 
-inline int LoopEnergy(int n1, int n2, int type, int type_2,
+inline PRIVATE int LoopEnergy(int n1, int n2, int type, int type_2,
 		      int si1, int sj1, int sp1, int sq1) {
   /* compute energy of degree 2 loop (stack bulge or interior) */
   int nl, ns, energy;

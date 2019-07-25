@@ -1252,7 +1252,7 @@ int PS_color_aln(const char *structure, const char *filename,
 	/* Write number every 10th position, leave out block breaks */
 	if ((i+1)%10==0 && (i+1)%columnWidth!=0){
 	  snprintf(tmpBuffer,length,"%i",i+1);
-	  strncpy(ruler+i,tmpBuffer,strlen(tmpBuffer));
+	  memcpy(ruler+i, tmpBuffer, strlen(tmpBuffer));
 	}
   }
   ruler[length]='\0';

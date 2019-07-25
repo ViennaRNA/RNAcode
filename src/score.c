@@ -24,6 +24,7 @@
 #include "RNAcode.h"
 #include "code.h"
 #include "misc.h"
+#include "extreme_fit.h"
 
 extern parameters pars;
 
@@ -589,7 +590,7 @@ backtrackData* backtrack(int opt_b, int opt_i, float**** SSk , const struct aln 
     output[k].states = (int*)  malloc(sizeof(int) * (colsN+1));
     output[k].z =      (int*)  malloc(sizeof(int) * (colsN+1));
     output[k].transitions = (int*)  malloc(sizeof(int) * (colsN+1));
-    output[k].scores = (int*)  malloc(sizeof(float) * (colsN+1));
+    output[k].scores = (float*)  malloc(sizeof(float) * (colsN+1));
     
     seq_k=alignment[k]->seq;
   

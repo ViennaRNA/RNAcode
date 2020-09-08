@@ -1,0 +1,8 @@
+<map id="getPairwiseScoreMatrix" name="getPairwiseScoreMatrix">
+<area shape="rect" id="node2" href="$misc_8c.html#a935b3901ff2b656c44257b4606ceab6c" title="getSeqLength" alt="" coords="217,5,320,32"/>
+<area shape="rect" id="node3" href="$misc_8c.html#ab8906f987e8caa1c304422e2105784db" title="allocateSk" alt="" coords="227,56,310,83"/>
+<area shape="rect" id="node4" href="$misc_8c.html#af49091737065e3ea21101edf17533dcf" title="pos2col" alt="" coords="235,107,302,133"/>
+<area shape="rect" id="node5" href="$misc_8c.html#a9fe543fe19ab3ff4ae9def519e1f0ac1" title="getBlock" alt="" coords="232,157,305,184"/>
+<area shape="rect" id="node6" href="$score_8c.html#aa7ac5e027c4335c220657e63d95b18ec" title="calculateSigma" alt="" coords="213,208,324,235"/>
+<area shape="rect" id="node7" href="$misc_8c.html#a62dbd6f5f78b8829c91c5e373b897f67" title="hDist" alt="" coords="372,208,425,235"/>
+</map>

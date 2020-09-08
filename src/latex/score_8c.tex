@@ -1,0 +1,327 @@
+\hypertarget{score_8c}{}\section{score.\+c File Reference}
+\label{score_8c}\index{score.\+c@{score.\+c}}
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}score.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}R\+N\+Acode.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}code.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}misc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}extreme\+\_\+fit.\+h\char`\"{}}\newline
+Include dependency graph for score.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{score_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int $\ast$$\ast$ \hyperlink{score_8c_a5deb0fecb3a13330879241f24575ac6c}{get\+Scoring\+Matrix} ()
+\item 
+void \hyperlink{score_8c_a92e464aeb840be0a3082485f30bd094b}{free\+Scoring\+Matrix} (int $\ast$$\ast$matrix)
+\item 
+void \hyperlink{score_8c_afa0b54f696bdcdf5395fb5e5185bd129}{calculate\+BG} (\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$\hyperlink{treeSimulate_8c_a027a1f1731d22465c926ce57be2364c3}{model})
+\item 
+float \hyperlink{score_8c_a10a41c7b92952d470f0f8d2af7bd2c1b}{prob\+H\+KY} (int i, int j, float d, float freqs\mbox{[}4\mbox{]}, float kappa)
+\item 
+void \hyperlink{score_8c_a73aae058cfc643479adf77c5ffc48a45}{count\+Freqs\+Mono} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]}, float freqs\mbox{[}$\,$\mbox{]})
+\item 
+\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$ \hyperlink{score_8c_ad5c373a610e54d23a1cb8500d2634e9b}{get\+Models} (T\+Tree $\ast$tree, struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]}, float kappa)
+\item 
+void \hyperlink{score_8c_a303c139a77497eb1282c6d2a4d415c1c}{free\+Models} (\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$\hyperlink{score_8c_a2351b02aa48f9f78d350b4b19408d38f}{models}, int N)
+\item 
+float \hyperlink{score_8c_aa7ac5e027c4335c220657e63d95b18ec}{calculate\+Sigma} (char $\ast$block\+\_\+0, char $\ast$block\+\_\+k, int k, \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$\hyperlink{score_8c_a2351b02aa48f9f78d350b4b19408d38f}{models})
+\item 
+void \hyperlink{score_8c_a6589227c4b47c35cca34ecc18c7f9634}{get\+Pairwise\+Score\+Matrix} (\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$\hyperlink{score_8c_a2351b02aa48f9f78d350b4b19408d38f}{models}, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+\hyperlink{score_8h_a0751e1c4932f95e3e60c73409408a97f}{backtrack\+Data} $\ast$ \hyperlink{score_8c_a0557015d88daf987d0730792a31493ad}{backtrack} (int opt\+\_\+b, int opt\+\_\+i, float $\ast$$\ast$$\ast$$\ast$S\+Sk, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+float $\ast$$\ast$ \hyperlink{score_8c_af6b84950cd47402f4580d56eb22854fd}{get\+Multiple\+Score\+Matrix} (float $\ast$$\ast$$\ast$$\ast$\hyperlink{score_8c_a1662932a5f2814e67dfbbd95ab925073}{Sk}, \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$\hyperlink{score_8c_a2351b02aa48f9f78d350b4b19408d38f}{models}, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+\hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats} $\ast$ \hyperlink{score_8c_a93045a86d8c050d38eed9c213ced83c7}{get\+H\+SS} (float $\ast$$\ast$S, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$$\ast$input\+Aln, char strand)
+\item 
+int \hyperlink{score_8c_aa313efebb5f1c1c987e98178c1668452}{get\+Extreme\+Value\+Pars} (T\+Tree $\ast$tree, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]}, int sampleN, float max\+Native\+Score, float $\ast$par\+Mu, float $\ast$par\+Lambda)
+\item 
+\hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats} $\ast$ \hyperlink{score_8c_a098269687ae30d844d2c6b58793f2d2c}{score\+Aln} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$input\+Aln\mbox{[}$\,$\mbox{]}, T\+Tree $\ast$tree, float kappa, int \hyperlink{score_8h_a0557015d88daf987d0730792a31493ad}{backtrack})
+\item 
+void \hyperlink{score_8c_ab2954f5929699167062e554323b3ec08}{freeS} (float $\ast$$\ast$S, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{score_8c_a39c41782e70b3f6d743e3287c015d573}{free\+Sk} (float $\ast$$\ast$$\ast$$\ast$S, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{RNAcode_8h_ac21aeabbefffddb27496994611a09dcd}{parameters} \hyperlink{score_8c_a8dea3b88a171ed8de9f8f98079e7561a}{pars}
+\item 
+int \hyperlink{score_8c_a119a7eb0ecd417f83e41f4325ce522c8}{transcode} \mbox{[}4\mbox{]}\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}
+\item 
+int \hyperlink{score_8c_a528f2f941a2c7a8de187c946e438d107}{B\+L\+O\+S\+U\+M62} \mbox{[}24\mbox{]}\mbox{[}24\mbox{]}
+\item 
+int \hyperlink{score_8c_addcd68ee32c359359fcb55b5bfd8a62f}{B\+L\+O\+S\+U\+M90} \mbox{[}24\mbox{]}\mbox{[}24\mbox{]}
+\item 
+\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$ \hyperlink{score_8c_a2351b02aa48f9f78d350b4b19408d38f}{models}
+\item 
+\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$ \hyperlink{score_8c_a63827dfbc95488762e66ea061bc89afd}{models\+Rev}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{score_8c_a1662932a5f2814e67dfbbd95ab925073}{Sk}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{score_8c_a189ec0118947b93b0df1359ab643d3ce}{Sk\+\_\+native}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{score_8c_a720f3e09e87f08ee95fd84af1c9c575e}{Sk\+\_\+native\+\_\+rev}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{score_8c_a0557015d88daf987d0730792a31493ad}\label{score_8c_a0557015d88daf987d0730792a31493ad}} 
+\index{score.\+c@{score.\+c}!backtrack@{backtrack}}
+\index{backtrack@{backtrack}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{backtrack()}{backtrack()}}
+{\footnotesize\ttfamily \hyperlink{score_8h_a0751e1c4932f95e3e60c73409408a97f}{backtrack\+Data}$\ast$ backtrack (\begin{DoxyParamCaption}\item[{int}]{opt\+\_\+b,  }\item[{int}]{opt\+\_\+i,  }\item[{float $\ast$$\ast$$\ast$$\ast$}]{S\+Sk,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{score_8c_a0557015d88daf987d0730792a31493ad_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_afa0b54f696bdcdf5395fb5e5185bd129}\label{score_8c_afa0b54f696bdcdf5395fb5e5185bd129}} 
+\index{score.\+c@{score.\+c}!calculate\+BG@{calculate\+BG}}
+\index{calculate\+BG@{calculate\+BG}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{calculate\+B\+G()}{calculateBG()}}
+{\footnotesize\ttfamily void calculate\+BG (\begin{DoxyParamCaption}\item[{\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$}]{model }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{score_8c_afa0b54f696bdcdf5395fb5e5185bd129_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_aa7ac5e027c4335c220657e63d95b18ec}\label{score_8c_aa7ac5e027c4335c220657e63d95b18ec}} 
+\index{score.\+c@{score.\+c}!calculate\+Sigma@{calculate\+Sigma}}
+\index{calculate\+Sigma@{calculate\+Sigma}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{calculate\+Sigma()}{calculateSigma()}}
+{\footnotesize\ttfamily float calculate\+Sigma (\begin{DoxyParamCaption}\item[{char $\ast$}]{block\+\_\+0,  }\item[{char $\ast$}]{block\+\_\+k,  }\item[{int}]{k,  }\item[{\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$}]{models }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{score_8c_aa7ac5e027c4335c220657e63d95b18ec_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_a73aae058cfc643479adf77c5ffc48a45}\label{score_8c_a73aae058cfc643479adf77c5ffc48a45}} 
+\index{score.\+c@{score.\+c}!count\+Freqs\+Mono@{count\+Freqs\+Mono}}
+\index{count\+Freqs\+Mono@{count\+Freqs\+Mono}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{count\+Freqs\+Mono()}{countFreqsMono()}}
+{\footnotesize\ttfamily void count\+Freqs\+Mono (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]},  }\item[{float}]{freqs\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{score_8c_a303c139a77497eb1282c6d2a4d415c1c}\label{score_8c_a303c139a77497eb1282c6d2a4d415c1c}} 
+\index{score.\+c@{score.\+c}!free\+Models@{free\+Models}}
+\index{free\+Models@{free\+Models}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{free\+Models()}{freeModels()}}
+{\footnotesize\ttfamily void free\+Models (\begin{DoxyParamCaption}\item[{\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$}]{models,  }\item[{int}]{N }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{score_8c_a303c139a77497eb1282c6d2a4d415c1c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_ab2954f5929699167062e554323b3ec08}\label{score_8c_ab2954f5929699167062e554323b3ec08}} 
+\index{score.\+c@{score.\+c}!freeS@{freeS}}
+\index{freeS@{freeS}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{free\+S()}{freeS()}}
+{\footnotesize\ttfamily void freeS (\begin{DoxyParamCaption}\item[{float $\ast$$\ast$}]{S,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{score_8c_ab2954f5929699167062e554323b3ec08_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_a92e464aeb840be0a3082485f30bd094b}\label{score_8c_a92e464aeb840be0a3082485f30bd094b}} 
+\index{score.\+c@{score.\+c}!free\+Scoring\+Matrix@{free\+Scoring\+Matrix}}
+\index{free\+Scoring\+Matrix@{free\+Scoring\+Matrix}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{free\+Scoring\+Matrix()}{freeScoringMatrix()}}
+{\footnotesize\ttfamily void free\+Scoring\+Matrix (\begin{DoxyParamCaption}\item[{int $\ast$$\ast$}]{matrix }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{score_8c_a39c41782e70b3f6d743e3287c015d573}\label{score_8c_a39c41782e70b3f6d743e3287c015d573}} 
+\index{score.\+c@{score.\+c}!free\+Sk@{free\+Sk}}
+\index{free\+Sk@{free\+Sk}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{free\+Sk()}{freeSk()}}
+{\footnotesize\ttfamily void free\+Sk (\begin{DoxyParamCaption}\item[{float $\ast$$\ast$$\ast$$\ast$}]{S,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{score_8c_a39c41782e70b3f6d743e3287c015d573_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_aa313efebb5f1c1c987e98178c1668452}\label{score_8c_aa313efebb5f1c1c987e98178c1668452}} 
+\index{score.\+c@{score.\+c}!get\+Extreme\+Value\+Pars@{get\+Extreme\+Value\+Pars}}
+\index{get\+Extreme\+Value\+Pars@{get\+Extreme\+Value\+Pars}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{get\+Extreme\+Value\+Pars()}{getExtremeValuePars()}}
+{\footnotesize\ttfamily int get\+Extreme\+Value\+Pars (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]},  }\item[{int}]{sampleN,  }\item[{float}]{max\+Native\+Score,  }\item[{float $\ast$}]{par\+Mu,  }\item[{float $\ast$}]{par\+Lambda }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{score_8c_aa313efebb5f1c1c987e98178c1668452_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_a93045a86d8c050d38eed9c213ced83c7}\label{score_8c_a93045a86d8c050d38eed9c213ced83c7}} 
+\index{score.\+c@{score.\+c}!get\+H\+SS@{get\+H\+SS}}
+\index{get\+H\+SS@{get\+H\+SS}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{get\+H\+S\+S()}{getHSS()}}
+{\footnotesize\ttfamily \hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats}$\ast$ get\+H\+SS (\begin{DoxyParamCaption}\item[{float $\ast$$\ast$}]{S,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$$\ast$}]{input\+Aln,  }\item[{char}]{strand }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{score_8c_a93045a86d8c050d38eed9c213ced83c7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_ad5c373a610e54d23a1cb8500d2634e9b}\label{score_8c_ad5c373a610e54d23a1cb8500d2634e9b}} 
+\index{score.\+c@{score.\+c}!get\+Models@{get\+Models}}
+\index{get\+Models@{get\+Models}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{get\+Models()}{getModels()}}
+{\footnotesize\ttfamily \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model}$\ast$ get\+Models (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]},  }\item[{float}]{kappa }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{score_8c_ad5c373a610e54d23a1cb8500d2634e9b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_af6b84950cd47402f4580d56eb22854fd}\label{score_8c_af6b84950cd47402f4580d56eb22854fd}} 
+\index{score.\+c@{score.\+c}!get\+Multiple\+Score\+Matrix@{get\+Multiple\+Score\+Matrix}}
+\index{get\+Multiple\+Score\+Matrix@{get\+Multiple\+Score\+Matrix}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{get\+Multiple\+Score\+Matrix()}{getMultipleScoreMatrix()}}
+{\footnotesize\ttfamily float$\ast$$\ast$ get\+Multiple\+Score\+Matrix (\begin{DoxyParamCaption}\item[{float $\ast$$\ast$$\ast$$\ast$}]{Sk,  }\item[{\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$}]{models,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{score_8c_af6b84950cd47402f4580d56eb22854fd_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_a6589227c4b47c35cca34ecc18c7f9634}\label{score_8c_a6589227c4b47c35cca34ecc18c7f9634}} 
+\index{score.\+c@{score.\+c}!get\+Pairwise\+Score\+Matrix@{get\+Pairwise\+Score\+Matrix}}
+\index{get\+Pairwise\+Score\+Matrix@{get\+Pairwise\+Score\+Matrix}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{get\+Pairwise\+Score\+Matrix()}{getPairwiseScoreMatrix()}}
+{\footnotesize\ttfamily void get\+Pairwise\+Score\+Matrix (\begin{DoxyParamCaption}\item[{\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$}]{models,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{score_8c_a6589227c4b47c35cca34ecc18c7f9634_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{score_8c_a5deb0fecb3a13330879241f24575ac6c}\label{score_8c_a5deb0fecb3a13330879241f24575ac6c}} 
+\index{score.\+c@{score.\+c}!get\+Scoring\+Matrix@{get\+Scoring\+Matrix}}
+\index{get\+Scoring\+Matrix@{get\+Scoring\+Matrix}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{get\+Scoring\+Matrix()}{getScoringMatrix()}}
+{\footnotesize\ttfamily int$\ast$$\ast$ get\+Scoring\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{score_8c_a10a41c7b92952d470f0f8d2af7bd2c1b}\label{score_8c_a10a41c7b92952d470f0f8d2af7bd2c1b}} 
+\index{score.\+c@{score.\+c}!prob\+H\+KY@{prob\+H\+KY}}
+\index{prob\+H\+KY@{prob\+H\+KY}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{prob\+H\+K\+Y()}{probHKY()}}
+{\footnotesize\ttfamily float prob\+H\+KY (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j,  }\item[{float}]{d,  }\item[{float}]{freqs\mbox{[}4\mbox{]},  }\item[{float}]{kappa }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{score_8c_a098269687ae30d844d2c6b58793f2d2c}\label{score_8c_a098269687ae30d844d2c6b58793f2d2c}} 
+\index{score.\+c@{score.\+c}!score\+Aln@{score\+Aln}}
+\index{score\+Aln@{score\+Aln}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{score\+Aln()}{scoreAln()}}
+{\footnotesize\ttfamily \hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats}$\ast$ score\+Aln (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{input\+Aln\mbox{[}$\,$\mbox{]},  }\item[{T\+Tree $\ast$}]{tree,  }\item[{float}]{kappa,  }\item[{int}]{backtrack }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{score_8c_a098269687ae30d844d2c6b58793f2d2c_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{score_8c_a528f2f941a2c7a8de187c946e438d107}\label{score_8c_a528f2f941a2c7a8de187c946e438d107}} 
+\index{score.\+c@{score.\+c}!B\+L\+O\+S\+U\+M62@{B\+L\+O\+S\+U\+M62}}
+\index{B\+L\+O\+S\+U\+M62@{B\+L\+O\+S\+U\+M62}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{B\+L\+O\+S\+U\+M62}{BLOSUM62}}
+{\footnotesize\ttfamily int B\+L\+O\+S\+U\+M62\mbox{[}24\mbox{]}\mbox{[}24\mbox{]}}
+
+\mbox{\Hypertarget{score_8c_addcd68ee32c359359fcb55b5bfd8a62f}\label{score_8c_addcd68ee32c359359fcb55b5bfd8a62f}} 
+\index{score.\+c@{score.\+c}!B\+L\+O\+S\+U\+M90@{B\+L\+O\+S\+U\+M90}}
+\index{B\+L\+O\+S\+U\+M90@{B\+L\+O\+S\+U\+M90}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{B\+L\+O\+S\+U\+M90}{BLOSUM90}}
+{\footnotesize\ttfamily int B\+L\+O\+S\+U\+M90\mbox{[}24\mbox{]}\mbox{[}24\mbox{]}}
+
+\mbox{\Hypertarget{score_8c_a2351b02aa48f9f78d350b4b19408d38f}\label{score_8c_a2351b02aa48f9f78d350b4b19408d38f}} 
+\index{score.\+c@{score.\+c}!models@{models}}
+\index{models@{models}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{models}{models}}
+{\footnotesize\ttfamily \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model}$\ast$ models}
+
+\mbox{\Hypertarget{score_8c_a63827dfbc95488762e66ea061bc89afd}\label{score_8c_a63827dfbc95488762e66ea061bc89afd}} 
+\index{score.\+c@{score.\+c}!models\+Rev@{models\+Rev}}
+\index{models\+Rev@{models\+Rev}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{models\+Rev}{modelsRev}}
+{\footnotesize\ttfamily \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model}$\ast$ models\+Rev}
+
+\mbox{\Hypertarget{score_8c_a8dea3b88a171ed8de9f8f98079e7561a}\label{score_8c_a8dea3b88a171ed8de9f8f98079e7561a}} 
+\index{score.\+c@{score.\+c}!pars@{pars}}
+\index{pars@{pars}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{pars}{pars}}
+{\footnotesize\ttfamily \hyperlink{RNAcode_8h_ac21aeabbefffddb27496994611a09dcd}{parameters} pars}
+
+\mbox{\Hypertarget{score_8c_a1662932a5f2814e67dfbbd95ab925073}\label{score_8c_a1662932a5f2814e67dfbbd95ab925073}} 
+\index{score.\+c@{score.\+c}!Sk@{Sk}}
+\index{Sk@{Sk}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{Sk}{Sk}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk}
+
+\mbox{\Hypertarget{score_8c_a189ec0118947b93b0df1359ab643d3ce}\label{score_8c_a189ec0118947b93b0df1359ab643d3ce}} 
+\index{score.\+c@{score.\+c}!Sk\+\_\+native@{Sk\+\_\+native}}
+\index{Sk\+\_\+native@{Sk\+\_\+native}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{Sk\+\_\+native}{Sk\_native}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk\+\_\+native}
+
+\mbox{\Hypertarget{score_8c_a720f3e09e87f08ee95fd84af1c9c575e}\label{score_8c_a720f3e09e87f08ee95fd84af1c9c575e}} 
+\index{score.\+c@{score.\+c}!Sk\+\_\+native\+\_\+rev@{Sk\+\_\+native\+\_\+rev}}
+\index{Sk\+\_\+native\+\_\+rev@{Sk\+\_\+native\+\_\+rev}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{Sk\+\_\+native\+\_\+rev}{Sk\_native\_rev}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk\+\_\+native\+\_\+rev}
+
+\mbox{\Hypertarget{score_8c_a119a7eb0ecd417f83e41f4325ce522c8}\label{score_8c_a119a7eb0ecd417f83e41f4325ce522c8}} 
+\index{score.\+c@{score.\+c}!transcode@{transcode}}
+\index{transcode@{transcode}!score.\+c@{score.\+c}}
+\subsubsection{\texorpdfstring{transcode}{transcode}}
+{\footnotesize\ttfamily int transcode\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}}
+

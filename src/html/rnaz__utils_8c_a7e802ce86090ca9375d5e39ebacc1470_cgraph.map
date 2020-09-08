@@ -1,0 +1,8 @@
+<map id="checkFormat" name="checkFormat">
+<area shape="rect" id="node2" href="$utils_8c.html#a39d4415a69dcce7a8301d38829101d50" title="get_line" alt="" coords="159,21,226,47"/>
+<area shape="rect" id="node5" href="$utils_8c.html#a93e5a2447f559f7930054555a4252ccd" title="nrerror" alt="" coords="396,97,455,123"/>
+<area shape="rect" id="node6" href="$rnaz__utils_8c.html#a174b786ba35d783d0937a545d2d4071b" title="splitFields" alt="" coords="152,71,233,98"/>
+<area shape="rect" id="node7" href="$rnaz__utils_8c.html#a5afeb493cf63c3077bc7ccc2df25208d" title="freeFields" alt="" coords="153,173,232,199"/>
+<area shape="rect" id="node3" href="$utils_8c.html#a5dac704be118855d7c4dd3aa3bc31fc3" title="space" alt="" coords="397,21,454,47"/>
+<area shape="rect" id="node4" href="$utils_8c.html#a9037ada838835b1b9db41581a021b0c8" title="xrealloc" alt="" coords="281,21,348,47"/>
+</map>

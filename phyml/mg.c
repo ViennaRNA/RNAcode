@@ -41,7 +41,7 @@ int MG_main(int argc, char **argv)
   srand(r_seed);
   Make_Model_Complete(io->mod);
   fp_phyml_stats = Openfile(io->out_stats_file,io->out_stats_file_open_mode);
-  fprintf(fp_phyml_stats,"\n- PHYML %s -\n\n", VERSION);
+  //fprintf(fp_phyml_stats,"\n- PHYML %s -\n\n", VERSION);
   fp_phyml_tree = Openfile(io->out_tree_file,io->out_tree_file_open_mode);
   fp_phyml_lk = fopen(io->out_lk_file,"w");
 
@@ -1331,7 +1331,7 @@ int Mg_Spr(phydbl init_lnL, superarbre *st)
   int move,best_move;
   node *gt_a, *gt_d;
 
-  st->tree->root       = st->tree->noeud[0];
+  //st->tree->root       = st->tree->noeud[0];
   st->tree->both_sides = 1;
   pruned               = NULL;
   target               = NULL;

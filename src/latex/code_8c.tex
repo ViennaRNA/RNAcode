@@ -1,0 +1,157 @@
+\hypertarget{code_8c}{}\section{code.\+c File Reference}
+\label{code_8c}\index{code.\+c@{code.\+c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}code.\+h\char`\"{}}\newline
+Include dependency graph for code.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{code_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{code_8c_a8d64bc3ec5de4db181efd7ff565ff894}{translate\+Seq} (char $\ast$seq)
+\item 
+int $\ast$ \hyperlink{code_8c_a011bbc41b53a2519b2bb46214b7a1fcc}{encode\+Seq} (char $\ast$seq)
+\item 
+int \hyperlink{code_8c_a617a88955038003d70de0d9113b505eb}{encode\+AA} (char aa)
+\item 
+char \hyperlink{code_8c_a124646f7d65dd512584b8fbab1fcc7a4}{decode\+AA} (int encoded\+AA)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{code_8c_a119a7eb0ecd417f83e41f4325ce522c8}{transcode} \mbox{[}4\mbox{]}\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}
+\item 
+int \hyperlink{code_8c_a528f2f941a2c7a8de187c946e438d107}{B\+L\+O\+S\+U\+M62} \mbox{[}24\mbox{]}\mbox{[}24\mbox{]}
+\item 
+int \hyperlink{code_8c_addcd68ee32c359359fcb55b5bfd8a62f}{B\+L\+O\+S\+U\+M90} \mbox{[}24\mbox{]}\mbox{[}24\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{code_8c_a124646f7d65dd512584b8fbab1fcc7a4}\label{code_8c_a124646f7d65dd512584b8fbab1fcc7a4}} 
+\index{code.\+c@{code.\+c}!decode\+AA@{decode\+AA}}
+\index{decode\+AA@{decode\+AA}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{decode\+A\+A()}{decodeAA()}}
+{\footnotesize\ttfamily char decode\+AA (\begin{DoxyParamCaption}\item[{int}]{encoded\+AA }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{code_8c_a617a88955038003d70de0d9113b505eb}\label{code_8c_a617a88955038003d70de0d9113b505eb}} 
+\index{code.\+c@{code.\+c}!encode\+AA@{encode\+AA}}
+\index{encode\+AA@{encode\+AA}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{encode\+A\+A()}{encodeAA()}}
+{\footnotesize\ttfamily int encode\+AA (\begin{DoxyParamCaption}\item[{char}]{aa }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{code_8c_a011bbc41b53a2519b2bb46214b7a1fcc}\label{code_8c_a011bbc41b53a2519b2bb46214b7a1fcc}} 
+\index{code.\+c@{code.\+c}!encode\+Seq@{encode\+Seq}}
+\index{encode\+Seq@{encode\+Seq}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{encode\+Seq()}{encodeSeq()}}
+{\footnotesize\ttfamily int$\ast$ encode\+Seq (\begin{DoxyParamCaption}\item[{char $\ast$}]{seq }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{code_8c_a8d64bc3ec5de4db181efd7ff565ff894}\label{code_8c_a8d64bc3ec5de4db181efd7ff565ff894}} 
+\index{code.\+c@{code.\+c}!translate\+Seq@{translate\+Seq}}
+\index{translate\+Seq@{translate\+Seq}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{translate\+Seq()}{translateSeq()}}
+{\footnotesize\ttfamily char$\ast$ translate\+Seq (\begin{DoxyParamCaption}\item[{char $\ast$}]{seq }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{code_8c_a8d64bc3ec5de4db181efd7ff565ff894_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{code_8c_a528f2f941a2c7a8de187c946e438d107}\label{code_8c_a528f2f941a2c7a8de187c946e438d107}} 
+\index{code.\+c@{code.\+c}!B\+L\+O\+S\+U\+M62@{B\+L\+O\+S\+U\+M62}}
+\index{B\+L\+O\+S\+U\+M62@{B\+L\+O\+S\+U\+M62}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{B\+L\+O\+S\+U\+M62}{BLOSUM62}}
+{\footnotesize\ttfamily int B\+L\+O\+S\+U\+M62\mbox{[}24\mbox{]}\mbox{[}24\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=\{\{ 4,-1,-2,-2, 0,-1,-1, 0,-2,-1,-1,-1,-1,-2,-1, 1, 0,-3,-2, 0,-2,-1, 0,-4\},
+                      \{-1, 5, 0,-2,-3, 1, 0,-2, 0,-3,-2, 2,-1,-3,-2,-1,-1,-3,-2,-3,-1, 0,-1,-4\},
+                      \{-2, 0, 6, 1,-3, 0, 0, 0, 1,-3,-3, 0,-2,-3,-2, 1, 0,-4,-2,-3, 3, 0,-1,-4\},
+                      \{-2,-2, 1, 6,-3, 0, 2,-1,-1,-3,-4,-1,-3,-3,-1, 0,-1,-4,-3,-3, 4, 1,-1,-4\},
+                      \{ 0,-3,-3,-3, 9,-3,-4,-3,-3,-1,-1,-3,-1,-2,-3,-1,-1,-2,-2,-1,-3,-3,-2,-4\},
+                      \{-1, 1, 0, 0,-3, 5, 2,-2, 0,-3,-2, 1, 0,-3,-1, 0,-1,-2,-1,-2, 0, 3,-1,-4\},
+                      \{-1, 0, 0, 2,-4, 2, 5,-2, 0,-3,-3, 1,-2,-3,-1, 0,-1,-3,-2,-2, 1, 4,-1,-4\},
+                      \{ 0,-2, 0,-1,-3,-2,-2, 6,-2,-4,-4,-2,-3,-3,-2, 0,-2,-2,-3,-3,-1,-2,-1,-4\},
+                      \{-2, 0, 1,-1,-3, 0, 0,-2, 8,-3,-3,-1,-2,-1,-2,-1,-2,-2, 2,-3, 0, 0,-1,-4\},
+                      \{-1,-3,-3,-3,-1,-3,-3,-4,-3, 4, 2,-3, 1, 0,-3,-2,-1,-3,-1, 3,-3,-3,-1,-4\},
+                      \{-1,-2,-3,-4,-1,-2,-3,-4,-3, 2, 4,-2, 2, 0,-3,-2,-1,-2,-1, 1,-4,-3,-1,-4\},
+                      \{-1, 2, 0,-1,-3, 1, 1,-2,-1,-3,-2, 5,-1,-3,-1, 0,-1,-3,-2,-2, 0, 1,-1,-4\},
+                      \{-1,-1,-2,-3,-1, 0,-2,-3,-2, 1, 2,-1, 5, 0,-2,-1,-1,-1,-1, 1,-3,-1,-1,-4\},
+                      \{-2,-3,-3,-3,-2,-3,-3,-3,-1, 0, 0,-3, 0, 6,-4,-2,-2, 1, 3,-1,-3,-3,-1,-4\},
+                      \{-1,-2,-2,-1,-3,-1,-1,-2,-2,-3,-3,-1,-2,-4, 7,-1,-1,-4,-3,-2,-2,-1,-2,-4\},
+                      \{ 1,-1, 1, 0,-1, 0, 0, 0,-1,-2,-2, 0,-1,-2,-1, 4, 1,-3,-2,-2, 0, 0, 0,-4\},
+                      \{ 0,-1, 0,-1,-1,-1,-1,-2,-2,-1,-1,-1,-1,-2,-1, 1, 5,-2,-2, 0,-1,-1, 0,-4\},
+                      \{-3,-3,-4,-4,-2,-2,-3,-2,-2,-3,-2,-3,-1, 1,-4,-3,-2, 11, 2,-3,-4,-3,-2,-4\},
+                      \{-2,-2,-2,-3,-2,-1,-2,-3, 2,-1,-1,-2,-1, 3,-3,-2,-2, 2, 7,-1,-3,-2,-1,-4\},
+                      \{ 0,-3,-3,-3,-1,-2,-2,-3,-3, 3, 1,-2, 1,-1,-2,-2, 0,-3,-1, 4,-3,-2,-1,-4\},
+                      \{-2,-1, 3, 4,-3, 0, 1,-1, 0,-3,-4, 0,-3,-3,-2, 0,-1,-4,-3,-3, 4, 1,-1,-4\},
+                      \{-1, 0, 0, 1,-3, 3, 4,-2, 0,-3,-3, 1,-1,-3,-1, 0,-1,-3,-2,-2, 1, 4,-1,-4\},
+                      \{ 0,-1,-1,-1,-2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-2, 0, 0,-2,-1,-1,-1,-1,-1,-4\},
+                      \{-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4, 1\}\}
+\end{DoxyCode}
+\mbox{\Hypertarget{code_8c_addcd68ee32c359359fcb55b5bfd8a62f}\label{code_8c_addcd68ee32c359359fcb55b5bfd8a62f}} 
+\index{code.\+c@{code.\+c}!B\+L\+O\+S\+U\+M90@{B\+L\+O\+S\+U\+M90}}
+\index{B\+L\+O\+S\+U\+M90@{B\+L\+O\+S\+U\+M90}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{B\+L\+O\+S\+U\+M90}{BLOSUM90}}
+{\footnotesize\ttfamily int B\+L\+O\+S\+U\+M90\mbox{[}24\mbox{]}\mbox{[}24\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=\{\{ 5,-2,-2,-3,-1,-1,-1, 0,-2,-2,-2,-1,-2,-3,-1, 1, 0,-4,-3,-1,-2,-1,-1,-6\},
+                      \{-2, 6,-1,-3,-5, 1,-1,-3, 0,-4,-3, 2,-2,-4,-3,-1,-2,-4,-3,-3,-2, 0,-2,-6\},
+                      \{-2,-1, 7, 1,-4, 0,-1,-1, 0,-4,-4, 0,-3,-4,-3, 0, 0,-5,-3,-4, 4,-1,-2,-6\},
+                      \{-3,-3, 1, 7,-5,-1, 1,-2,-2,-5,-5,-1,-4,-5,-3,-1,-2,-6,-4,-5, 4, 0,-2,-6\},
+                      \{-1,-5,-4,-5, 9,-4,-6,-4,-5,-2,-2,-4,-2,-3,-4,-2,-2,-4,-4,-2,-4,-5,-3,-6\},
+                      \{-1, 1, 0,-1,-4, 7, 2,-3, 1,-4,-3, 1, 0,-4,-2,-1,-1,-3,-3,-3,-1, 4,-1,-6\},
+                      \{-1,-1,-1, 1,-6, 2, 6,-3,-1,-4,-4, 0,-3,-5,-2,-1,-1,-5,-4,-3, 0, 4,-2,-6\},
+                      \{ 0,-3,-1,-2,-4,-3,-3, 6,-3,-5,-5,-2,-4,-5,-3,-1,-3,-4,-5,-5,-2,-3,-2,-6\},
+                      \{-2, 0, 0,-2,-5, 1,-1,-3, 8,-4,-4,-1,-3,-2,-3,-2,-2,-3, 1,-4,-1, 0,-2,-6\},
+                      \{-2,-4,-4,-5,-2,-4,-4,-5,-4, 5, 1,-4, 1,-1,-4,-3,-1,-4,-2, 3,-5,-4,-2,-6\},
+                      \{-2,-3,-4,-5,-2,-3,-4,-5,-4, 1, 5,-3, 2, 0,-4,-3,-2,-3,-2, 0,-5,-4,-2,-6\},
+                      \{-1, 2, 0,-1,-4, 1, 0,-2,-1,-4,-3, 6,-2,-4,-2,-1,-1,-5,-3,-3,-1, 1,-1,-6\},
+                      \{-2,-2,-3,-4,-2, 0,-3,-4,-3, 1, 2,-2, 7,-1,-3,-2,-1,-2,-2, 0,-4,-2,-1,-6\},
+                      \{-3,-4,-4,-5,-3,-4,-5,-5,-2,-1, 0,-4,-1, 7,-4,-3,-3, 0, 3,-2,-4,-4,-2,-6\},
+                      \{-1,-3,-3,-3,-4,-2,-2,-3,-3,-4,-4,-2,-3,-4, 8,-2,-2,-5,-4,-3,-3,-2,-2,-6\},
+                      \{ 1,-1, 0,-1,-2,-1,-1,-1,-2,-3,-3,-1,-2,-3,-2, 5, 1,-4,-3,-2, 0,-1,-1,-6\},
+                      \{ 0,-2, 0,-2,-2,-1,-1,-3,-2,-1,-2,-1,-1,-3,-2, 1, 6,-4,-2,-1,-1,-1,-1,-6\},
+                      \{-4,-4,-5,-6,-4,-3,-5,-4,-3,-4,-3,-5,-2, 0,-5,-4,-4, 11, 2,-3,-6,-4,-3,-6\},
+                      \{-3,-3,-3,-4,-4,-3,-4,-5, 1,-2,-2,-3,-2, 3,-4,-3,-2, 2, 8,-3,-4,-3,-2,-6\},
+                      \{-1,-3,-4,-5,-2,-3,-3,-5,-4, 3, 0,-3, 0,-2,-3,-2,-1,-3,-3, 5,-4,-3,-2,-6\},
+                      \{-2,-2, 4, 4,-4,-1, 0,-2,-1,-5,-5,-1,-4,-4,-3, 0,-1,-6,-4,-4, 4, 0,-2,-6\},
+                      \{-1, 0,-1, 0,-5, 4, 4,-3, 0,-4,-4, 1,-2,-4,-2,-1,-1,-4,-3,-3, 0, 4,-1,-6\},
+                      \{-1,-2,-2,-2,-3,-1,-2,-2,-2,-2,-2,-1,-1,-2,-2,-1,-1,-3,-2,-2,-2,-1,-2,-6\},
+                      \{-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6,-6, 1\},
+\}
+\end{DoxyCode}
+\mbox{\Hypertarget{code_8c_a119a7eb0ecd417f83e41f4325ce522c8}\label{code_8c_a119a7eb0ecd417f83e41f4325ce522c8}} 
+\index{code.\+c@{code.\+c}!transcode@{transcode}}
+\index{transcode@{transcode}!code.\+c@{code.\+c}}
+\subsubsection{\texorpdfstring{transcode}{transcode}}
+{\footnotesize\ttfamily int transcode\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}\mbox{[}4\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=\{\{\{ 11, 2 , 11, 2 \},\{ 16, 16, 16, 16\},\{ 1 , 15, 1 , 15\},\{ 9 , 9 , 12, 9 \}\},
+  
+
+                        \{\{ 5 , 8 , 5 , 8 \},\{ 14, 14, 14, 14\},\{ 1 , 1 , 1 , 1 \},\{ 10, 10, 10, 10 \}\},
+  
+
+                        \{\{ 6 , 3 , 6 , 3 \},\{ 0 , 0 , 0 , 0 \},\{ 7 , 7 , 7 , 7 \},\{ 19, 19, 19, 19\}\},
+
+  
+                        \{\{ -1, 18, -1, 18\},\{ 15, 15, 15, 15\},\{ -1, 4 , 17, 4 \},\{ 10, 13, 10, 13\}\}\}
+\end{DoxyCode}

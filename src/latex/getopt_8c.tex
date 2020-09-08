@@ -1,0 +1,268 @@
+\hypertarget{getopt_8c}{}\section{getopt.\+c File Reference}
+\label{getopt_8c}\index{getopt.\+c@{getopt.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}getopt.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$strings.\+h$>$}\newline
+Include dependency graph for getopt.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{getopt_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{getopt_8c_a9bcd7db9771ff03b7e5a9fec9c489861}{\+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO}
+\item 
+\#define \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const}
+\item 
+\#define \hyperlink{getopt_8c_a5325c715897861c318d3ae312ac452cc}{G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON}~2
+\item 
+\#define \hyperlink{getopt_8c_a86a239addea586602343007a370bf8ad}{\+\_\+}(msgid)~(msgid)
+\item 
+\#define \hyperlink{getopt_8c_a6e06e56c5fa96faaf47f3b231e015e35}{S\+W\+A\+P\+\_\+\+F\+L\+A\+GS}(ch1,  ch2)
+\item 
+\#define \hyperlink{getopt_8c_a71ceb8911d64b39b402041ba5ea8453c}{N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P}~(argv\mbox{[}\hyperlink{getopt_8h_ad5e1c16213bbee2d5e8cc363309f418c}{optind}\mbox{]}\mbox{[}0\mbox{]} != \textquotesingle{}-\/\textquotesingle{} $\vert$$\vert$ argv\mbox{[}\hyperlink{getopt_8h_ad5e1c16213bbee2d5e8cc363309f418c}{optind}\mbox{]}\mbox{[}1\mbox{]} == \textquotesingle{}\textbackslash{}0\textquotesingle{})
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \hyperlink{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55ba0e73a0691c110b1442d8364d1d12eccc}{R\+E\+Q\+U\+I\+R\+E\+\_\+\+O\+R\+D\+ER}, 
+\hyperlink{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55bacfdde4b47c27f4efbd832e1ac7f8a8fc}{P\+E\+R\+M\+U\+TE}, 
+\hyperlink{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55ba3c56550bfafe809d9214b863b69c31c5}{R\+E\+T\+U\+R\+N\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{getopt_8c_aee28fd8a0e40b6d958f7d20348e45368}{getenv} ()
+\item 
+static char $\ast$ \hyperlink{getopt_8c_ae0ac978b7775f69496c0f127ffdada9d}{my\+\_\+index} (char $\ast$str, int chr) \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const}
+\item 
+static void \hyperlink{getopt_8c_a4621659dd6377e52ac50a0869625bb6e}{exchange} (char $\ast$$\ast$argv)
+\item 
+static \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{getopt_8c_a17475cbc1ffae0c12af2e0a3319d197f}{\+\_\+getopt\+\_\+initialize} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$optstring)
+\item 
+int \hyperlink{getopt_8c_a0df92a0ae8fe1fd43268c738f548674f}{\+\_\+getopt\+\_\+internal} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$optstring, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structoption}{option} $\ast$longopts, int $\ast$longind, int long\+\_\+only)
+\item 
+int \hyperlink{getopt_8c_a1b2ada39ab92162c6ec9c67c8093fa2e}{getopt} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$optstring)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{getopt_8c_adb50a0eab9fed92fc3bfc7dfa4f2c410}{optarg}
+\item 
+int \hyperlink{getopt_8c_ad5e1c16213bbee2d5e8cc363309f418c}{optind} = 1
+\item 
+int \hyperlink{getopt_8c_a28286be757527aeb1db951b5da9aeec1}{\+\_\+\+\_\+getopt\+\_\+initialized}
+\item 
+static char $\ast$ \hyperlink{getopt_8c_a47a40a4c365dae45f94751ad32aab530}{nextchar}
+\item 
+int \hyperlink{getopt_8c_ae30f05ee1e2e5652f174a35c7875d25e}{opterr} = 1
+\item 
+int \hyperlink{getopt_8c_a475b8db98445da73e5f62a1ef6324b95}{optopt} = \textquotesingle{}?\textquotesingle{}
+\item 
+static enum  \{ ... \}  \hyperlink{getopt_8c_a67a84cf4dacaa8337be68345f8b9a8cc}{ordering}
+\item 
+static char $\ast$ \hyperlink{getopt_8c_ad0ccb64bbd4defe7a57dbad2045ddd14}{posixly\+\_\+correct}
+\item 
+static int \hyperlink{getopt_8c_a7b0f4f3bfbee147113f282427ce933ed}{first\+\_\+nonopt}
+\item 
+static int \hyperlink{getopt_8c_a580f2c2acf35dad51ca18b427212bf15}{last\+\_\+nonopt}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{getopt_8c_a86a239addea586602343007a370bf8ad}\label{getopt_8c_a86a239addea586602343007a370bf8ad}} 
+\index{getopt.\+c@{getopt.\+c}!\+\_\+@{\+\_\+}}
+\index{\+\_\+@{\+\_\+}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+}{\_}}
+{\footnotesize\ttfamily \#define \+\_\+(\begin{DoxyParamCaption}\item[{}]{msgid }\end{DoxyParamCaption})~(msgid)}
+
+\mbox{\Hypertarget{getopt_8c_a9bcd7db9771ff03b7e5a9fec9c489861}\label{getopt_8c_a9bcd7db9771ff03b7e5a9fec9c489861}} 
+\index{getopt.\+c@{getopt.\+c}!\+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO@{\+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO}}
+\index{\+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO@{\+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO}{\_NO\_PROTO}}
+{\footnotesize\ttfamily \#define \+\_\+\+N\+O\+\_\+\+P\+R\+O\+TO}
+
+\mbox{\Hypertarget{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}\label{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}} 
+\index{getopt.\+c@{getopt.\+c}!const@{const}}
+\index{const@{const}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{const}{const}}
+{\footnotesize\ttfamily \#define const}
+
+\mbox{\Hypertarget{getopt_8c_a5325c715897861c318d3ae312ac452cc}\label{getopt_8c_a5325c715897861c318d3ae312ac452cc}} 
+\index{getopt.\+c@{getopt.\+c}!G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON@{G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON}}
+\index{G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON@{G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON}{GETOPT\_INTERFACE\_VERSION}}
+{\footnotesize\ttfamily \#define G\+E\+T\+O\+P\+T\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+E\+\_\+\+V\+E\+R\+S\+I\+ON~2}
+
+\mbox{\Hypertarget{getopt_8c_a71ceb8911d64b39b402041ba5ea8453c}\label{getopt_8c_a71ceb8911d64b39b402041ba5ea8453c}} 
+\index{getopt.\+c@{getopt.\+c}!N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P@{N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P}}
+\index{N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P@{N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P}{NONOPTION\_P}}
+{\footnotesize\ttfamily \#define N\+O\+N\+O\+P\+T\+I\+O\+N\+\_\+P~(argv\mbox{[}\hyperlink{getopt_8h_ad5e1c16213bbee2d5e8cc363309f418c}{optind}\mbox{]}\mbox{[}0\mbox{]} != \textquotesingle{}-\/\textquotesingle{} $\vert$$\vert$ argv\mbox{[}\hyperlink{getopt_8h_ad5e1c16213bbee2d5e8cc363309f418c}{optind}\mbox{]}\mbox{[}1\mbox{]} == \textquotesingle{}\textbackslash{}0\textquotesingle{})}
+
+\mbox{\Hypertarget{getopt_8c_a6e06e56c5fa96faaf47f3b231e015e35}\label{getopt_8c_a6e06e56c5fa96faaf47f3b231e015e35}} 
+\index{getopt.\+c@{getopt.\+c}!S\+W\+A\+P\+\_\+\+F\+L\+A\+GS@{S\+W\+A\+P\+\_\+\+F\+L\+A\+GS}}
+\index{S\+W\+A\+P\+\_\+\+F\+L\+A\+GS@{S\+W\+A\+P\+\_\+\+F\+L\+A\+GS}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{S\+W\+A\+P\+\_\+\+F\+L\+A\+GS}{SWAP\_FLAGS}}
+{\footnotesize\ttfamily \#define S\+W\+A\+P\+\_\+\+F\+L\+A\+GS(\begin{DoxyParamCaption}\item[{}]{ch1,  }\item[{}]{ch2 }\end{DoxyParamCaption})}
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55b}\label{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55b}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+E\+Q\+U\+I\+R\+E\+\_\+\+O\+R\+D\+ER@{R\+E\+Q\+U\+I\+R\+E\+\_\+\+O\+R\+D\+ER}!getopt.\+c@{getopt.\+c}}\index{getopt.\+c@{getopt.\+c}!R\+E\+Q\+U\+I\+R\+E\+\_\+\+O\+R\+D\+ER@{R\+E\+Q\+U\+I\+R\+E\+\_\+\+O\+R\+D\+ER}}}\mbox{\Hypertarget{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55ba0e73a0691c110b1442d8364d1d12eccc}\label{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55ba0e73a0691c110b1442d8364d1d12eccc}} 
+R\+E\+Q\+U\+I\+R\+E\+\_\+\+O\+R\+D\+ER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P\+E\+R\+M\+U\+TE@{P\+E\+R\+M\+U\+TE}!getopt.\+c@{getopt.\+c}}\index{getopt.\+c@{getopt.\+c}!P\+E\+R\+M\+U\+TE@{P\+E\+R\+M\+U\+TE}}}\mbox{\Hypertarget{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55bacfdde4b47c27f4efbd832e1ac7f8a8fc}\label{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55bacfdde4b47c27f4efbd832e1ac7f8a8fc}} 
+P\+E\+R\+M\+U\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+E\+T\+U\+R\+N\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER@{R\+E\+T\+U\+R\+N\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER}!getopt.\+c@{getopt.\+c}}\index{getopt.\+c@{getopt.\+c}!R\+E\+T\+U\+R\+N\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER@{R\+E\+T\+U\+R\+N\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER}}}\mbox{\Hypertarget{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55ba3c56550bfafe809d9214b863b69c31c5}\label{getopt_8c_a06fc87d81c62e9abb8790b6e5713c55ba3c56550bfafe809d9214b863b69c31c5}} 
+R\+E\+T\+U\+R\+N\+\_\+\+I\+N\+\_\+\+O\+R\+D\+ER&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{getopt_8c_a17475cbc1ffae0c12af2e0a3319d197f}\label{getopt_8c_a17475cbc1ffae0c12af2e0a3319d197f}} 
+\index{getopt.\+c@{getopt.\+c}!\+\_\+getopt\+\_\+initialize@{\+\_\+getopt\+\_\+initialize}}
+\index{\+\_\+getopt\+\_\+initialize@{\+\_\+getopt\+\_\+initialize}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+getopt\+\_\+initialize()}{\_getopt\_initialize()}}
+{\footnotesize\ttfamily static \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ \+\_\+getopt\+\_\+initialize (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{optstring }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=251pt]{getopt_8c_a17475cbc1ffae0c12af2e0a3319d197f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{getopt_8c_a0df92a0ae8fe1fd43268c738f548674f}\label{getopt_8c_a0df92a0ae8fe1fd43268c738f548674f}} 
+\index{getopt.\+c@{getopt.\+c}!\+\_\+getopt\+\_\+internal@{\+\_\+getopt\+\_\+internal}}
+\index{\+\_\+getopt\+\_\+internal@{\+\_\+getopt\+\_\+internal}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+getopt\+\_\+internal()}{\_getopt\_internal()}}
+{\footnotesize\ttfamily int \+\_\+getopt\+\_\+internal (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{optstring,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structoption}{option} $\ast$}]{longopts,  }\item[{int $\ast$}]{longind,  }\item[{int}]{long\+\_\+only }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{getopt_8c_a0df92a0ae8fe1fd43268c738f548674f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{getopt_8c_a4621659dd6377e52ac50a0869625bb6e}\label{getopt_8c_a4621659dd6377e52ac50a0869625bb6e}} 
+\index{getopt.\+c@{getopt.\+c}!exchange@{exchange}}
+\index{exchange@{exchange}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{exchange()}{exchange()}}
+{\footnotesize\ttfamily static void exchange (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=346pt]{getopt_8c_a4621659dd6377e52ac50a0869625bb6e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{getopt_8c_aee28fd8a0e40b6d958f7d20348e45368}\label{getopt_8c_aee28fd8a0e40b6d958f7d20348e45368}} 
+\index{getopt.\+c@{getopt.\+c}!getenv@{getenv}}
+\index{getenv@{getenv}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{getenv()}{getenv()}}
+{\footnotesize\ttfamily char$\ast$ getenv (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{getopt_8c_a1b2ada39ab92162c6ec9c67c8093fa2e}\label{getopt_8c_a1b2ada39ab92162c6ec9c67c8093fa2e}} 
+\index{getopt.\+c@{getopt.\+c}!getopt@{getopt}}
+\index{getopt@{getopt}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{getopt()}{getopt()}}
+{\footnotesize\ttfamily int getopt (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{optstring }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{getopt_8c_a1b2ada39ab92162c6ec9c67c8093fa2e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{getopt_8c_ae0ac978b7775f69496c0f127ffdada9d}\label{getopt_8c_ae0ac978b7775f69496c0f127ffdada9d}} 
+\index{getopt.\+c@{getopt.\+c}!my\+\_\+index@{my\+\_\+index}}
+\index{my\+\_\+index@{my\+\_\+index}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{my\+\_\+index()}{my\_index()}}
+{\footnotesize\ttfamily static char$\ast$ my\+\_\+index (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{int}]{chr }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{getopt_8c_a28286be757527aeb1db951b5da9aeec1}\label{getopt_8c_a28286be757527aeb1db951b5da9aeec1}} 
+\index{getopt.\+c@{getopt.\+c}!\+\_\+\+\_\+getopt\+\_\+initialized@{\+\_\+\+\_\+getopt\+\_\+initialized}}
+\index{\+\_\+\+\_\+getopt\+\_\+initialized@{\+\_\+\+\_\+getopt\+\_\+initialized}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+getopt\+\_\+initialized}{\_\_getopt\_initialized}}
+{\footnotesize\ttfamily int \+\_\+\+\_\+getopt\+\_\+initialized}
+
+\mbox{\Hypertarget{getopt_8c_a7b0f4f3bfbee147113f282427ce933ed}\label{getopt_8c_a7b0f4f3bfbee147113f282427ce933ed}} 
+\index{getopt.\+c@{getopt.\+c}!first\+\_\+nonopt@{first\+\_\+nonopt}}
+\index{first\+\_\+nonopt@{first\+\_\+nonopt}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{first\+\_\+nonopt}{first\_nonopt}}
+{\footnotesize\ttfamily int first\+\_\+nonopt\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{getopt_8c_a580f2c2acf35dad51ca18b427212bf15}\label{getopt_8c_a580f2c2acf35dad51ca18b427212bf15}} 
+\index{getopt.\+c@{getopt.\+c}!last\+\_\+nonopt@{last\+\_\+nonopt}}
+\index{last\+\_\+nonopt@{last\+\_\+nonopt}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{last\+\_\+nonopt}{last\_nonopt}}
+{\footnotesize\ttfamily int last\+\_\+nonopt\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{getopt_8c_a47a40a4c365dae45f94751ad32aab530}\label{getopt_8c_a47a40a4c365dae45f94751ad32aab530}} 
+\index{getopt.\+c@{getopt.\+c}!nextchar@{nextchar}}
+\index{nextchar@{nextchar}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{nextchar}{nextchar}}
+{\footnotesize\ttfamily char$\ast$ nextchar\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{getopt_8c_adb50a0eab9fed92fc3bfc7dfa4f2c410}\label{getopt_8c_adb50a0eab9fed92fc3bfc7dfa4f2c410}} 
+\index{getopt.\+c@{getopt.\+c}!optarg@{optarg}}
+\index{optarg@{optarg}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{optarg}{optarg}}
+{\footnotesize\ttfamily char$\ast$ optarg}
+
+\mbox{\Hypertarget{getopt_8c_ae30f05ee1e2e5652f174a35c7875d25e}\label{getopt_8c_ae30f05ee1e2e5652f174a35c7875d25e}} 
+\index{getopt.\+c@{getopt.\+c}!opterr@{opterr}}
+\index{opterr@{opterr}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{opterr}{opterr}}
+{\footnotesize\ttfamily int opterr = 1}
+
+\mbox{\Hypertarget{getopt_8c_ad5e1c16213bbee2d5e8cc363309f418c}\label{getopt_8c_ad5e1c16213bbee2d5e8cc363309f418c}} 
+\index{getopt.\+c@{getopt.\+c}!optind@{optind}}
+\index{optind@{optind}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{optind}{optind}}
+{\footnotesize\ttfamily int optind = 1}
+
+\mbox{\Hypertarget{getopt_8c_a475b8db98445da73e5f62a1ef6324b95}\label{getopt_8c_a475b8db98445da73e5f62a1ef6324b95}} 
+\index{getopt.\+c@{getopt.\+c}!optopt@{optopt}}
+\index{optopt@{optopt}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{optopt}{optopt}}
+{\footnotesize\ttfamily int optopt = \textquotesingle{}?\textquotesingle{}}
+
+\mbox{\Hypertarget{getopt_8c_a67a84cf4dacaa8337be68345f8b9a8cc}\label{getopt_8c_a67a84cf4dacaa8337be68345f8b9a8cc}} 
+\index{getopt.\+c@{getopt.\+c}!ordering@{ordering}}
+\index{ordering@{ordering}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{ordering}{ordering}}
+{\footnotesize\ttfamily enum \{ ... \}   ordering\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{getopt_8c_ad0ccb64bbd4defe7a57dbad2045ddd14}\label{getopt_8c_ad0ccb64bbd4defe7a57dbad2045ddd14}} 
+\index{getopt.\+c@{getopt.\+c}!posixly\+\_\+correct@{posixly\+\_\+correct}}
+\index{posixly\+\_\+correct@{posixly\+\_\+correct}!getopt.\+c@{getopt.\+c}}
+\subsubsection{\texorpdfstring{posixly\+\_\+correct}{posixly\_correct}}
+{\footnotesize\ttfamily char$\ast$ posixly\+\_\+correct\hspace{0.3cm}{\ttfamily [static]}}
+

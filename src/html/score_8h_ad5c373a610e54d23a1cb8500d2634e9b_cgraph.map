@@ -1,0 +1,9 @@
+<map id="getModels" name="getModels">
+<area shape="rect" id="node2" href="$treeSimulate_8c.html#a684681e84edaa63e768ec7ad1ff4884f" title="getDistanceMatrix" alt="" coords="136,5,264,32"/>
+<area shape="rect" id="node4" href="$score_8c.html#a73aae058cfc643479adf77c5ffc48a45" title="countFreqsMono" alt="" coords="141,56,259,83"/>
+<area shape="rect" id="node5" href="$score_8c.html#a5deb0fecb3a13330879241f24575ac6c" title="getScoringMatrix" alt="" coords="140,107,260,133"/>
+<area shape="rect" id="node6" href="$score_8c.html#afa0b54f696bdcdf5395fb5e5185bd129" title="calculateBG" alt="" coords="153,157,247,184"/>
+<area shape="rect" id="node3" href="$treeSimulate_8c.html#a3d5dbc026864385b3c931c928110b32a" title="getLCA" alt="" coords="316,5,383,32"/>
+<area shape="rect" id="node7" href="$score_8c.html#a10a41c7b92952d470f0f8d2af7bd2c1b" title="probHKY" alt="" coords="312,132,387,159"/>
+<area shape="rect" id="node8" href="$misc_8c.html#a62dbd6f5f78b8829c91c5e373b897f67" title="hDist" alt="" coords="323,183,376,209"/>
+</map>

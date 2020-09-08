@@ -77,7 +77,7 @@ int Eigen(int job, double *A, int n, double *rr, double *ri,
 /* complex funcctions
 */
 
-/* 
+
 complex compl (double re,double im)
 {
     complex r;
@@ -86,7 +86,7 @@ complex compl (double re,double im)
     r.im = im;
     return(r);
 }
-*/
+
 complex _conj (complex a)
 {
     a.im = -a.im;
@@ -95,7 +95,7 @@ complex _conj (complex a)
 
 #define csize(a) (fabs(a.re)+fabs(a.im))
 
-/*
+
 
 complex cplus (complex a, complex b)
 {
@@ -141,7 +141,7 @@ complex cdiv (complex a,complex b)
     return(c);
 }
 
-*/
+
 
 /* complex local_cexp (complex a) */
 /* { */
@@ -362,7 +362,7 @@ void bbalance(double *mat, int n,int *low, int *hi, double *scale)
  * into the eigenvectors of the original matrix
  */
 
-/*
+
 void unbalance(int n,double *vr,double *vi, int low, int hi, double *scale)
 {
     int i,j,k;
@@ -404,14 +404,14 @@ void unbalance(int n,double *vr,double *vi, int low, int hi, double *scale)
     }
 }
 
-*/
+
 
 /*
  * Reduce the submatrix in rows and columns low through hi of real matrix mat to
  * Hessenberg form by elementary similarity transformations
  */
 
- /*
+ 
 void elemhess(int job,double *mat,int n,int low,int hi, double *vr,
               double *vi, int *work)
 {
@@ -481,7 +481,7 @@ void elemhess(int job,double *mat,int n,int low,int hi, double *vr,
    }
 }
 
- */
+
 
 
 /*
@@ -489,329 +489,324 @@ void elemhess(int job,double *mat,int n,int low,int hi, double *vr,
  * Return 1 if converges successfully and 0 otherwise
  */
  
-/* int realeig(int job,double *mat,int n,int low, int hi, double *valr, */
-/*       double *vali, double *vr,double *vi) */
-/* { */
-/*    complex v; */
-/*    double p=0,q=0,r=0,s=0,t,w,x,y,z=0,ra,sa,norm,eps; */
-/*    int niter,en,i,j,k,l,m; */
-/*    double precision  = pow((double)BASE,(double)(1-DIGITS)); */
+ int realeig(int job,double *mat,int n,int low, int hi, double *valr, 
+       double *vali, double *vr,double *vi) 
+ { 
+    complex v; 
+    double p=0,q=0,r=0,s=0,t,w,x,y,z=0,ra,sa,norm,eps; 
+    int niter,en,i,j,k,l,m; 
+    double precision  = pow((double)BASE,(double)(1-DIGITS)); 
+    eps = precision; 
+    for (i=0; i<n; i++) { 
+       valr[i]=0.0; 
+       vali[i]=0.0; 
+    } 
+       /* store isolated roots and calculate norm */
+    for (norm = 0,i = 0; i < n; i++) { 
+       for (j = MAX(0,i-1); j < n; j++) { 
+          norm += fabs(mat[pos(i,j,n)]); 
+       } 
+       if (i < low || i > hi) valr[i] = mat[pos(i,i,n)]; 
+    } 
+    t = 0; 
+    en = hi; 
 
-/*    eps = precision; */
-/*    for (i=0; i<n; i++) { */
-/*       valr[i]=0.0; */
-/*       vali[i]=0.0; */
-/*    } */
-/*       /\* store isolated roots and calculate norm *\/ */
-/*    for (norm = 0,i = 0; i < n; i++) { */
-/*       for (j = MAX(0,i-1); j < n; j++) { */
-/*          norm += fabs(mat[pos(i,j,n)]); */
-/*       } */
-/*       if (i < low || i > hi) valr[i] = mat[pos(i,i,n)]; */
-/*    } */
-/*    t = 0; */
-/*    en = hi; */
+    while (en >= low) { 
+       niter = 0; 
+       for (;;) { 
 
-/*    while (en >= low) { */
-/*       niter = 0; */
-/*       for (;;) { */
+        /* look for single small subdiagonal element *\/ */
 
-/*        /\* look for single small subdiagonal element *\/ */
+          for (l = en; l > low; l--) { 
+             s = fabs(mat[pos(l-1,l-1,n)]) + fabs(mat[pos(l,l,n)]); 
+             if (s == 0) s = norm; 
+              if (fabs(mat[pos(l,l-1,n)]) <= eps * s) break; 
+          } 
+          /* form shift *\/ */
 
-/*          for (l = en; l > low; l--) { */
-/*             s = fabs(mat[pos(l-1,l-1,n)]) + fabs(mat[pos(l,l,n)]); */
-/*             if (s == 0) s = norm; */
-/*             if (fabs(mat[pos(l,l-1,n)]) <= eps * s) break; */
-/*          } */
+          x = mat[pos(en,en,n)]; 
 
-/*          /\* form shift *\/ */
+          if (l == en) {             /* one root found */
+             valr[en] = x + t; 
+             if (job) mat[pos(en,en,n)] = x + t; 
+             en--;
+             break; 
+          } 
+          y = mat[pos(en-1,en-1,n)]; 
+          w = mat[pos(en,en-1,n)] * mat[pos(en-1,en,n)]; 
 
-/*          x = mat[pos(en,en,n)]; */
+          if (l == en - 1) {                /* two roots found */ 
+             p = (y - x) / 2; 
+             q = p * p + w; 
+             z = sqrt(fabs(q)); 
+             x += t; 
+             if (job) { 
+                mat[pos(en,en,n)] = x; 
+                mat[pos(en-1,en-1,n)] = y + t; 
+             } 
+             if (q < 0) {                /* complex pair */ 
+                valr[en-1] = x+p; 
+                vali[en-1] = z; 
+                valr[en] = x+p; 
+                vali[en] = -z; 
+              } 
+             else {                      /* real pair *\/ */
+                z = (p < 0) ? p - z : p + z; 
+                valr[en-1] = x + z; 
+                valr[en] = (z == 0) ? x + z : x - w / z; 
+                if (job) { 
+                   x = mat[pos(en,en-1,n)];
+                   s = fabs(x) + fabs(z); 
+                   p = x / s; 
+                   q = z / s; 
+                   r = sqrt(p*p+q*q); 
+                   p /= r; 
+                   q /= r; 
+                   for (j = en - 1; j < n; j++) { 
+                      z = mat[pos(en-1,j,n)]; 
+                      mat[pos(en-1,j,n)] = q * z + p * 
+                      mat[pos(en,j,n)]; 
+                      mat[pos(en,j,n)] = q * mat[pos(en,j,n)] - p*z; 
+                   } 
+                   for (i = 0; i <= en; i++) { 
+                      z = mat[pos(i,en-1,n)]; 
+                      mat[pos(i,en-1,n)] = q * z + p * mat[pos(i,en,n)]; 
+                      mat[pos(i,en,n)] = q * mat[pos(i,en,n)] - p*z; 
+                   } 
+                   for (i = low; i <= hi; i++) { 
+                      z = vr[pos(i,en-1,n)]; 
+                      vr[pos(i,en-1,n)] = q*z + p*vr[pos(i,en,n)]; 
+                      vr[pos(i,en,n)] = q*vr[pos(i,en,n)] - p*z; 
+                   } 
+                } 
+             } 
+             en -= 2; 
+             break; 
+          } 
+          if (niter == MAXITER) return(-1); 
+          if (niter != 0 && niter % 10 == 0) { 
+             t += x; 
+             for (i = low; i <= en; i++) mat[pos(i,i,n)] -= x; 
+             s = fabs(mat[pos(en,en-1,n)]) + fabs(mat[pos(en-1,en-2,n)]); 
+             x = y = 0.75 * s; 
+             w = -0.4375 * s * s; 
+          } 
+          niter++; 
+            /* look for two consecutive small subdiagonal elements */ 
+          for (m = en - 2; m >= l; m--) { 
+             z = mat[pos(m,m,n)]; 
+             r = x - z; 
+             s = y - z;
+             p = (r * s - w) / mat[pos(m+1,m,n)] + mat[pos(m,m+1,n)]; 
+             q = mat[pos(m+1,m+1,n)] - z - r - s; 
+             r = mat[pos(m+2,m+1,n)];
+             s = fabs(p) + fabs(q) + fabs(r); 
+             p /= s; 
+             q /= s; 
+             r /= s; 
+             if (m == l || fabs(mat[pos(m,m-1,n)]) * (fabs(q)+fabs(r)) <= 
+                 eps * (fabs(mat[pos(m-1,m-1,n)]) + fabs(z) + 
+                 fabs(mat[pos(m+1,m+1,n)])) * fabs(p)) break; 
+          } 
+          for (i = m + 2; i <= en; i++) mat[pos(i,i-2,n)] = 0; 
+          for (i = m + 3; i <= en; i++) mat[pos(i,i-3,n)] = 0; 
+              /* double QR step involving rows l to en and columns m to en */
+          for (k = m; k < en; k++) { 
+             if (k != m) { 
+                p = mat[pos(k,k-1,n)]; 
+                q = mat[pos(k+1,k-1,n)]; 
+                r = (k == en - 1) ? 0 : mat[pos(k+2,k-1,n)]; 
+                if ((x = fabs(p) + fabs(q) + fabs(r)) == 0) continue; 
+                p /= x; 
+                q /= x; 
+                r /= x; 
+             } 
+             s = sqrt(p*p+q*q+r*r); 
+             if (p < 0) s = -s; 
+             if (k != m) { 
+                mat[pos(k,k-1,n)] = -s * x; 
+             } 
+             else if (l != m) { 
+                mat[pos(k,k-1,n)] = -mat[pos(k,k-1,n)]; 
+             } 
+             p += s; 
+             x = p / s; 
+             y = q / s; 
+             z = r / s; 
+             q /= p; 
+             r /= p; 
+                 /* row modification */
+             for (j = k; j <= (!job ? en : n-1); j++){ 
+                p = mat[pos(k,j,n)] + q * mat[pos(k+1,j,n)]; 
+                if (k != en - 1) { 
+                   p += r * mat[pos(k+2,j,n)]; 
+                   mat[pos(k+2,j,n)] -= p * z; 
+                } 
+                mat[pos(k+1,j,n)] -= p * y; 
+                mat[pos(k,j,n)] -= p * x; 
+             } 
+             j = MIN(en,k+3); 
+               /* column modification */ 
+             for (i = (!job ? l : 0); i <= j; i++) { 
+                p = x * mat[pos(i,k,n)] + y * mat[pos(i,k+1,n)]; 
+                if (k != en - 1) { 
+                   p += z * mat[pos(i,k+2,n)]; 
+                   mat[pos(i,k+2,n)] -= p*r; 
+                } 
+                mat[pos(i,k+1,n)] -= p*q; 
+                mat[pos(i,k,n)] -= p; 
+             } 
+             if (job) {             /* accumulate transformations */ 
+                for (i = low; i <= hi; i++) { 
+                   p = x * vr[pos(i,k,n)] + y * vr[pos(i,k+1,n)]; 
+                   if (k != en - 1) { 
+                      p += z * vr[pos(i,k+2,n)]; 
+                      vr[pos(i,k+2,n)] -= p*r; 
+                   } 
+                   vr[pos(i,k+1,n)] -= p*q; 
+                   vr[pos(i,k,n)] -= p; 
+                } 
+             } 
+          } 
+       } 
+    } 
+    if (!job) return(0); 
+    if (norm != 0) { 
+        /* back substitute to find vectors of upper triangular form */
+       for (en = n-1; en >= 0; en--) { 
+          p = valr[en]; 
+          if ((q = vali[en]) < 0) {            /* complex vector */ 
+             m = en - 1; 
+             if (fabs(mat[pos(en,en-1,n)]) > fabs(mat[pos(en-1,en,n)])) { 
+                mat[pos(en-1,en-1,n)] = q / mat[pos(en,en-1,n)]; 
+                mat[pos(en-1,en,n)] = (p - mat[pos(en,en,n)]) / 
+                      mat[pos(en,en-1,n)]; 
+             } 
+             else { 
+                v = cdiv(compl(0.0,-mat[pos(en-1,en,n)]), 
+                     compl(mat[pos(en-1,en-1,n)]-p,q)); 
+                mat[pos(en-1,en-1,n)] = v.re; 
+                mat[pos(en-1,en,n)] = v.im; 
+             } 
+             mat[pos(en,en-1,n)] = 0; 
+             mat[pos(en,en,n)] = 1; 
+             for (i = en - 2; i >= 0; i--) { 
+                w = mat[pos(i,i,n)] - p; 
+                ra = 0; 
+                sa = mat[pos(i,en,n)]; 
+                for (j = m; j < en; j++) { 
+                   ra += mat[pos(i,j,n)] * mat[pos(j,en-1,n)]; 
+                   sa += mat[pos(i,j,n)] * mat[pos(j,en,n)]; 
+                } 
+                if (vali[i] < 0) { 
+                   z = w; 
+                   r = ra; 
+                   s = sa; 
+                } 
+                else { 
+                   m = i; 
+                   if (vali[i] == 0) { 
+                      v = cdiv(compl(-ra,-sa),compl(w,q)); 
+                      mat[pos(i,en-1,n)] = v.re; 
+                      mat[pos(i,en,n)] = v.im; 
+                   } 
+                   else {                      /* solve complex equations */ 
+                      x = mat[pos(i,i+1,n)]; 
+                      y = mat[pos(i+1,i,n)]; 
+                      v.re = (valr[i]- p)*(valr[i]-p) + vali[i]*vali[i] - q*q; 
+                      if ((fabs(v.re) + fabs(v.im)) == 0) { 
+                         v.re = eps * norm * (fabs(w) + 
+                                 fabs(q) + fabs(x) + fabs(y) + fabs(z)); 
+                      } 
+                      v = cdiv(compl(x*r-z*ra+q*sa,x*s-z*sa-q*ra),v); 
+                      mat[pos(i,en-1,n)] = v.re; 
+                      mat[pos(i,en,n)] = v.im; 
+                      if (fabs(x) > fabs(z) + fabs(q)) { 
+                         mat[pos(i+1,en-1,n)] =  
+                              (-ra - w * mat[pos(i,en-1,n)] + 
+                              q * mat[pos(i,en,n)]) / x; 
+                         mat[pos(i+1,en,n)] = (-sa - w * mat[pos(i,en,n)] - 
+                              q * mat[pos(i,en-1,n)]) / x; 
+                      } 
+                      else { 
+                         v = cdiv(compl(-r-y*mat[pos(i,en-1,n)], 
+                              -s-y*mat[pos(i,en,n)]),compl(z,q)); 
+                         mat[pos(i+1,en-1,n)] = v.re; 
+                         mat[pos(i+1,en,n)] = v.im; 
+                      } 
+                   } 
+                } 
+             } 
+          } 
+          else if (q == 0) {                             /* real vector */ 
+             m = en; 
+             mat[pos(en,en,n)] = 1; 
+             for (i = en - 1; i >= 0; i--) { 
+                w = mat[pos(i,i,n)] - p; 
+                r = mat[pos(i,en,n)]; 
+                for (j = m; j < en; j++) { 
+                   r += mat[pos(i,j,n)] * mat[pos(j,en,n)]; 
+                } 
+                if (vali[i] < 0) { 
+                   z = w; 
+                   s = r; 
+                } 
+                else { 
+                   m = i; 
+                   if (vali[i] == 0) { 
+                      if ((t = w) == 0) t = eps * norm; 
+                      mat[pos(i,en,n)] = -r / t; 
+                   } 
+                   else {            /* solve real equations */ 
+                      x = mat[pos(i,i+1,n)]; 
+                      y = mat[pos(i+1,i,n)]; 
+                      q = (valr[i] - p) * (valr[i] - p) + vali[i]*vali[i]; 
+                      t = (x * s - z * r) / q; 
+                      mat[pos(i,en,n)] = t; 
+                      if (fabs(x) <= fabs(z)) { 
+                         mat[pos(i+1,en,n)] = (-s - y * t) / z; 
+                      } 
+                      else { 
+                         mat[pos(i+1,en,n)] = (-r - w * t) / x; 
+                      } 
+                   } 
+                } 
+             } 
+          } 
+       } 
+              // /\* vectors of isolated roots *\/ 
+       for (i = 0; i < n; i++) { 
+          if (i < low || i > hi) { 
+             for (j = i; j < n; j++) { 
+                vr[pos(i,j,n)] = mat[pos(i,j,n)]; 
+             } 
+          } 
+       } 
+        /* multiply by transformation matrix */ 
 
-/*          if (l == en) {             /\* one root found *\/ */
-/*             valr[en] = x + t; */
-/*             if (job) mat[pos(en,en,n)] = x + t; */
-/*             en--; */
-/*             break; */
-/*          } */
-
-/*          y = mat[pos(en-1,en-1,n)]; */
-/*          w = mat[pos(en,en-1,n)] * mat[pos(en-1,en,n)]; */
-
-/*          if (l == en - 1) {                /\* two roots found *\/ */
-/*             p = (y - x) / 2; */
-/*             q = p * p + w; */
-/*             z = sqrt(fabs(q)); */
-/*             x += t; */
-/*             if (job) { */
-/*                mat[pos(en,en,n)] = x; */
-/*                mat[pos(en-1,en-1,n)] = y + t; */
-/*             } */
-/*             if (q < 0) {                /\* complex pair *\/ */
-/*                valr[en-1] = x+p; */
-/*                vali[en-1] = z; */
-/*                valr[en] = x+p; */
-/*                vali[en] = -z; */
-/*             } */
-/*             else {                      /\* real pair *\/ */
-/*                z = (p < 0) ? p - z : p + z; */
-/*                valr[en-1] = x + z; */
-/*                valr[en] = (z == 0) ? x + z : x - w / z; */
-/*                if (job) { */
-/*                   x = mat[pos(en,en-1,n)]; */
-/*                   s = fabs(x) + fabs(z); */
-/*                   p = x / s; */
-/*                   q = z / s; */
-/*                   r = sqrt(p*p+q*q); */
-/*                   p /= r; */
-/*                   q /= r; */
-/*                   for (j = en - 1; j < n; j++) { */
-/*                      z = mat[pos(en-1,j,n)]; */
-/*                      mat[pos(en-1,j,n)] = q * z + p * */
-/*                      mat[pos(en,j,n)]; */
-/*                      mat[pos(en,j,n)] = q * mat[pos(en,j,n)] - p*z; */
-/*                   } */
-/*                   for (i = 0; i <= en; i++) { */
-/*                      z = mat[pos(i,en-1,n)]; */
-/*                      mat[pos(i,en-1,n)] = q * z + p * mat[pos(i,en,n)]; */
-/*                      mat[pos(i,en,n)] = q * mat[pos(i,en,n)] - p*z; */
-/*                   } */
-/*                   for (i = low; i <= hi; i++) { */
-/*                      z = vr[pos(i,en-1,n)]; */
-/*                      vr[pos(i,en-1,n)] = q*z + p*vr[pos(i,en,n)]; */
-/*                      vr[pos(i,en,n)] = q*vr[pos(i,en,n)] - p*z; */
-/*                   } */
-/*                } */
-/*             } */
-/*             en -= 2; */
-/*             break; */
-/*          } */
-/*          if (niter == MAXITER) return(-1); */
-/*          if (niter != 0 && niter % 10 == 0) { */
-/*             t += x; */
-/*             for (i = low; i <= en; i++) mat[pos(i,i,n)] -= x; */
-/*             s = fabs(mat[pos(en,en-1,n)]) + fabs(mat[pos(en-1,en-2,n)]); */
-/*             x = y = 0.75 * s; */
-/*             w = -0.4375 * s * s; */
-/*          } */
-/*          niter++; */
-/*            /\* look for two consecutive small subdiagonal elements *\/ */
-/*          for (m = en - 2; m >= l; m--) { */
-/*             z = mat[pos(m,m,n)]; */
-/*             r = x - z; */
-/*             s = y - z; */
-/*             p = (r * s - w) / mat[pos(m+1,m,n)] + mat[pos(m,m+1,n)]; */
-/*             q = mat[pos(m+1,m+1,n)] - z - r - s; */
-/*             r = mat[pos(m+2,m+1,n)]; */
-/*             s = fabs(p) + fabs(q) + fabs(r); */
-/*             p /= s; */
-/*             q /= s; */
-/*             r /= s; */
-/*             if (m == l || fabs(mat[pos(m,m-1,n)]) * (fabs(q)+fabs(r)) <= */
-/*                 eps * (fabs(mat[pos(m-1,m-1,n)]) + fabs(z) + */
-/*                 fabs(mat[pos(m+1,m+1,n)])) * fabs(p)) break; */
-/*          } */
-/*          for (i = m + 2; i <= en; i++) mat[pos(i,i-2,n)] = 0; */
-/*          for (i = m + 3; i <= en; i++) mat[pos(i,i-3,n)] = 0; */
-/*              /\* double QR step involving rows l to en and columns m to en *\/ */
-/*          for (k = m; k < en; k++) { */
-/*             if (k != m) { */
-/*                p = mat[pos(k,k-1,n)]; */
-/*                q = mat[pos(k+1,k-1,n)]; */
-/*                r = (k == en - 1) ? 0 : mat[pos(k+2,k-1,n)]; */
-/*                if ((x = fabs(p) + fabs(q) + fabs(r)) == 0) continue; */
-/*                p /= x; */
-/*                q /= x; */
-/*                r /= x; */
-/*             } */
-/*             s = sqrt(p*p+q*q+r*r); */
-/*             if (p < 0) s = -s; */
-/*             if (k != m) { */
-/*                mat[pos(k,k-1,n)] = -s * x; */
-/*             } */
-/*             else if (l != m) { */
-/*                mat[pos(k,k-1,n)] = -mat[pos(k,k-1,n)]; */
-/*             } */
-/*             p += s; */
-/*             x = p / s; */
-/*             y = q / s; */
-/*             z = r / s; */
-/*             q /= p; */
-/*             r /= p; */
-/*                 /\* row modification *\/ */
-/*             for (j = k; j <= (!job ? en : n-1); j++){ */
-/*                p = mat[pos(k,j,n)] + q * mat[pos(k+1,j,n)]; */
-/*                if (k != en - 1) { */
-/*                   p += r * mat[pos(k+2,j,n)]; */
-/*                   mat[pos(k+2,j,n)] -= p * z; */
-/*                } */
-/*                mat[pos(k+1,j,n)] -= p * y; */
-/*                mat[pos(k,j,n)] -= p * x; */
-/*             } */
-/*             j = MIN(en,k+3); */
-/*               /\* column modification *\/ */
-/*             for (i = (!job ? l : 0); i <= j; i++) { */
-/*                p = x * mat[pos(i,k,n)] + y * mat[pos(i,k+1,n)]; */
-/*                if (k != en - 1) { */
-/*                   p += z * mat[pos(i,k+2,n)]; */
-/*                   mat[pos(i,k+2,n)] -= p*r; */
-/*                } */
-/*                mat[pos(i,k+1,n)] -= p*q; */
-/*                mat[pos(i,k,n)] -= p; */
-/*             } */
-/*             if (job) {             /\* accumulate transformations *\/ */
-/*                for (i = low; i <= hi; i++) { */
-/*                   p = x * vr[pos(i,k,n)] + y * vr[pos(i,k+1,n)]; */
-/*                   if (k != en - 1) { */
-/*                      p += z * vr[pos(i,k+2,n)]; */
-/*                      vr[pos(i,k+2,n)] -= p*r; */
-/*                   } */
-/*                   vr[pos(i,k+1,n)] -= p*q; */
-/*                   vr[pos(i,k,n)] -= p; */
-/*                } */
-/*             } */
-/*          } */
-/*       } */
-/*    } */
-
-/*    if (!job) return(0); */
-/*    if (norm != 0) { */
-/*        /\* back substitute to find vectors of upper triangular form *\/ */
-/*       for (en = n-1; en >= 0; en--) { */
-/*          p = valr[en]; */
-/*          if ((q = vali[en]) < 0) {            /\* complex vector *\/ */
-/*             m = en - 1; */
-/*             if (fabs(mat[pos(en,en-1,n)]) > fabs(mat[pos(en-1,en,n)])) { */
-/*                mat[pos(en-1,en-1,n)] = q / mat[pos(en,en-1,n)]; */
-/*                mat[pos(en-1,en,n)] = (p - mat[pos(en,en,n)]) / */
-/*                      mat[pos(en,en-1,n)]; */
-/*             } */
-/*             else { */
-/*                v = cdiv(compl(0.0,-mat[pos(en-1,en,n)]), */
-/*                     compl(mat[pos(en-1,en-1,n)]-p,q)); */
-/*                mat[pos(en-1,en-1,n)] = v.re; */
-/*                mat[pos(en-1,en,n)] = v.im; */
-/*             } */
-/*             mat[pos(en,en-1,n)] = 0; */
-/*             mat[pos(en,en,n)] = 1; */
-/*             for (i = en - 2; i >= 0; i--) { */
-/*                w = mat[pos(i,i,n)] - p; */
-/*                ra = 0; */
-/*                sa = mat[pos(i,en,n)]; */
-/*                for (j = m; j < en; j++) { */
-/*                   ra += mat[pos(i,j,n)] * mat[pos(j,en-1,n)]; */
-/*                   sa += mat[pos(i,j,n)] * mat[pos(j,en,n)]; */
-/*                } */
-/*                if (vali[i] < 0) { */
-/*                   z = w; */
-/*                   r = ra; */
-/*                   s = sa; */
-/*                } */
-/*                else { */
-/*                   m = i; */
-/*                   if (vali[i] == 0) { */
-/*                      v = cdiv(compl(-ra,-sa),compl(w,q)); */
-/*                      mat[pos(i,en-1,n)] = v.re; */
-/*                      mat[pos(i,en,n)] = v.im; */
-/*                   } */
-/*                   else {                      /\* solve complex equations *\/ */
-/*                      x = mat[pos(i,i+1,n)]; */
-/*                      y = mat[pos(i+1,i,n)]; */
-/*                      v.re = (valr[i]- p)*(valr[i]-p) + vali[i]*vali[i] - q*q; */
-/*                      v.im = (valr[i] - p)*2*q; */
-/*                      if ((fabs(v.re) + fabs(v.im)) == 0) { */
-/*                         v.re = eps * norm * (fabs(w) + */
-/*                                 fabs(q) + fabs(x) + fabs(y) + fabs(z)); */
-/*                      } */
-/*                      v = cdiv(compl(x*r-z*ra+q*sa,x*s-z*sa-q*ra),v); */
-/*                      mat[pos(i,en-1,n)] = v.re; */
-/*                      mat[pos(i,en,n)] = v.im; */
-/*                      if (fabs(x) > fabs(z) + fabs(q)) { */
-/*                         mat[pos(i+1,en-1,n)] =  */
-/*                              (-ra - w * mat[pos(i,en-1,n)] + */
-/*                              q * mat[pos(i,en,n)]) / x; */
-/*                         mat[pos(i+1,en,n)] = (-sa - w * mat[pos(i,en,n)] - */
-/*                              q * mat[pos(i,en-1,n)]) / x; */
-/*                      } */
-/*                      else { */
-/*                         v = cdiv(compl(-r-y*mat[pos(i,en-1,n)], */
-/*                              -s-y*mat[pos(i,en,n)]),compl(z,q)); */
-/*                         mat[pos(i+1,en-1,n)] = v.re; */
-/*                         mat[pos(i+1,en,n)] = v.im; */
-/*                      } */
-/*                   } */
-/*                } */
-/*             } */
-/*          } */
-/*          else if (q == 0) {                             /\* real vector *\/ */
-/*             m = en; */
-/*             mat[pos(en,en,n)] = 1; */
-/*             for (i = en - 1; i >= 0; i--) { */
-/*                w = mat[pos(i,i,n)] - p; */
-/*                r = mat[pos(i,en,n)]; */
-/*                for (j = m; j < en; j++) { */
-/*                   r += mat[pos(i,j,n)] * mat[pos(j,en,n)]; */
-/*                } */
-/*                if (vali[i] < 0) { */
-/*                   z = w; */
-/*                   s = r; */
-/*                } */
-/*                else { */
-/*                   m = i; */
-/*                   if (vali[i] == 0) { */
-/*                      if ((t = w) == 0) t = eps * norm; */
-/*                      mat[pos(i,en,n)] = -r / t; */
-/*                   } */
-/*                   else {            /\* solve real equations *\/ */
-/*                      x = mat[pos(i,i+1,n)]; */
-/*                      y = mat[pos(i+1,i,n)]; */
-/*                      q = (valr[i] - p) * (valr[i] - p) + vali[i]*vali[i]; */
-/*                      t = (x * s - z * r) / q; */
-/*                      mat[pos(i,en,n)] = t; */
-/*                      if (fabs(x) <= fabs(z)) { */
-/*                         mat[pos(i+1,en,n)] = (-s - y * t) / z; */
-/*                      } */
-/*                      else { */
-/*                         mat[pos(i+1,en,n)] = (-r - w * t) / x; */
-/*                      } */
-/*                   } */
-/*                } */
-/*             } */
-/*          } */
-/*       } */
-/*              /\* vectors of isolated roots *\/ */
-/*       for (i = 0; i < n; i++) { */
-/*          if (i < low || i > hi) { */
-/*             for (j = i; j < n; j++) { */
-/*                vr[pos(i,j,n)] = mat[pos(i,j,n)]; */
-/*             } */
-/*          } */
-/*       } */
-/*        /\* multiply by transformation matrix *\/ */
-
-/*       for (j = n-1; j >= low; j--) { */
-/*          m = MIN(j,hi); */
-/*          for (i = low; i <= hi; i++) { */
-/*             for (z = 0,k = low; k <= m; k++) { */
-/*                z += vr[pos(i,k,n)] * mat[pos(k,j,n)]; */
-/*             } */
-/*             vr[pos(i,j,n)] = z; */
-/*          } */
-/*       } */
-/*    } */
+       for (j = n-1; j >= low; j--) { 
+          m = MIN(j,hi); 
+          for (i = low; i <= hi; i++) { 
+             for (z = 0,k = low; k <= m; k++) { 
+                z += vr[pos(i,k,n)] * mat[pos(k,j,n)]; 
+             } 
+             vr[pos(i,j,n)] = z; 
+          } 
+       } 
+    } 
 /*     /\* rearrange complex eigenvectors *\/ */
-/*    for (j = 0; j < n; j++) { */
-/*       if (vali[j] != 0) { */
-/*          for (i = 0; i < n; i++) { */
-/*             vi[pos(i,j,n)] = vr[pos(i,j+1,n)]; */
-/*             vr[pos(i,j+1,n)] = vr[pos(i,j,n)]; */
-/*             vi[pos(i,j+1,n)] = -vi[pos(i,j,n)]; */
-/*          } */
-/*          j++; */
-/*       } */
-/*    } */
-/*    return(0); */
-/* } */
+    for (j = 0; j < n; j++) { 
+       if (vali[j] != 0) { 
+          for (i = 0; i < n; i++) { 
+             vi[pos(i,j,n)] = vr[pos(i,j+1,n)]; 
+             vr[pos(i,j+1,n)] = vr[pos(i,j,n)]; 
+             vi[pos(i,j+1,n)] = -vi[pos(i,j,n)]; 
+          } 
+          j++; 
+       } 
+    } 
+    return(0); 
+ } 
 
 
 #define LUDCMP_TINY 1.0e-20;

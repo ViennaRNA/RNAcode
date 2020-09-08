@@ -1,0 +1,24 @@
+<map id="printResults" name="printResults">
+<area shape="rect" id="node2" href="$misc_8c.html#a08c97f6ebbb296bfe2d0f74e7a3a8af8" title="compareLocation" alt="" coords="145,107,267,133"/>
+<area shape="rect" id="node3" href="$misc_8c.html#a3003bc209fbd623b0ebf8d55c3f76454" title="compareScores" alt="" coords="149,157,263,184"/>
+<area shape="rect" id="node4" href="$postscript_8c.html#ac7d6bf70e040d36788b6eacace4cb312" title="colorAln" alt="" coords="171,208,241,235"/>
+<area shape="rect" id="node5" href="$postscript_8c.html#a1d6c94586a33965dd4277c7fe62de430" title="setParameters" alt="" coords="315,5,421,32"/>
+<area shape="rect" id="node6" href="$rnaz__utils_8c.html#aa870f4f41dc7bf4808af716a34482ac5" title="consensus" alt="" coords="325,56,411,83"/>
+<area shape="rect" id="node8" href="$misc_8c.html#a935b3901ff2b656c44257b4606ceab6c" title="getSeqLength" alt="" coords="480,208,583,235"/>
+<area shape="rect" id="node9" href="$misc_8c.html#a0da1742a6a7f546827bee85fbdf53592" title="copyAln" alt="" coords="333,107,403,133"/>
+<area shape="rect" id="node11" href="$rnaz__utils_8c.html#a9c0adcc1f46e9fceab51c54bd25475e2" title="revAln" alt="" coords="339,157,397,184"/>
+<area shape="rect" id="node12" href="$misc_8c.html#a6017c986a43a1bba1569a8efb1b3aedb" title="extendRegion" alt="" coords="317,309,419,336"/>
+<area shape="rect" id="node15" href="$score_8c.html#a0557015d88daf987d0730792a31493ad" title="backtrack" alt="" coords="329,259,407,285"/>
+<area shape="rect" id="node16" href="$postscript_8c.html#a88d8c5c3031b8ee553b4bfc437e4b73e" title="colorHSS" alt="" coords="329,360,407,387"/>
+<area shape="rect" id="node22" href="$rnaz__utils_8c.html#ace5cb65b010161f9eb138717b4592673" title="freeAln" alt="" coords="337,461,399,488"/>
+<area shape="rect" id="node7" href="$utils_8c.html#a5dac704be118855d7c4dd3aa3bc31fc3" title="space" alt="" coords="656,107,713,133"/>
+<area shape="rect" id="node10" href="$rnaz__utils_8c.html#ab3af11f3fc09669574f682072f795865" title="createAlnEntry" alt="" coords="477,107,585,133"/>
+<area shape="rect" id="node13" href="$misc_8c.html#af49091737065e3ea21101edf17533dcf" title="pos2col" alt="" coords="498,259,565,285"/>
+<area shape="rect" id="node14" href="$misc_8c.html#a9fe543fe19ab3ff4ae9def519e1f0ac1" title="getBlock" alt="" coords="495,309,568,336"/>
+<area shape="rect" id="node17" href="$score_8c.html#a5deb0fecb3a13330879241f24575ac6c" title="getScoringMatrix" alt="" coords="471,360,591,387"/>
+<area shape="rect" id="node18" href="$code_8c.html#a8d64bc3ec5de4db181efd7ff565ff894" title="translateSeq" alt="" coords="484,411,579,437"/>
+<area shape="rect" id="node21" href="$score_8c.html#a92e464aeb840be0a3082485f30bd094b" title="freeScoringMatrix" alt="" coords="469,461,593,488"/>
+<area shape="rect" id="node19" href="$code_8c.html#a011bbc41b53a2519b2bb46214b7a1fcc" title="encodeSeq" alt="" coords="641,436,728,463"/>
+<area shape="rect" id="node20" href="$code_8c.html#a124646f7d65dd512584b8fbab1fcc7a4" title="decodeAA" alt="" coords="643,385,726,412"/>
+<area shape="rect" id="node23" href="$rnaz__utils_8c.html#ac38565a99389ebf0aed62a623d893299" title="freeAlnEntry" alt="" coords="484,512,579,539"/>
+</map>

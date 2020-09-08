@@ -24,7 +24,7 @@ the GNU public licence. See http://www.opensource.org for details.
 #include "alrt.h"
 
 
-#ifdef PHYML
+
 
 int main(int argc, char **argv)
 {
@@ -381,29 +381,3 @@ int main(int argc, char **argv)
   Free_Input(io);
   return 0;
 }
-
-#elif(MG)
-#include "mg.h"
-int main(int argc, char **argv)
-{
-  MC_main(argc, argv);
-  return 1;
-}
-
-#elif(M4)
-#include "m4.h"
-int main(int argc, char **argv)
-{
-  MC_main(argc, argv);
-  return 1;
-}
-
-#elif(MC)
-#include "mc.h"
-int main(int argc, char **argv)
-{
-  MC_main(argc, argv);
-  return 1;
-}
-
-#endif

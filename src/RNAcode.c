@@ -22,6 +22,10 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <execinfo.h>
+#include <signal.h>
+#include <unistd.h>
+
 #include "RNAcode.h"
 #include "rnaz_utils.h"
 #include "treeML.h"
@@ -34,6 +38,20 @@
 #include "postscript.h"
 #include "misc.h"
 #include "utils.h"
+
+void handler(int sig) {
+  void *array[10];
+  size_t size;
+
+  // get void*'s for all entries on the stack
+  size = backtrace(array, 10);
+
+  // print out all the frames to stderr
+  fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  exit(1);
+}
+
 
 /* Global variables shared troughout the application */
 
@@ -50,7 +68,7 @@ long int hitCounter;
 void freeModels(bgModel* models, int N);
 
 int main(int argc, char *argv[]){
-
+  signal(SIGSEGV, handler);
   int i,j,k,x,L,N,hssCount, alnCounter;
   char *tmpSeq, *treeString;
   float kappa, maxScore;

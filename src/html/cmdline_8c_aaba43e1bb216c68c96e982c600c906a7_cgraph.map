@@ -1,0 +1,12 @@
+<map id="cmdline_parser_internal" name="cmdline_parser_internal">
+<area shape="rect" id="node2" href="$cmdline_8c.html#aca62b50d03d0d082968eeb1940f98650" title="cmdline_parser_init" alt="" coords="214,9,349,36"/>
+<area shape="rect" id="node6" href="$getopt_8h.html#a8616b8a74ae6c01a7ad95ad2876226ec" title="getopt_long" alt="" coords="237,60,326,86"/>
+<area shape="rect" id="node7" href="$cmdline_8c.html#a21d8824d410efa489c4921011c1c0765" title="updates an option " alt="" coords="238,110,325,137"/>
+<area shape="rect" id="node8" href="$cmdline_8c.html#a0ec9efd6eb3e6e939fcaaadd8b4c6a9f" title="replacement of strdup, which is not standard " alt="" coords="417,136,539,162"/>
+<area shape="rect" id="node9" href="$cmdline_8c.html#af1b97c4e92b88f736e350b3902266ba4" title="cmdline_parser_free" alt="" coords="212,212,351,238"/>
+<area shape="rect" id="node10" href="$cmdline_8c.html#ace6fb8241473bb89c5a575774eb4ba2a" title="cmdline_parser_release" alt="" coords="399,212,557,238"/>
+<area shape="rect" id="node3" href="$cmdline_8c.html#a48968b912c47767e9f057f5bc11634cb" title="clear_given" alt="" coords="619,85,707,112"/>
+<area shape="rect" id="node4" href="$cmdline_8c.html#a4d7018864f814395754ea4127ce4d37b" title="clear_args" alt="" coords="437,34,519,61"/>
+<area shape="rect" id="node5" href="$cmdline_8c.html#a4dcfd361cdaac143739a02102296fedd" title="init_args_info" alt="" coords="429,85,527,112"/>
+<area shape="rect" id="node11" href="$cmdline_8c.html#a3a3cc8b020811185cb0a4b96e1ff5a40" title="free_string_field" alt="" coords="605,212,720,238"/>
+</map>

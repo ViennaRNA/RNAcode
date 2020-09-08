@@ -1,0 +1,574 @@
+\hypertarget{cmdline_8c}{}\section{cmdline.\+c File Reference}
+\label{cmdline_8c}\index{cmdline.\+c@{cmdline.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}getopt.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cmdline.\+h\char`\"{}}\newline
+Include dependency graph for cmdline.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1}{cmdline\+\_\+parser\+\_\+arg\+\_\+type} \{ \newline
+\hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a67dd250fb3e23862523b667407868ada}{A\+R\+G\+\_\+\+NO}, 
+\hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1afd135f03243c33991ef507f4410718f7}{A\+R\+G\+\_\+\+F\+L\+AG}, 
+\hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a1e0904ee5e3baf2aa4070ab0718a3afa}{A\+R\+G\+\_\+\+S\+T\+R\+I\+NG}, 
+\hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a58393752406d163205fa18f450909993}{A\+R\+G\+\_\+\+I\+NT}, 
+\newline
+\hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a5875de3e892eb32ed41e4d60ef7d99ca}{A\+R\+G\+\_\+\+F\+L\+O\+AT}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{cmdline_8c_a48968b912c47767e9f057f5bc11634cb}{clear\+\_\+given} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+static void \hyperlink{cmdline_8c_a4d7018864f814395754ea4127ce4d37b}{clear\+\_\+args} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+static int \hyperlink{cmdline_8c_aaba43e1bb216c68c96e982c600c906a7}{cmdline\+\_\+parser\+\_\+internal} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info, struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$params, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$additional\+\_\+error)
+\item 
+static char $\ast$ \hyperlink{cmdline_8c_a0ec9efd6eb3e6e939fcaaadd8b4c6a9f}{gengetopt\+\_\+strdup} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$s)
+\begin{DoxyCompactList}\small\item\em replacement of strdup, which is not standard \end{DoxyCompactList}\item 
+static void \hyperlink{cmdline_8c_a4dcfd361cdaac143739a02102296fedd}{init\+\_\+args\+\_\+info} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+void \hyperlink{cmdline_8c_a96f27bf35ce0ab8eea7a1f6e6b59a5e2}{cmdline\+\_\+parser\+\_\+print\+\_\+version} (void)
+\item 
+static void \hyperlink{cmdline_8c_ad600bb9026825a295ea57df22bdf7eca}{print\+\_\+help\+\_\+common} (void)
+\item 
+void \hyperlink{cmdline_8c_ad4f7db2fa4002379eb30e5206f3b7492}{cmdline\+\_\+parser\+\_\+print\+\_\+help} (void)
+\item 
+void \hyperlink{cmdline_8c_aca62b50d03d0d082968eeb1940f98650}{cmdline\+\_\+parser\+\_\+init} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+void \hyperlink{cmdline_8c_af72b814611cffc706b2135ccdfe7e997}{cmdline\+\_\+parser\+\_\+params\+\_\+init} (struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$params)
+\item 
+struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$ \hyperlink{cmdline_8c_afd778af110fe0ee1ea5eac7aa9939d92}{cmdline\+\_\+parser\+\_\+params\+\_\+create} (void)
+\item 
+static void \hyperlink{cmdline_8c_a3a3cc8b020811185cb0a4b96e1ff5a40}{free\+\_\+string\+\_\+field} (char $\ast$$\ast$s)
+\item 
+static void \hyperlink{cmdline_8c_ace6fb8241473bb89c5a575774eb4ba2a}{cmdline\+\_\+parser\+\_\+release} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+static void \hyperlink{cmdline_8c_a332041b3060103618ef6b767ab32d0dd}{write\+\_\+into\+\_\+file} (F\+I\+LE $\ast$\hyperlink{postscript_8c_ae581849c67336453bd5b81e6518019a9}{outfile}, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$opt, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$arg, char $\ast$values\mbox{[}$\,$\mbox{]})
+\item 
+int \hyperlink{cmdline_8c_a1f73418092a6e6eb3706aa0de2785e11}{cmdline\+\_\+parser\+\_\+dump} (F\+I\+LE $\ast$\hyperlink{postscript_8c_ae581849c67336453bd5b81e6518019a9}{outfile}, struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+int \hyperlink{cmdline_8c_a5f3e9412f88f1058a31ac28ad2ea2818}{cmdline\+\_\+parser\+\_\+file\+\_\+save} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$filename, struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+void \hyperlink{cmdline_8c_af1b97c4e92b88f736e350b3902266ba4}{cmdline\+\_\+parser\+\_\+free} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+int \hyperlink{cmdline_8c_a96f1044799c552f3ee139f9b1387b363}{cmdline\+\_\+parser} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info)
+\item 
+int \hyperlink{cmdline_8c_a77e461b5bdfd4a36c59a96bfb1813e38}{cmdline\+\_\+parser\+\_\+ext} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info, struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$params)
+\item 
+int \hyperlink{cmdline_8c_a08e3536edc64ec5ee7c2df546c6e9dd7}{cmdline\+\_\+parser2} (int argc, char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$argv, struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info, int override, int initialize, int check\+\_\+required)
+\item 
+int \hyperlink{cmdline_8c_a83651e5be280d60aed58fdb72456a030}{cmdline\+\_\+parser\+\_\+required} (struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$args\+\_\+info, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$prog\+\_\+name)
+\item 
+static int \hyperlink{cmdline_8c_a21d8824d410efa489c4921011c1c0765}{update\+\_\+arg} (void $\ast$field, char $\ast$$\ast$orig\+\_\+field, unsigned int $\ast$field\+\_\+given, unsigned int $\ast$prev\+\_\+given, char $\ast$value, char $\ast$possible\+\_\+values\mbox{[}$\,$\mbox{]}, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$default\+\_\+value, \hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1}{cmdline\+\_\+parser\+\_\+arg\+\_\+type} arg\+\_\+type, int check\+\_\+ambiguity, int override, int no\+\_\+free, int multiple\+\_\+option, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$long\+\_\+opt, char short\+\_\+opt, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$additional\+\_\+error)
+\begin{DoxyCompactList}\small\item\em updates an option \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{cmdline_8c_a610c3307abce5a8fd304b86b018ae60b}{gengetopt\+\_\+args\+\_\+info\+\_\+purpose} = \char`\"{}\char`\"{}
+\begin{DoxyCompactList}\small\item\em the purpose string of the program \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{cmdline_8c_a9f397a306f363bfdebb611e86acf36d5}{gengetopt\+\_\+args\+\_\+info\+\_\+usage} = \char`\"{}Usage\+: \char`\"{} C\+M\+D\+L\+I\+N\+E\+\_\+\+P\+A\+R\+S\+E\+R\+\_\+\+P\+A\+C\+K\+A\+GE \char`\"{} \mbox{[}O\+P\+T\+I\+O\+NS\mbox{]}... \mbox{[}F\+I\+L\+ES\mbox{]}...\char`\"{}
+\begin{DoxyCompactList}\small\item\em the usage string of the program \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{cmdline_8c_accad6107ca685f6eba555f6ce63d355d}{gengetopt\+\_\+args\+\_\+info\+\_\+description} = \char`\"{}\char`\"{}
+\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{cmdline_8c_a6af7a6b7fb37c0abaa916ee1cfa0a41f}{gengetopt\+\_\+args\+\_\+info\+\_\+help} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em all the lines making the help output \end{DoxyCompactList}\item 
+static char $\ast$ \hyperlink{cmdline_8c_a08f16a026de44b77c5e7be490fb9e32b}{package\+\_\+name} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1}\label{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+arg\+\_\+type@{cmdline\+\_\+parser\+\_\+arg\+\_\+type}}
+\index{cmdline\+\_\+parser\+\_\+arg\+\_\+type@{cmdline\+\_\+parser\+\_\+arg\+\_\+type}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+arg\+\_\+type}{cmdline\_parser\_arg\_type}}
+{\footnotesize\ttfamily enum \hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1}{cmdline\+\_\+parser\+\_\+arg\+\_\+type}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+R\+G\+\_\+\+NO@{A\+R\+G\+\_\+\+NO}!cmdline.\+c@{cmdline.\+c}}\index{cmdline.\+c@{cmdline.\+c}!A\+R\+G\+\_\+\+NO@{A\+R\+G\+\_\+\+NO}}}\mbox{\Hypertarget{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a67dd250fb3e23862523b667407868ada}\label{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a67dd250fb3e23862523b667407868ada}} 
+A\+R\+G\+\_\+\+NO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+R\+G\+\_\+\+F\+L\+AG@{A\+R\+G\+\_\+\+F\+L\+AG}!cmdline.\+c@{cmdline.\+c}}\index{cmdline.\+c@{cmdline.\+c}!A\+R\+G\+\_\+\+F\+L\+AG@{A\+R\+G\+\_\+\+F\+L\+AG}}}\mbox{\Hypertarget{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1afd135f03243c33991ef507f4410718f7}\label{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1afd135f03243c33991ef507f4410718f7}} 
+A\+R\+G\+\_\+\+F\+L\+AG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+R\+G\+\_\+\+S\+T\+R\+I\+NG@{A\+R\+G\+\_\+\+S\+T\+R\+I\+NG}!cmdline.\+c@{cmdline.\+c}}\index{cmdline.\+c@{cmdline.\+c}!A\+R\+G\+\_\+\+S\+T\+R\+I\+NG@{A\+R\+G\+\_\+\+S\+T\+R\+I\+NG}}}\mbox{\Hypertarget{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a1e0904ee5e3baf2aa4070ab0718a3afa}\label{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a1e0904ee5e3baf2aa4070ab0718a3afa}} 
+A\+R\+G\+\_\+\+S\+T\+R\+I\+NG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+R\+G\+\_\+\+I\+NT@{A\+R\+G\+\_\+\+I\+NT}!cmdline.\+c@{cmdline.\+c}}\index{cmdline.\+c@{cmdline.\+c}!A\+R\+G\+\_\+\+I\+NT@{A\+R\+G\+\_\+\+I\+NT}}}\mbox{\Hypertarget{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a58393752406d163205fa18f450909993}\label{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a58393752406d163205fa18f450909993}} 
+A\+R\+G\+\_\+\+I\+NT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+R\+G\+\_\+\+F\+L\+O\+AT@{A\+R\+G\+\_\+\+F\+L\+O\+AT}!cmdline.\+c@{cmdline.\+c}}\index{cmdline.\+c@{cmdline.\+c}!A\+R\+G\+\_\+\+F\+L\+O\+AT@{A\+R\+G\+\_\+\+F\+L\+O\+AT}}}\mbox{\Hypertarget{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a5875de3e892eb32ed41e4d60ef7d99ca}\label{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1a5875de3e892eb32ed41e4d60ef7d99ca}} 
+A\+R\+G\+\_\+\+F\+L\+O\+AT&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{cmdline_8c_a4d7018864f814395754ea4127ce4d37b}\label{cmdline_8c_a4d7018864f814395754ea4127ce4d37b}} 
+\index{cmdline.\+c@{cmdline.\+c}!clear\+\_\+args@{clear\+\_\+args}}
+\index{clear\+\_\+args@{clear\+\_\+args}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{clear\+\_\+args()}{clear\_args()}}
+{\footnotesize\ttfamily static void clear\+\_\+args (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{cmdline_8c_a48968b912c47767e9f057f5bc11634cb}\label{cmdline_8c_a48968b912c47767e9f057f5bc11634cb}} 
+\index{cmdline.\+c@{cmdline.\+c}!clear\+\_\+given@{clear\+\_\+given}}
+\index{clear\+\_\+given@{clear\+\_\+given}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{clear\+\_\+given()}{clear\_given()}}
+{\footnotesize\ttfamily static void clear\+\_\+given (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{cmdline_8c_a96f1044799c552f3ee139f9b1387b363}\label{cmdline_8c_a96f1044799c552f3ee139f9b1387b363}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser@{cmdline\+\_\+parser}}
+\index{cmdline\+\_\+parser@{cmdline\+\_\+parser}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser()}{cmdline\_parser()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})}
+
+The command line parser 
+\begin{DoxyParams}{Parameters}
+{\em argc} & the number of command line options \\
+\hline
+{\em argv} & the command line options \\
+\hline
+{\em args\+\_\+info} & the structure where option information will be stored \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if everything went fine, N\+ON 0 if an error took place 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_a96f1044799c552f3ee139f9b1387b363_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a08e3536edc64ec5ee7c2df546c6e9dd7}\label{cmdline_8c_a08e3536edc64ec5ee7c2df546c6e9dd7}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser2@{cmdline\+\_\+parser2}}
+\index{cmdline\+\_\+parser2@{cmdline\+\_\+parser2}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser2()}{cmdline\_parser2()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser2 (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info,  }\item[{int}]{override,  }\item[{int}]{initialize,  }\item[{int}]{check\+\_\+required }\end{DoxyParamCaption})}
+
+The command line parser (version with additional parameters -\/ deprecated) 
+\begin{DoxyParams}{Parameters}
+{\em argc} & the number of command line options \\
+\hline
+{\em argv} & the command line options \\
+\hline
+{\em args\+\_\+info} & the structure where option information will be stored \\
+\hline
+{\em override} & whether to override possibly already present options \\
+\hline
+{\em initialize} & whether to initialize the option structure my\+\_\+args\+\_\+info \\
+\hline
+{\em check\+\_\+required} & whether to check that all required options were provided \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if everything went fine, N\+ON 0 if an error took place 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000001}{Deprecated}]use \hyperlink{cmdline_8h_a77e461b5bdfd4a36c59a96bfb1813e38}{cmdline\+\_\+parser\+\_\+ext()} instead \end{DoxyRefDesc}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_a08e3536edc64ec5ee7c2df546c6e9dd7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a1f73418092a6e6eb3706aa0de2785e11}\label{cmdline_8c_a1f73418092a6e6eb3706aa0de2785e11}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+dump@{cmdline\+\_\+parser\+\_\+dump}}
+\index{cmdline\+\_\+parser\+\_\+dump@{cmdline\+\_\+parser\+\_\+dump}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+dump()}{cmdline\_parser\_dump()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser\+\_\+dump (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{outfile,  }\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})}
+
+Save the contents of the option struct into an already open F\+I\+LE stream. 
+\begin{DoxyParams}{Parameters}
+{\em outfile} & the stream where to dump options \\
+\hline
+{\em args\+\_\+info} & the option struct to dump \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if everything went fine, N\+ON 0 if an error took place 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{cmdline_8c_a1f73418092a6e6eb3706aa0de2785e11_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a77e461b5bdfd4a36c59a96bfb1813e38}\label{cmdline_8c_a77e461b5bdfd4a36c59a96bfb1813e38}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+ext@{cmdline\+\_\+parser\+\_\+ext}}
+\index{cmdline\+\_\+parser\+\_\+ext@{cmdline\+\_\+parser\+\_\+ext}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+ext()}{cmdline\_parser\_ext()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser\+\_\+ext (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info,  }\item[{struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$}]{params }\end{DoxyParamCaption})}
+
+The command line parser (version with additional parameters) 
+\begin{DoxyParams}{Parameters}
+{\em argc} & the number of command line options \\
+\hline
+{\em argv} & the command line options \\
+\hline
+{\em args\+\_\+info} & the structure where option information will be stored \\
+\hline
+{\em params} & additional parameters for the parser \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if everything went fine, N\+ON 0 if an error took place 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_a77e461b5bdfd4a36c59a96bfb1813e38_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a5f3e9412f88f1058a31ac28ad2ea2818}\label{cmdline_8c_a5f3e9412f88f1058a31ac28ad2ea2818}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+file\+\_\+save@{cmdline\+\_\+parser\+\_\+file\+\_\+save}}
+\index{cmdline\+\_\+parser\+\_\+file\+\_\+save@{cmdline\+\_\+parser\+\_\+file\+\_\+save}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+file\+\_\+save()}{cmdline\_parser\_file\_save()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser\+\_\+file\+\_\+save (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{filename,  }\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})}
+
+Save the contents of the option struct into a (text) file. This file can be read by the config file parser (if generated by gengetopt) 
+\begin{DoxyParams}{Parameters}
+{\em filename} & the file where to save \\
+\hline
+{\em args\+\_\+info} & the option struct to save \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if everything went fine, N\+ON 0 if an error took place 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_a5f3e9412f88f1058a31ac28ad2ea2818_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_af1b97c4e92b88f736e350b3902266ba4}\label{cmdline_8c_af1b97c4e92b88f736e350b3902266ba4}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+free@{cmdline\+\_\+parser\+\_\+free}}
+\index{cmdline\+\_\+parser\+\_\+free@{cmdline\+\_\+parser\+\_\+free}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+free()}{cmdline\_parser\_free()}}
+{\footnotesize\ttfamily void cmdline\+\_\+parser\+\_\+free (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})}
+
+Deallocates the string fields of the \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} structure (but does not deallocate the structure itself) 
+\begin{DoxyParams}{Parameters}
+{\em args\+\_\+info} & the structure to deallocate \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_af1b97c4e92b88f736e350b3902266ba4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_aca62b50d03d0d082968eeb1940f98650}\label{cmdline_8c_aca62b50d03d0d082968eeb1940f98650}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+init@{cmdline\+\_\+parser\+\_\+init}}
+\index{cmdline\+\_\+parser\+\_\+init@{cmdline\+\_\+parser\+\_\+init}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+init()}{cmdline\_parser\_init()}}
+{\footnotesize\ttfamily void cmdline\+\_\+parser\+\_\+init (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})}
+
+Initializes the passed \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} structure\textquotesingle{}s fields (also set default values for options that have a default) 
+\begin{DoxyParams}{Parameters}
+{\em args\+\_\+info} & the structure to initialize \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{cmdline_8c_aca62b50d03d0d082968eeb1940f98650_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_aaba43e1bb216c68c96e982c600c906a7}\label{cmdline_8c_aaba43e1bb216c68c96e982c600c906a7}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+internal@{cmdline\+\_\+parser\+\_\+internal}}
+\index{cmdline\+\_\+parser\+\_\+internal@{cmdline\+\_\+parser\+\_\+internal}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+internal()}{cmdline\_parser\_internal()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser\+\_\+internal (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} $\ast$}]{argv,  }\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info,  }\item[{struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$}]{params,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{additional\+\_\+error }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_aaba43e1bb216c68c96e982c600c906a7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_afd778af110fe0ee1ea5eac7aa9939d92}\label{cmdline_8c_afd778af110fe0ee1ea5eac7aa9939d92}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+params\+\_\+create@{cmdline\+\_\+parser\+\_\+params\+\_\+create}}
+\index{cmdline\+\_\+parser\+\_\+params\+\_\+create@{cmdline\+\_\+parser\+\_\+params\+\_\+create}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+params\+\_\+create()}{cmdline\_parser\_params\_create()}}
+{\footnotesize\ttfamily struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params}$\ast$ cmdline\+\_\+parser\+\_\+params\+\_\+create (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Allocates dynamically a \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} structure and initializes all its fields to their default values \begin{DoxyReturn}{Returns}
+the created and initialized \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} structure 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_afd778af110fe0ee1ea5eac7aa9939d92_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_af72b814611cffc706b2135ccdfe7e997}\label{cmdline_8c_af72b814611cffc706b2135ccdfe7e997}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+params\+\_\+init@{cmdline\+\_\+parser\+\_\+params\+\_\+init}}
+\index{cmdline\+\_\+parser\+\_\+params\+\_\+init@{cmdline\+\_\+parser\+\_\+params\+\_\+init}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+params\+\_\+init()}{cmdline\_parser\_params\_init()}}
+{\footnotesize\ttfamily void cmdline\+\_\+parser\+\_\+params\+\_\+init (\begin{DoxyParamCaption}\item[{struct \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} $\ast$}]{params }\end{DoxyParamCaption})}
+
+Initializes all the fields a \hyperlink{structcmdline__parser__params}{cmdline\+\_\+parser\+\_\+params} structure to their default values 
+\begin{DoxyParams}{Parameters}
+{\em params} & the structure to initialize \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{cmdline_8c_ad4f7db2fa4002379eb30e5206f3b7492}\label{cmdline_8c_ad4f7db2fa4002379eb30e5206f3b7492}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+print\+\_\+help@{cmdline\+\_\+parser\+\_\+print\+\_\+help}}
+\index{cmdline\+\_\+parser\+\_\+print\+\_\+help@{cmdline\+\_\+parser\+\_\+print\+\_\+help}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+print\+\_\+help()}{cmdline\_parser\_print\_help()}}
+{\footnotesize\ttfamily void cmdline\+\_\+parser\+\_\+print\+\_\+help (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Print the help Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmdline_8c_ad4f7db2fa4002379eb30e5206f3b7492_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a96f27bf35ce0ab8eea7a1f6e6b59a5e2}\label{cmdline_8c_a96f27bf35ce0ab8eea7a1f6e6b59a5e2}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+print\+\_\+version@{cmdline\+\_\+parser\+\_\+print\+\_\+version}}
+\index{cmdline\+\_\+parser\+\_\+print\+\_\+version@{cmdline\+\_\+parser\+\_\+print\+\_\+version}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+print\+\_\+version()}{cmdline\_parser\_print\_version()}}
+{\footnotesize\ttfamily void cmdline\+\_\+parser\+\_\+print\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Print the version \mbox{\Hypertarget{cmdline_8c_ace6fb8241473bb89c5a575774eb4ba2a}\label{cmdline_8c_ace6fb8241473bb89c5a575774eb4ba2a}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+release@{cmdline\+\_\+parser\+\_\+release}}
+\index{cmdline\+\_\+parser\+\_\+release@{cmdline\+\_\+parser\+\_\+release}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+release()}{cmdline\_parser\_release()}}
+{\footnotesize\ttfamily static void cmdline\+\_\+parser\+\_\+release (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{cmdline_8c_ace6fb8241473bb89c5a575774eb4ba2a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a83651e5be280d60aed58fdb72456a030}\label{cmdline_8c_a83651e5be280d60aed58fdb72456a030}} 
+\index{cmdline.\+c@{cmdline.\+c}!cmdline\+\_\+parser\+\_\+required@{cmdline\+\_\+parser\+\_\+required}}
+\index{cmdline\+\_\+parser\+\_\+required@{cmdline\+\_\+parser\+\_\+required}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{cmdline\+\_\+parser\+\_\+required()}{cmdline\_parser\_required()}}
+{\footnotesize\ttfamily int cmdline\+\_\+parser\+\_\+required (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{prog\+\_\+name }\end{DoxyParamCaption})}
+
+Checks that all the required options were specified 
+\begin{DoxyParams}{Parameters}
+{\em args\+\_\+info} & the structure to check \\
+\hline
+{\em prog\+\_\+name} & the name of the program that will be used to print possible errors \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{cmdline_8c_a3a3cc8b020811185cb0a4b96e1ff5a40}\label{cmdline_8c_a3a3cc8b020811185cb0a4b96e1ff5a40}} 
+\index{cmdline.\+c@{cmdline.\+c}!free\+\_\+string\+\_\+field@{free\+\_\+string\+\_\+field}}
+\index{free\+\_\+string\+\_\+field@{free\+\_\+string\+\_\+field}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{free\+\_\+string\+\_\+field()}{free\_string\_field()}}
+{\footnotesize\ttfamily static void free\+\_\+string\+\_\+field (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{cmdline_8c_a0ec9efd6eb3e6e939fcaaadd8b4c6a9f}\label{cmdline_8c_a0ec9efd6eb3e6e939fcaaadd8b4c6a9f}} 
+\index{cmdline.\+c@{cmdline.\+c}!gengetopt\+\_\+strdup@{gengetopt\+\_\+strdup}}
+\index{gengetopt\+\_\+strdup@{gengetopt\+\_\+strdup}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{gengetopt\+\_\+strdup()}{gengetopt\_strdup()}}
+{\footnotesize\ttfamily char $\ast$ gengetopt\+\_\+strdup (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+replacement of strdup, which is not standard 
+
+\mbox{\Hypertarget{cmdline_8c_a4dcfd361cdaac143739a02102296fedd}\label{cmdline_8c_a4dcfd361cdaac143739a02102296fedd}} 
+\index{cmdline.\+c@{cmdline.\+c}!init\+\_\+args\+\_\+info@{init\+\_\+args\+\_\+info}}
+\index{init\+\_\+args\+\_\+info@{init\+\_\+args\+\_\+info}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{init\+\_\+args\+\_\+info()}{init\_args\_info()}}
+{\footnotesize\ttfamily static void init\+\_\+args\+\_\+info (\begin{DoxyParamCaption}\item[{struct \hyperlink{structgengetopt__args__info}{gengetopt\+\_\+args\+\_\+info} $\ast$}]{args\+\_\+info }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{cmdline_8c_ad600bb9026825a295ea57df22bdf7eca}\label{cmdline_8c_ad600bb9026825a295ea57df22bdf7eca}} 
+\index{cmdline.\+c@{cmdline.\+c}!print\+\_\+help\+\_\+common@{print\+\_\+help\+\_\+common}}
+\index{print\+\_\+help\+\_\+common@{print\+\_\+help\+\_\+common}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+help\+\_\+common()}{print\_help\_common()}}
+{\footnotesize\ttfamily static void print\+\_\+help\+\_\+common (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{cmdline_8c_ad600bb9026825a295ea57df22bdf7eca_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a21d8824d410efa489c4921011c1c0765}\label{cmdline_8c_a21d8824d410efa489c4921011c1c0765}} 
+\index{cmdline.\+c@{cmdline.\+c}!update\+\_\+arg@{update\+\_\+arg}}
+\index{update\+\_\+arg@{update\+\_\+arg}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{update\+\_\+arg()}{update\_arg()}}
+{\footnotesize\ttfamily static int update\+\_\+arg (\begin{DoxyParamCaption}\item[{void $\ast$}]{field,  }\item[{char $\ast$$\ast$}]{orig\+\_\+field,  }\item[{unsigned int $\ast$}]{field\+\_\+given,  }\item[{unsigned int $\ast$}]{prev\+\_\+given,  }\item[{char $\ast$}]{value,  }\item[{char $\ast$}]{possible\+\_\+values\mbox{[}$\,$\mbox{]},  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{default\+\_\+value,  }\item[{\hyperlink{cmdline_8c_a88e31a859f36efa57ad64e6ae13332a1}{cmdline\+\_\+parser\+\_\+arg\+\_\+type}}]{arg\+\_\+type,  }\item[{int}]{check\+\_\+ambiguity,  }\item[{int}]{override,  }\item[{int}]{no\+\_\+free,  }\item[{int}]{multiple\+\_\+option,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{long\+\_\+opt,  }\item[{char}]{short\+\_\+opt,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{additional\+\_\+error }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+updates an option 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the generic pointer to the field to update \\
+\hline
+{\em orig\+\_\+field} & the pointer to the orig field \\
+\hline
+{\em field\+\_\+given} & the pointer to the number of occurrence of this option \\
+\hline
+{\em prev\+\_\+given} & the pointer to the number of occurrence already seen \\
+\hline
+{\em value} & the argument for this option (if null no arg was specified) \\
+\hline
+{\em possible\+\_\+values} & the possible values for this option (if specified) \\
+\hline
+{\em default\+\_\+value} & the default value (in case the option only accepts fixed values) \\
+\hline
+{\em arg\+\_\+type} & the type of this option \\
+\hline
+{\em check\+\_\+ambiguity} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{structcmdline__parser__params_a6e4442704fc40b0b655f7cc602f13ec4}{cmdline\+\_\+parser\+\_\+params.\+check\+\_\+ambiguity} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em override} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{structcmdline__parser__params_ad3ff9d69146e69a47506782197b5675c}{cmdline\+\_\+parser\+\_\+params.\+override} 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em no\+\_\+free} & whether to free a possible previous value \\
+\hline
+{\em multiple\+\_\+option} & whether this is a multiple option \\
+\hline
+{\em long\+\_\+opt} & the corresponding long option \\
+\hline
+{\em short\+\_\+opt} & the corresponding short option (or \textquotesingle{}-\/\textquotesingle{} if none) \\
+\hline
+{\em additional\+\_\+error} & possible further error specification \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=273pt]{cmdline_8c_a21d8824d410efa489c4921011c1c0765_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{cmdline_8c_a332041b3060103618ef6b767ab32d0dd}\label{cmdline_8c_a332041b3060103618ef6b767ab32d0dd}} 
+\index{cmdline.\+c@{cmdline.\+c}!write\+\_\+into\+\_\+file@{write\+\_\+into\+\_\+file}}
+\index{write\+\_\+into\+\_\+file@{write\+\_\+into\+\_\+file}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{write\+\_\+into\+\_\+file()}{write\_into\_file()}}
+{\footnotesize\ttfamily static void write\+\_\+into\+\_\+file (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{outfile,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{opt,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{arg,  }\item[{char $\ast$}]{values\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{cmdline_8c_accad6107ca685f6eba555f6ce63d355d}\label{cmdline_8c_accad6107ca685f6eba555f6ce63d355d}} 
+\index{cmdline.\+c@{cmdline.\+c}!gengetopt\+\_\+args\+\_\+info\+\_\+description@{gengetopt\+\_\+args\+\_\+info\+\_\+description}}
+\index{gengetopt\+\_\+args\+\_\+info\+\_\+description@{gengetopt\+\_\+args\+\_\+info\+\_\+description}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{gengetopt\+\_\+args\+\_\+info\+\_\+description}{gengetopt\_args\_info\_description}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+\_\+description = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{cmdline_8c_a6af7a6b7fb37c0abaa916ee1cfa0a41f}\label{cmdline_8c_a6af7a6b7fb37c0abaa916ee1cfa0a41f}} 
+\index{cmdline.\+c@{cmdline.\+c}!gengetopt\+\_\+args\+\_\+info\+\_\+help@{gengetopt\+\_\+args\+\_\+info\+\_\+help}}
+\index{gengetopt\+\_\+args\+\_\+info\+\_\+help@{gengetopt\+\_\+args\+\_\+info\+\_\+help}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{gengetopt\+\_\+args\+\_\+info\+\_\+help}{gengetopt\_args\_info\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+\_\+help\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{
+  \textcolor{stringliteral}{"  -h, --help               Print help and exit"},
+  \textcolor{stringliteral}{"  -V, --version            Print version and exit"},
+  \textcolor{stringliteral}{"  -o, --outfile=STRING     Output filename"},
+  \textcolor{stringliteral}{"  -g, --gtf                GTF output  (default=off)"},
+  \textcolor{stringliteral}{"  -t, --tabular            Tab delimited output  (default=off)"},
+  \textcolor{stringliteral}{"  -b, --best-only          Print only best hit per alignment  (default=off)"},
+  \textcolor{stringliteral}{"  -r, --best-region        Print all best non-overlapping hits per alignment  \(\backslash\)n                        
+           (default=off)"},
+  \textcolor{stringliteral}{"  -c, --pars=STRING        String with parameters"},
+  \textcolor{stringliteral}{"  -s, --stop-early         Don't calculate p-values if below cutoff  \(\backslash\)n                            
+       (default=off)"},
+  \textcolor{stringliteral}{"  -n, --num-samples=INT    Number of samples"},
+  \textcolor{stringliteral}{"  -p, --cutoff=FLOAT       p-value cutoff"},
+  \textcolor{stringliteral}{"  -z, --debug-file=STRING  Debug file"},
+  \textcolor{stringliteral}{"  -e, --eps                Postscript output  (default=off)"},
+  \textcolor{stringliteral}{"  -i, --eps-cutoff=FLOAT   Postscript output p-value cutoff"},
+  \textcolor{stringliteral}{"  -d, --eps-dir=STRING     Postscript directory"},
+  \textcolor{stringliteral}{"  -l, --limit=STRING       limit to species"},
+  \textcolor{stringliteral}{"  -m, --blosum=INT         BLOSUM matrix version"},
+    0
+\}
+\end{DoxyCode}
+
+
+all the lines making the help output 
+
+\mbox{\Hypertarget{cmdline_8c_a610c3307abce5a8fd304b86b018ae60b}\label{cmdline_8c_a610c3307abce5a8fd304b86b018ae60b}} 
+\index{cmdline.\+c@{cmdline.\+c}!gengetopt\+\_\+args\+\_\+info\+\_\+purpose@{gengetopt\+\_\+args\+\_\+info\+\_\+purpose}}
+\index{gengetopt\+\_\+args\+\_\+info\+\_\+purpose@{gengetopt\+\_\+args\+\_\+info\+\_\+purpose}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{gengetopt\+\_\+args\+\_\+info\+\_\+purpose}{gengetopt\_args\_info\_purpose}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+\_\+purpose = \char`\"{}\char`\"{}}
+
+
+
+the purpose string of the program 
+
+\mbox{\Hypertarget{cmdline_8c_a9f397a306f363bfdebb611e86acf36d5}\label{cmdline_8c_a9f397a306f363bfdebb611e86acf36d5}} 
+\index{cmdline.\+c@{cmdline.\+c}!gengetopt\+\_\+args\+\_\+info\+\_\+usage@{gengetopt\+\_\+args\+\_\+info\+\_\+usage}}
+\index{gengetopt\+\_\+args\+\_\+info\+\_\+usage@{gengetopt\+\_\+args\+\_\+info\+\_\+usage}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{gengetopt\+\_\+args\+\_\+info\+\_\+usage}{gengetopt\_args\_info\_usage}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+\_\+usage = \char`\"{}Usage\+: \char`\"{} C\+M\+D\+L\+I\+N\+E\+\_\+\+P\+A\+R\+S\+E\+R\+\_\+\+P\+A\+C\+K\+A\+GE \char`\"{} \mbox{[}O\+P\+T\+I\+O\+NS\mbox{]}... \mbox{[}F\+I\+L\+ES\mbox{]}...\char`\"{}}
+
+
+
+the usage string of the program 
+
+\mbox{\Hypertarget{cmdline_8c_a08f16a026de44b77c5e7be490fb9e32b}\label{cmdline_8c_a08f16a026de44b77c5e7be490fb9e32b}} 
+\index{cmdline.\+c@{cmdline.\+c}!package\+\_\+name@{package\+\_\+name}}
+\index{package\+\_\+name@{package\+\_\+name}!cmdline.\+c@{cmdline.\+c}}
+\subsubsection{\texorpdfstring{package\+\_\+name}{package\_name}}
+{\footnotesize\ttfamily char$\ast$ package\+\_\+name = 0\hspace{0.3cm}{\ttfamily [static]}}
+

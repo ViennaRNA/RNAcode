@@ -1,0 +1,7 @@
+<map id="read_clustal" name="read_clustal">
+<area shape="rect" id="node2" href="$utils_8c.html#a39d4415a69dcce7a8301d38829101d50" title="get_line" alt="" coords="145,80,212,106"/>
+<area shape="rect" id="node3" href="$utils_8c.html#a5dac704be118855d7c4dd3aa3bc31fc3" title="space" alt="" coords="417,68,474,94"/>
+<area shape="rect" id="node4" href="$utils_8c.html#a9037ada838835b1b9db41581a021b0c8" title="xrealloc" alt="" coords="281,130,347,157"/>
+<area shape="rect" id="node5" href="$utils_8c.html#a93e5a2447f559f7930054555a4252ccd" title="nrerror" alt="" coords="416,144,475,170"/>
+<area shape="rect" id="node6" href="$rnaz__utils_8c.html#ab3af11f3fc09669574f682072f795865" title="createAlnEntry" alt="" coords="260,29,368,56"/>
+</map>

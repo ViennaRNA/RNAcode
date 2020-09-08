@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['encodeaa',['encodeAA',['../code_8c.html#a617a88955038003d70de0d9113b505eb',1,'encodeAA(char aa):&#160;code.c'],['../code_8h.html#a617a88955038003d70de0d9113b505eb',1,'encodeAA(char aa):&#160;code.c']]],
+  ['encodebase',['encodeBase',['../rnaz__utils_8c.html#a48ca69cad11fcf2c4d962b73ff4388ee',1,'encodeBase(char base):&#160;rnaz_utils.c'],['../rnaz__utils_8h.html#a48ca69cad11fcf2c4d962b73ff4388ee',1,'encodeBase(char base):&#160;rnaz_utils.c']]],
+  ['encodeseq',['encodeSeq',['../code_8c.html#a011bbc41b53a2519b2bb46214b7a1fcc',1,'encodeSeq(char *seq):&#160;code.c'],['../code_8h.html#a011bbc41b53a2519b2bb46214b7a1fcc',1,'encodeSeq(char *seq):&#160;code.c']]],
+  ['end',['end',['../struct__segmentStats.html#a4d3d7af903f88c69e687d259590b00a3',1,'_segmentStats']]],
+  ['endgenomic',['endGenomic',['../struct__segmentStats.html#acf8d8441557c049db6d84d96ed7f7ca3',1,'_segmentStats']]],
+  ['endsite',['endSite',['../struct__segmentStats.html#af419d597e7393b0e78078eaa842ded6c',1,'_segmentStats']]],
+  ['eps_5fcutoff_5farg',['eps_cutoff_arg',['../structgengetopt__args__info.html#a7d5c15c092764baac13552613fda575f',1,'gengetopt_args_info']]],
+  ['eps_5fcutoff_5fgiven',['eps_cutoff_given',['../structgengetopt__args__info.html#a60b5aec84888abe557256b1909b01a01',1,'gengetopt_args_info']]],
+  ['eps_5fcutoff_5fhelp',['eps_cutoff_help',['../structgengetopt__args__info.html#a32790cf21a0f8e8623371d12deb4b337',1,'gengetopt_args_info']]],
+  ['eps_5fcutoff_5forig',['eps_cutoff_orig',['../structgengetopt__args__info.html#ad2f45ed857ac6e6d8b1a371d85b65e25',1,'gengetopt_args_info']]],
+  ['eps_5fdir_5farg',['eps_dir_arg',['../structgengetopt__args__info.html#a29434f1b1030755c24dde59d8c157de5',1,'gengetopt_args_info']]],
+  ['eps_5fdir_5fgiven',['eps_dir_given',['../structgengetopt__args__info.html#a33c0504245a49e483924248119b400a6',1,'gengetopt_args_info']]],
+  ['eps_5fdir_5fhelp',['eps_dir_help',['../structgengetopt__args__info.html#a1c676a66f0cf100d49679440032ae4ab',1,'gengetopt_args_info']]],
+  ['eps_5fdir_5forig',['eps_dir_orig',['../structgengetopt__args__info.html#a7474b0d19ed3f9c13ebc88e6cf652c65',1,'gengetopt_args_info']]],
+  ['eps_5fflag',['eps_flag',['../structgengetopt__args__info.html#a4c97eb3971c8f9222073e63484872bf0',1,'gengetopt_args_info']]],
+  ['eps_5fgiven',['eps_given',['../structgengetopt__args__info.html#a9d52e7e979f21f9278bcb39005164a44',1,'gengetopt_args_info']]],
+  ['eps_5fhelp',['eps_help',['../structgengetopt__args__info.html#aa87d33b8ebe4fa33c6c4b7454c3e7e55',1,'gengetopt_args_info']]],
+  ['equalfreqs',['equalFreqs',['../treeSimulate_8c.html#a85ef69963901475137a5babcaf4233b3',1,'treeSimulate.c']]],
+  ['evdmaxlikelyfit',['EVDMaxLikelyFit',['../extreme__fit_8c.html#a51c7409c6447353e0bd3b7c48d982984',1,'EVDMaxLikelyFit(double *x, int *c, int n, double *ret_mu, double *ret_lambda):&#160;extreme_fit.c'],['../extreme__fit_8h.html#a51c7409c6447353e0bd3b7c48d982984',1,'EVDMaxLikelyFit(double *x, int *c, int n, double *ret_mu, double *ret_lambda):&#160;extreme_fit.c']]],
+  ['exchange',['exchange',['../getopt_8c.html#a4621659dd6377e52ac50a0869625bb6e',1,'getopt.c']]],
+  ['extendregion',['extendRegion',['../misc_8c.html#a6017c986a43a1bba1569a8efb1b3aedb',1,'extendRegion(const struct aln *alignment[], int pos, int direction):&#160;misc.c'],['../misc_8h.html#a6017c986a43a1bba1569a8efb1b3aedb',1,'extendRegion(const struct aln *alignment[], int pos, int direction):&#160;misc.c']]],
+  ['extreme_5ffit_2ec',['extreme_fit.c',['../extreme__fit_8c.html',1,'']]],
+  ['extreme_5ffit_2eh',['extreme_fit.h',['../extreme__fit_8h.html',1,'']]]
+];

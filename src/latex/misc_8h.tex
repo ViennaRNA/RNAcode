@@ -1,0 +1,187 @@
+\hypertarget{misc_8h}{}\section{misc.\+h File Reference}
+\label{misc_8h}\index{misc.\+h@{misc.\+h}}
+{\ttfamily \#include \char`\"{}score.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}code.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rnaz\+\_\+utils.\+h\char`\"{}}\newline
+Include dependency graph for misc.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=317pt]{misc_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{misc_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{misc_8h_ab8906f987e8caa1c304422e2105784db}{allocate\+Sk} (int N, int L)
+\item 
+void \hyperlink{misc_8h_a540d653adf9134e345a0be15556bef9f}{copy\+Sk} (float $\ast$$\ast$$\ast$$\ast$from, float $\ast$$\ast$$\ast$$\ast$to, int N, int L)
+\item 
+int \hyperlink{misc_8h_a3003bc209fbd623b0ebf8d55c3f76454}{compare\+Scores} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} void $\ast$a, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} void $\ast$b)
+\item 
+void \hyperlink{misc_8h_a8eed68ed1197df02c8b9a49264efc717}{reintroduce\+Gaps} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$orig\+Aln\mbox{[}$\,$\mbox{]}, struct \hyperlink{structaln}{aln} $\ast$sampled\+Aln\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{misc_8h_a5753372a1a3c3974fc6be9a6030a67bf}{sort\+Aln} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$orig\+Aln\mbox{[}$\,$\mbox{]}, struct \hyperlink{structaln}{aln} $\ast$sampled\+Aln\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{misc_8h_a71b140f8ccd1190776a6cc04f42f7b0d}{free\+Results} (\hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats} results\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{misc_8h_a9fe543fe19ab3ff4ae9def519e1f0ac1}{get\+Block} (int i, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$seq\+\_\+0, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$seq\+\_\+k, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} int $\ast$map\+\_\+0, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} int $\ast$map\+\_\+k, char $\ast$block\+\_\+0, char $\ast$block\+\_\+k, int $\ast$z)
+\item 
+int \hyperlink{misc_8h_af49091737065e3ea21101edf17533dcf}{pos2col} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$seq, int pos)
+\item 
+int \hyperlink{misc_8h_a935b3901ff2b656c44257b4606ceab6c}{get\+Seq\+Length} (char $\ast$seq)
+\item 
+int \hyperlink{misc_8h_a62dbd6f5f78b8829c91c5e373b897f67}{h\+Dist} (int a1, int a2, int a3, int b1, int b2, int b3)
+\item 
+float \hyperlink{misc_8h_a29db63ab5182ac2f88eb37329c092126}{avg} (float $\ast$data, int N)
+\item 
+float \hyperlink{misc_8h_ac9b591bdb26f6a8b8ee56aee3e809c65}{stddev} (float $\ast$data, int N)
+\item 
+float \hyperlink{misc_8h_af625860d4b3644771a9b58a316518d00}{gaussian} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} float sigma)
+\item 
+void \hyperlink{misc_8h_a0da1742a6a7f546827bee85fbdf53592}{copy\+Aln} (struct \hyperlink{structaln}{aln} $\ast$src\mbox{[}$\,$\mbox{]}, struct \hyperlink{structaln}{aln} $\ast$dest\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{misc_8h_a622e2235405d5fce48465d284271642c}{print\+Aln\+Clustal} (F\+I\+LE $\ast$out, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{misc_8h_a92f776363f89ffb2864dc72fa7c8471f}{print\+Results} (F\+I\+LE $\ast$\hyperlink{postscript_8c_ae581849c67336453bd5b81e6518019a9}{outfile}, int output\+Format, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]}, \hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats} results\mbox{[}$\,$\mbox{]})
+\item 
+int \hyperlink{misc_8h_a6017c986a43a1bba1569a8efb1b3aedb}{extend\+Region} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]}, int pos, int direction)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{misc_8h_ab8906f987e8caa1c304422e2105784db}\label{misc_8h_ab8906f987e8caa1c304422e2105784db}} 
+\index{misc.\+h@{misc.\+h}!allocate\+Sk@{allocate\+Sk}}
+\index{allocate\+Sk@{allocate\+Sk}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{allocate\+Sk()}{allocateSk()}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ allocate\+Sk (\begin{DoxyParamCaption}\item[{int}]{N,  }\item[{int}]{L }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a29db63ab5182ac2f88eb37329c092126}\label{misc_8h_a29db63ab5182ac2f88eb37329c092126}} 
+\index{misc.\+h@{misc.\+h}!avg@{avg}}
+\index{avg@{avg}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{avg()}{avg()}}
+{\footnotesize\ttfamily float avg (\begin{DoxyParamCaption}\item[{float $\ast$}]{data,  }\item[{int}]{N }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a3003bc209fbd623b0ebf8d55c3f76454}\label{misc_8h_a3003bc209fbd623b0ebf8d55c3f76454}} 
+\index{misc.\+h@{misc.\+h}!compare\+Scores@{compare\+Scores}}
+\index{compare\+Scores@{compare\+Scores}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{compare\+Scores()}{compareScores()}}
+{\footnotesize\ttfamily int compare\+Scores (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} void $\ast$}]{a,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} void $\ast$}]{b }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a0da1742a6a7f546827bee85fbdf53592}\label{misc_8h_a0da1742a6a7f546827bee85fbdf53592}} 
+\index{misc.\+h@{misc.\+h}!copy\+Aln@{copy\+Aln}}
+\index{copy\+Aln@{copy\+Aln}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{copy\+Aln()}{copyAln()}}
+{\footnotesize\ttfamily void copy\+Aln (\begin{DoxyParamCaption}\item[{struct \hyperlink{structaln}{aln} $\ast$}]{src\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{dest\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{misc_8h_a0da1742a6a7f546827bee85fbdf53592_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{misc_8h_a540d653adf9134e345a0be15556bef9f}\label{misc_8h_a540d653adf9134e345a0be15556bef9f}} 
+\index{misc.\+h@{misc.\+h}!copy\+Sk@{copy\+Sk}}
+\index{copy\+Sk@{copy\+Sk}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{copy\+Sk()}{copySk()}}
+{\footnotesize\ttfamily void copy\+Sk (\begin{DoxyParamCaption}\item[{float $\ast$$\ast$$\ast$$\ast$}]{from,  }\item[{float $\ast$$\ast$$\ast$$\ast$}]{to,  }\item[{int}]{N,  }\item[{int}]{L }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a6017c986a43a1bba1569a8efb1b3aedb}\label{misc_8h_a6017c986a43a1bba1569a8efb1b3aedb}} 
+\index{misc.\+h@{misc.\+h}!extend\+Region@{extend\+Region}}
+\index{extend\+Region@{extend\+Region}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{extend\+Region()}{extendRegion()}}
+{\footnotesize\ttfamily int extend\+Region (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]},  }\item[{int}]{pos,  }\item[{int}]{direction }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{misc_8h_a6017c986a43a1bba1569a8efb1b3aedb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{misc_8h_a71b140f8ccd1190776a6cc04f42f7b0d}\label{misc_8h_a71b140f8ccd1190776a6cc04f42f7b0d}} 
+\index{misc.\+h@{misc.\+h}!free\+Results@{free\+Results}}
+\index{free\+Results@{free\+Results}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{free\+Results()}{freeResults()}}
+{\footnotesize\ttfamily void free\+Results (\begin{DoxyParamCaption}\item[{\hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats}}]{results\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_af625860d4b3644771a9b58a316518d00}\label{misc_8h_af625860d4b3644771a9b58a316518d00}} 
+\index{misc.\+h@{misc.\+h}!gaussian@{gaussian}}
+\index{gaussian@{gaussian}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{gaussian()}{gaussian()}}
+{\footnotesize\ttfamily float gaussian (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} float}]{sigma }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a9fe543fe19ab3ff4ae9def519e1f0ac1}\label{misc_8h_a9fe543fe19ab3ff4ae9def519e1f0ac1}} 
+\index{misc.\+h@{misc.\+h}!get\+Block@{get\+Block}}
+\index{get\+Block@{get\+Block}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{get\+Block()}{getBlock()}}
+{\footnotesize\ttfamily void get\+Block (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{seq\+\_\+0,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{seq\+\_\+k,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} int $\ast$}]{map\+\_\+0,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} int $\ast$}]{map\+\_\+k,  }\item[{char $\ast$}]{block\+\_\+0,  }\item[{char $\ast$}]{block\+\_\+k,  }\item[{int $\ast$}]{z }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a935b3901ff2b656c44257b4606ceab6c}\label{misc_8h_a935b3901ff2b656c44257b4606ceab6c}} 
+\index{misc.\+h@{misc.\+h}!get\+Seq\+Length@{get\+Seq\+Length}}
+\index{get\+Seq\+Length@{get\+Seq\+Length}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{get\+Seq\+Length()}{getSeqLength()}}
+{\footnotesize\ttfamily int get\+Seq\+Length (\begin{DoxyParamCaption}\item[{char $\ast$}]{seq }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a62dbd6f5f78b8829c91c5e373b897f67}\label{misc_8h_a62dbd6f5f78b8829c91c5e373b897f67}} 
+\index{misc.\+h@{misc.\+h}!h\+Dist@{h\+Dist}}
+\index{h\+Dist@{h\+Dist}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{h\+Dist()}{hDist()}}
+{\footnotesize\ttfamily int h\+Dist (\begin{DoxyParamCaption}\item[{int}]{a1,  }\item[{int}]{a2,  }\item[{int}]{a3,  }\item[{int}]{b1,  }\item[{int}]{b2,  }\item[{int}]{b3 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_af49091737065e3ea21101edf17533dcf}\label{misc_8h_af49091737065e3ea21101edf17533dcf}} 
+\index{misc.\+h@{misc.\+h}!pos2col@{pos2col}}
+\index{pos2col@{pos2col}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{pos2col()}{pos2col()}}
+{\footnotesize\ttfamily int pos2col (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{seq,  }\item[{int}]{pos }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a622e2235405d5fce48465d284271642c}\label{misc_8h_a622e2235405d5fce48465d284271642c}} 
+\index{misc.\+h@{misc.\+h}!print\+Aln\+Clustal@{print\+Aln\+Clustal}}
+\index{print\+Aln\+Clustal@{print\+Aln\+Clustal}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{print\+Aln\+Clustal()}{printAlnClustal()}}
+{\footnotesize\ttfamily void print\+Aln\+Clustal (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{out,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a92f776363f89ffb2864dc72fa7c8471f}\label{misc_8h_a92f776363f89ffb2864dc72fa7c8471f}} 
+\index{misc.\+h@{misc.\+h}!print\+Results@{print\+Results}}
+\index{print\+Results@{print\+Results}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{print\+Results()}{printResults()}}
+{\footnotesize\ttfamily void print\+Results (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{outfile,  }\item[{int}]{output\+Format,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]},  }\item[{\hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats}}]{results\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{misc_8h_a92f776363f89ffb2864dc72fa7c8471f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{misc_8h_a8eed68ed1197df02c8b9a49264efc717}\label{misc_8h_a8eed68ed1197df02c8b9a49264efc717}} 
+\index{misc.\+h@{misc.\+h}!reintroduce\+Gaps@{reintroduce\+Gaps}}
+\index{reintroduce\+Gaps@{reintroduce\+Gaps}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{reintroduce\+Gaps()}{reintroduceGaps()}}
+{\footnotesize\ttfamily void reintroduce\+Gaps (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{orig\+Aln\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{sampled\+Aln\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_a5753372a1a3c3974fc6be9a6030a67bf}\label{misc_8h_a5753372a1a3c3974fc6be9a6030a67bf}} 
+\index{misc.\+h@{misc.\+h}!sort\+Aln@{sort\+Aln}}
+\index{sort\+Aln@{sort\+Aln}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{sort\+Aln()}{sortAln()}}
+{\footnotesize\ttfamily void sort\+Aln (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{orig\+Aln\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{sampled\+Aln\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{misc_8h_ac9b591bdb26f6a8b8ee56aee3e809c65}\label{misc_8h_ac9b591bdb26f6a8b8ee56aee3e809c65}} 
+\index{misc.\+h@{misc.\+h}!stddev@{stddev}}
+\index{stddev@{stddev}!misc.\+h@{misc.\+h}}
+\subsubsection{\texorpdfstring{stddev()}{stddev()}}
+{\footnotesize\ttfamily float stddev (\begin{DoxyParamCaption}\item[{float $\ast$}]{data,  }\item[{int}]{N }\end{DoxyParamCaption})}
+

@@ -1,0 +1,20 @@
+<map id="scoreAln" name="scoreAln">
+<area shape="rect" id="node2" href="$misc_8c.html#a935b3901ff2b656c44257b4606ceab6c" title="getSeqLength" alt="" coords="339,208,441,235"/>
+<area shape="rect" id="node3" href="$misc_8c.html#a0da1742a6a7f546827bee85fbdf53592" title="copyAln" alt="" coords="172,5,241,32"/>
+<area shape="rect" id="node6" href="$rnaz__utils_8c.html#a9c0adcc1f46e9fceab51c54bd25475e2" title="revAln" alt="" coords="361,56,419,83"/>
+<area shape="rect" id="node7" href="$score_8c.html#a6589227c4b47c35cca34ecc18c7f9634" title="getPairwiseScoreMatrix" alt="" coords="127,360,287,387"/>
+<area shape="rect" id="node8" href="$misc_8c.html#ab8906f987e8caa1c304422e2105784db" title="allocateSk" alt="" coords="349,411,431,437"/>
+<area shape="rect" id="node13" href="$score_8c.html#af6b84950cd47402f4580d56eb22854fd" title="getMultipleScoreMatrix" alt="" coords="129,107,284,133"/>
+<area shape="rect" id="node14" href="$misc_8c.html#a540d653adf9134e345a0be15556bef9f" title="copySk" alt="" coords="173,309,240,336"/>
+<area shape="rect" id="node15" href="$score_8c.html#a93045a86d8c050d38eed9c213ced83c7" title="getHSS" alt="" coords="173,157,241,184"/>
+<area shape="rect" id="node16" href="$score_8c.html#ab2954f5929699167062e554323b3ec08" title="freeS" alt="" coords="180,208,233,235"/>
+<area shape="rect" id="node17" href="$misc_8c.html#a71b140f8ccd1190776a6cc04f42f7b0d" title="freeResults" alt="" coords="162,461,251,488"/>
+<area shape="rect" id="node18" href="$rnaz__utils_8c.html#ace5cb65b010161f9eb138717b4592673" title="freeAln" alt="" coords="175,512,238,539"/>
+<area shape="rect" id="node4" href="$rnaz__utils_8c.html#ab3af11f3fc09669574f682072f795865" title="createAlnEntry" alt="" coords="336,5,444,32"/>
+<area shape="rect" id="node5" href="$utils_8c.html#a5dac704be118855d7c4dd3aa3bc31fc3" title="space" alt="" coords="493,31,551,57"/>
+<area shape="rect" id="node9" href="$misc_8c.html#af49091737065e3ea21101edf17533dcf" title="pos2col" alt="" coords="357,259,423,285"/>
+<area shape="rect" id="node10" href="$misc_8c.html#a9fe543fe19ab3ff4ae9def519e1f0ac1" title="getBlock" alt="" coords="353,309,427,336"/>
+<area shape="rect" id="node11" href="$score_8c.html#aa7ac5e027c4335c220657e63d95b18ec" title="calculateSigma" alt="" coords="335,360,445,387"/>
+<area shape="rect" id="node12" href="$misc_8c.html#a62dbd6f5f78b8829c91c5e373b897f67" title="hDist" alt="" coords="495,360,549,387"/>
+<area shape="rect" id="node19" href="$rnaz__utils_8c.html#ac38565a99389ebf0aed62a623d893299" title="freeAlnEntry" alt="" coords="343,512,437,539"/>
+</map>

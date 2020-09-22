@@ -20,7 +20,7 @@ on a simple model of sequence data." (1997) O. Gascuel. Mol Biol Evol.
 */
 
 #include "bionj.h"
-#include "free.h"
+
 
 void Bionj(matrix *mat)
 {
@@ -28,9 +28,10 @@ void Bionj(matrix *mat)
   phydbl vxy,lx,ly,lamda,score;
 
   Clean_Tree_Connections(mat->tree);  
-  For(i,mat->tree->n_otu) mat->tip_node[i] = mat->tree->noeud[i];
-  mat->tree->num_curr_branch_available = 0;
+  for(i=0;i<mat->tree->n_otu;i++) mat->tip_node[i] = mat->tree->a_nodes[i];
+  mat->tree->num_curr_branch_available = mat->tree->n_otu;
 
+  
   while(mat->r > 3)
     {
       x = y =  0;
@@ -38,29 +39,33 @@ void Bionj(matrix *mat)
       score = .0;
       Compute_Sx(mat);
       Best_Pair(mat,&x,&y,&score);
-      vxy=Variance(mat,x,y);
+      vxy=BioNJ_Variance(mat,x,y);
       lx=Br_Length(mat,x,y);    
       ly=Br_Length(mat,y,x);
       lamda=Lamda(mat,x,y,vxy); 
       Update_Mat(mat,x,y,lx,ly,vxy,lamda);
       Update_Tree(mat,x,y,lx,ly,score);      
     }
+
   Finish(mat);
+
 }
   
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void Finish(matrix *mat)
 {
   phydbl dxy,dxz,dyz;
   int x,y,z;
-  node *nx,*ny,*nz,*new;
+  t_node *nx,*ny,*nz,*new;
   int i;
 
   dxy = dxz = dyz = -1.;
   x = y = z = -1;
 
-  For(i,mat->n_otu)
+  for(i=0;i<mat->n_otu;i++)
     {
       if(mat->on_off[i])
 	{
@@ -78,7 +83,7 @@ void Finish(matrix *mat)
   ny = mat->tip_node[y];
   nz = mat->tip_node[z];
 
-  new = mat->tree->noeud[mat->curr_int];
+  new = mat->tree->a_nodes[mat->curr_int];
   new->num = mat->curr_int;
   new->v[0] = nx;
   new->v[1] = ny;
@@ -88,25 +93,34 @@ void Finish(matrix *mat)
   ny->v[0] = new;
   nz->v[0] = new;
 
-  
-  Connect_One_Edge_To_Two_Nodes(new,nx,mat->tree->t_edges[mat->tree->num_curr_branch_available],mat->tree);
-  mat->tree->num_curr_branch_available++;
-  Connect_One_Edge_To_Two_Nodes(new,ny,mat->tree->t_edges[mat->tree->num_curr_branch_available],mat->tree);
-  mat->tree->num_curr_branch_available++;
-  Connect_One_Edge_To_Two_Nodes(new,nz,mat->tree->t_edges[mat->tree->num_curr_branch_available],mat->tree);
-  mat->tree->num_curr_branch_available++;
-
+  if(nx->tax)
+    Connect_One_Edge_To_Two_Nodes(new,nx,mat->tree->a_edges[nx->num],mat->tree);
+  else
+    Connect_One_Edge_To_Two_Nodes(new,nx,mat->tree->a_edges[mat->tree->num_curr_branch_available],mat->tree);
+    
+  if(ny->tax)
+    Connect_One_Edge_To_Two_Nodes(new,ny,mat->tree->a_edges[ny->num],mat->tree);
+  else
+    Connect_One_Edge_To_Two_Nodes(new,ny,mat->tree->a_edges[mat->tree->num_curr_branch_available],mat->tree);
+    
+  if(nz->tax)
+    Connect_One_Edge_To_Two_Nodes(new,nz,mat->tree->a_edges[nz->num],mat->tree);
+  else
+    Connect_One_Edge_To_Two_Nodes(new,nz,mat->tree->a_edges[mat->tree->num_curr_branch_available],mat->tree);
+    
  
-  nx->b[0]->l = .5*(dxy-dyz+dxz);
-  ny->b[0]->l = .5*(dyz-dxz+dxy);
-  nz->b[0]->l = .5*(dxz-dxy+dyz);
+  nx->b[0]->l->v = .5*(dxy-dyz+dxz);
+  ny->b[0]->l->v = .5*(dyz-dxz+dxy);
+  nz->b[0]->l->v = .5*(dxz-dxy+dyz);
    
-  new->b[0]->l = nx->b[0]->l;
-  new->b[1]->l = ny->b[0]->l;
-  new->b[2]->l = nz->b[0]->l;
+  new->b[0]->l->v = nx->b[0]->l->v;
+  new->b[1]->l->v = ny->b[0]->l->v;
+  new->b[2]->l->v = nz->b[0]->l->v;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void Update_Mat(matrix *mat, int x, int y, phydbl lx, phydbl ly, phydbl vxy, phydbl lamda)
 {
@@ -114,7 +128,7 @@ void Update_Mat(matrix *mat, int x, int y, phydbl lx, phydbl ly, phydbl vxy, phy
   int a,b;
   
   a = b = -1;
-  For(i,mat->n_otu)
+  for(i=0;i<mat->n_otu;i++)
     {
       if((mat->on_off[i]) && (i != x) && (i != y))
 	{
@@ -134,47 +148,53 @@ void Update_Mat(matrix *mat, int x, int y, phydbl lx, phydbl ly, phydbl vxy, phy
     }
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 void Update_Tree(matrix *mat, int x, int y, phydbl lx, phydbl ly, phydbl score)
 {
-  node *new, *nx, *ny;
+  t_node *new, *nx, *ny;
 
   nx            = mat->tip_node[x];
   ny            = mat->tip_node[y];
-  new           = mat->tree->noeud[mat->curr_int];
+  new           = mat->tree->a_nodes[mat->curr_int];
   nx->v[0]      = new;
   ny->v[0]      = new;
   new->v[1]     = nx;
   new->v[2]     = ny;
   new->num      = mat->curr_int;
-
-
-  Connect_One_Edge_To_Two_Nodes(new,nx,mat->tree->t_edges[mat->tree->num_curr_branch_available],mat->tree);
-  mat->tree->num_curr_branch_available++;
-  Connect_One_Edge_To_Two_Nodes(new,ny,mat->tree->t_edges[mat->tree->num_curr_branch_available],mat->tree);
-  mat->tree->num_curr_branch_available++;
-
-  nx->b[0]->l   = lx;
-  ny->b[0]->l   = ly;
   
-  new->b[1]->l  = lx;
-  new->b[2]->l  = ly;
+
+  if(nx->tax)
+    Connect_One_Edge_To_Two_Nodes(new,nx,mat->tree->a_edges[nx->num],mat->tree);
+  else
+    Connect_One_Edge_To_Two_Nodes(new,nx,mat->tree->a_edges[mat->tree->num_curr_branch_available],mat->tree);
+
+  if(ny->tax)
+    Connect_One_Edge_To_Two_Nodes(new,ny,mat->tree->a_edges[ny->num],mat->tree);
+  else
+    Connect_One_Edge_To_Two_Nodes(new,ny,mat->tree->a_edges[mat->tree->num_curr_branch_available],mat->tree);
+
+  
+  nx->b[0]->l->v   = lx;
+  ny->b[0]->l->v   = ly;
+  
+  new->b[1]->l->v  = lx;
+  new->b[2]->l->v  = ly;
   new->score[0] = score;
 
-  nx->l[0]      = lx;
-  ny->l[0]      = ly;
-  
-  new->l[1]     = lx;
-  new->l[2]     = ly;
- 
+  nx->b[0]->l->v   = lx;
+  ny->b[0]->l->v   = ly;
+   
   mat->tip_node[x] = new;
   mat->on_off[y] = 0;
   mat->curr_int++;
   mat->r--;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void Best_Pair(matrix *mat, int *x, int *y,phydbl *score)
 {
@@ -188,7 +208,7 @@ void Best_Pair(matrix *mat, int *x, int *y,phydbl *score)
 
   Qmin = 1.e+10;
   
-  For(i,mat->n_otu)
+  for(i=0;i<mat->n_otu;i++)
     {
       if(mat->on_off[i])
 	{
@@ -210,7 +230,7 @@ void Best_Pair(matrix *mat, int *x, int *y,phydbl *score)
     }
   
 /*   n_ties = 0; */
-/*   For(i,mat->n_otu) */
+/*   for(i=0;i<mat->n_otu;i++) */
 /*     { */
 /*       if(mat->on_off[i]) */
 /* 	{ */
@@ -230,7 +250,7 @@ void Best_Pair(matrix *mat, int *x, int *y,phydbl *score)
    
 /*   if(!n_ties) */
 /*     { */
-/*       printf("\n. Err in file %s at line %d\n",__FILE__,__LINE__); */
+/*       PhyML_Printf("\n. Err in file %s at line %d\n\n",__FILE__,__LINE__); */
 /*       Warn_And_Exit(""); */
 /*     } */
 
@@ -240,7 +260,7 @@ void Best_Pair(matrix *mat, int *x, int *y,phydbl *score)
 /*     { */
 /*       int cand; */
 /*       *x = *y = -1; */
-/*       cand = (int)rint(rand()/(phydbl)(RAND_MAX) * (n_ties-1)); */
+/*       cand = (int)RINT(rand()/(phydbl)(RAND_MAX) * (n_ties-1)); */
 /*       *x = (int)(ties[cand] / mat->n_otu); */
 /*       *y = (int)(ties[cand] % mat->n_otu); */
 /*     } */
@@ -249,34 +269,36 @@ void Best_Pair(matrix *mat, int *x, int *y,phydbl *score)
 
   Qmin2 = 1e+10;
 
-  For(i,mat->n_otu)
+  for(i=0;i<mat->n_otu;i++)
     {
       if((i != *y) && (i != *x) && (t_Qij[mat->n_otu*(*x)+i] < Qmin2)) Qmin2 = t_Qij[mat->n_otu*(*x)+i];
     }
 
-  For(i,mat->n_otu)
+  for(i=0;i<mat->n_otu;i++)
     {
       if((i != *y) && (i != *x) && (t_Qij[mat->n_otu*i+(*y)] < Qmin2)) Qmin2 = t_Qij[mat->n_otu*i+(*y)];
     }
 
-  *score = fabs(Qmin2 - Qmin)/fabs(Qmin);
+  *score = FABS(Qmin2 - Qmin)/FABS(Qmin);
 
   Free(t_Qij);
 /*   Free(ties); */
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void Compute_Sx(matrix *mat)
 {
   int i,j;
   
-  For(i,mat->n_otu)
+  for(i=0;i<mat->n_otu;i++)
     {
       mat->dist[i][i] = .0;
       if(mat->on_off[i])
 	{
-	  For(j,mat->n_otu)
+	  for(j=0;j<mat->n_otu;j++)
 	    {
 	      if((i != j) && (mat->on_off[j]))
 		{
@@ -287,14 +309,18 @@ void Compute_Sx(matrix *mat)
     }
 }
 	      
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 phydbl Sum_S(matrix *mat, int i)
 {
   return mat->dist[i][i];
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 phydbl Dist(matrix *mat, int x, int y)
 {
@@ -304,9 +330,10 @@ phydbl Dist(matrix *mat, int x, int y)
       return(mat->dist[y][x]);
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-phydbl Variance(matrix *mat, int x, int y)
+phydbl BioNJ_Variance(matrix *mat, int x, int y)
 {
     if(x > y)
       {
@@ -318,7 +345,9 @@ phydbl Variance(matrix *mat, int x, int y)
       }
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 phydbl Br_Length(matrix *mat, int x, int y)
 {
@@ -326,7 +355,9 @@ phydbl Br_Length(matrix *mat, int x, int y)
 	      (Sum_S(mat,x)-Sum_S(mat,y))/(phydbl)(mat->r-2.)); 
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 phydbl Dist_Red(matrix *mat, int x, phydbl lx, int y, phydbl ly, int i, phydbl lamda)
 {
@@ -336,18 +367,21 @@ phydbl Dist_Red(matrix *mat, int x, phydbl lx, int y, phydbl ly, int i, phydbl l
   return(Dui);
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 phydbl Var_Red(matrix *mat, int x, int y, int i, phydbl lamda, phydbl vxy)
 {
   phydbl Vui;
-  Vui=lamda*(Variance(mat,x,i))
-     +(1.-lamda)*(Variance(mat,y,i))
+  Vui=lamda*(BioNJ_Variance(mat,x,i))
+     +(1.-lamda)*(BioNJ_Variance(mat,y,i))
     -lamda*(1.-lamda)*vxy;
   return(Vui);
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 phydbl Lamda(matrix *mat, int x, int y, phydbl vxy)
 {
@@ -358,14 +392,14 @@ phydbl Lamda(matrix *mat, int x, int y, phydbl vxy)
       lamda = 0.5;
     else /* BioNJ (Gascuel, 1997) */
       {
-	if(vxy==0.0)
+	if(vxy < SMALL && vxy > -SMALL)
 	  lamda=0.5;
 	else
 	  {
-	    For(i,mat->n_otu)
+	    for(i=0;i<mat->n_otu;i++)
 	      {
 		if((x != i) && (y != i) && (mat->on_off[i]))
-		  lamda = lamda + Variance(mat,y,i) - Variance(mat,x,i);
+		  lamda = lamda + BioNJ_Variance(mat,y,i) - BioNJ_Variance(mat,x,i);
 	      }
 	    lamda = 0.5 + lamda/(2.*(mat->r-2)*vxy);
 	  }
@@ -379,7 +413,9 @@ phydbl Lamda(matrix *mat, int x, int y, phydbl vxy)
     return(lamda);
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 phydbl Q_Agglo(matrix *mat, int x, int y)
 {
@@ -390,21 +426,25 @@ phydbl Q_Agglo(matrix *mat, int x, int y)
   return(Qxy);                       
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void Bionj_Br_Length(matrix *mat)
 {
   int x;
 
-  x = Bionj_Br_Length_Post(mat->tree->noeud[0],
-			   mat->tree->noeud[0]->v[0],
+  x = Bionj_Br_Length_Post(mat->tree->a_nodes[0],
+			   mat->tree->a_nodes[0]->v[0],
 			   mat);
-  mat->tree->noeud[0]->b[0]->l = Dist(mat,0,x);
+  mat->tree->a_nodes[0]->b[0]->l->v = Dist(mat,0,x);
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-int Bionj_Br_Length_Post(node *a, node *d, matrix *mat)
+
+int Bionj_Br_Length_Post(t_node *a, t_node *d, matrix *mat)
 {
   int i;
 
@@ -419,7 +459,7 @@ int Bionj_Br_Length_Post(node *a, node *d, matrix *mat)
       int x,y;
 
       d_v1 = d_v2 = -1;
-      For(i,3)
+      for(i=0;i<3;i++)
 	if(d->v[i] != a) {(d_v1 < 0)?(d_v1 = i):(d_v2 = i);}
       
 
@@ -428,14 +468,14 @@ int Bionj_Br_Length_Post(node *a, node *d, matrix *mat)
 
       vxy = .0;
       Compute_Sx(mat);
-      vxy=Variance(mat,(x),(y));
+      vxy=BioNJ_Variance(mat,(x),(y));
       lx=Br_Length(mat,(x),(y));    
       ly=Br_Length(mat,(y),(x));
       lamda=Lamda(mat,(x),(y),vxy); 
       Update_Mat(mat,(x),(y),lx,ly,vxy,lamda);
 
-      d->b[d_v1]->l = lx;
-      d->b[d_v2]->l = ly;
+      d->b[d_v1]->l->v = lx;
+      d->b[d_v2]->l->v = ly;
       
       mat->on_off[y] = 0;
       mat->r--;
@@ -444,7 +484,9 @@ int Bionj_Br_Length_Post(node *a, node *d, matrix *mat)
     }
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 
 

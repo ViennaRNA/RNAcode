@@ -22,6 +22,7 @@
 #include <ctype.h>
 #include <math.h>
 
+
 #include "RNAcode.h"
 #include "rnaz_utils.h"
 #include "treeML.h"
@@ -50,7 +51,6 @@ long int hitCounter;
 void freeModels(bgModel* models, int N);
 
 int main(int argc, char *argv[]){
-
   int i,j,k,x,L,N,hssCount, alnCounter;
   char *tmpSeq, *treeString;
   float kappa, maxScore;
@@ -154,6 +154,7 @@ int main(int argc, char *argv[]){
       fprintf(stderr,"\nSkipping alignment. Failed to build ML tree.\n");
       continue;
     }
+
 
     tree=string2tree(treeString);
     free(treeString);

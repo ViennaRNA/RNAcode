@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['gaussian',['gaussian',['../misc_8h.html#af625860d4b3644771a9b58a316518d00',1,'misc.h']]],
+  ['gengetopt_5fstrdup',['gengetopt_strdup',['../cmdline_8c.html#a0ec9efd6eb3e6e939fcaaadd8b4c6a9f',1,'cmdline.c']]],
+  ['get_5fline',['get_line',['../utils_8c.html#a39d4415a69dcce7a8301d38829101d50',1,'get_line(FILE *fp):&#160;utils.c'],['../utils_8h.html#a90fb7a370255e405c5384c4332bce847',1,'get_line(const FILE *fp):&#160;utils.h']]],
+  ['get_5fseq_5flocal',['Get_Seq_local',['../treeML_8c.html#a8a90f2586451905454dd568da9a0f759',1,'treeML.c']]],
+  ['getblock',['getBlock',['../misc_8c.html#a9fe543fe19ab3ff4ae9def519e1f0ac1',1,'getBlock(int i, const char *seq_0, const char *seq_k, const int *map_0, const int *map_k, char *block_0, char *block_k, int *z):&#160;misc.c'],['../misc_8h.html#a9fe543fe19ab3ff4ae9def519e1f0ac1',1,'getBlock(int i, const char *seq_0, const char *seq_k, const int *map_0, const int *map_k, char *block_0, char *block_k, int *z):&#160;misc.c']]],
+  ['getcumsum',['getCumSum',['../score_8h.html#ae5aac97ccd98fa3231294f3677204992',1,'score.h']]],
+  ['getdistancematrix',['getDistanceMatrix',['../treeSimulate_8c.html#a684681e84edaa63e768ec7ad1ff4884f',1,'getDistanceMatrix(TTree *tree, struct aln *alignment[]):&#160;treeSimulate.c'],['../treeSimulate_8h.html#a684681e84edaa63e768ec7ad1ff4884f',1,'getDistanceMatrix(TTree *tree, struct aln *alignment[]):&#160;treeSimulate.c']]],
+  ['getenv',['getenv',['../getopt_8c.html#aee28fd8a0e40b6d958f7d20348e45368',1,'getopt.c']]],
+  ['getextremevaluepars',['getExtremeValuePars',['../score_8c.html#aa313efebb5f1c1c987e98178c1668452',1,'getExtremeValuePars(TTree *tree, const struct aln *alignment[], int sampleN, float maxNativeScore, float *parMu, float *parLambda):&#160;score.c'],['../score_8h.html#aa313efebb5f1c1c987e98178c1668452',1,'getExtremeValuePars(TTree *tree, const struct aln *alignment[], int sampleN, float maxNativeScore, float *parMu, float *parLambda):&#160;score.c']]],
+  ['gethss',['getHSS',['../score_8c.html#a93045a86d8c050d38eed9c213ced83c7',1,'getHSS(float **S, const struct aln **inputAln, char strand):&#160;score.c'],['../score_8h.html#a93045a86d8c050d38eed9c213ced83c7',1,'getHSS(float **S, const struct aln **inputAln, char strand):&#160;score.c']]],
+  ['getlca',['getLCA',['../treeSimulate_8c.html#a3d5dbc026864385b3c931c928110b32a',1,'getLCA(TTree *tree, TNode *nodeA, TNode *nodeB):&#160;treeSimulate.c'],['../treeSimulate_8h.html#a3d5dbc026864385b3c931c928110b32a',1,'getLCA(TTree *tree, TNode *nodeA, TNode *nodeB):&#160;treeSimulate.c']]],
+  ['getmodelmatrix',['getModelMatrix',['../score_8h.html#a909825ebbd6f4923c4e425186001f095',1,'score.h']]],
+  ['getmodels',['getModels',['../score_8c.html#ad5c373a610e54d23a1cb8500d2634e9b',1,'getModels(TTree *tree, struct aln *alignment[], float kappa):&#160;score.c'],['../score_8h.html#ad5c373a610e54d23a1cb8500d2634e9b',1,'getModels(TTree *tree, struct aln *alignment[], float kappa):&#160;score.c']]],
+  ['getmultiplescorematrix',['getMultipleScoreMatrix',['../score_8c.html#af6b84950cd47402f4580d56eb22854fd',1,'getMultipleScoreMatrix(float ****Sk, bgModel *models, const struct aln *alignment[]):&#160;score.c'],['../score_8h.html#af6b84950cd47402f4580d56eb22854fd',1,'getMultipleScoreMatrix(float ****Sk, bgModel *models, const struct aln *alignment[]):&#160;score.c']]],
+  ['getopt',['getopt',['../getopt_8c.html#a1b2ada39ab92162c6ec9c67c8093fa2e',1,'getopt(int argc, char *const *argv, const char *optstring):&#160;getopt.c'],['../getopt_8h.html#a6c5b232cca42dab05f40b47f69715f8b',1,'getopt():&#160;getopt.h']]],
+  ['getopt_5flong',['getopt_long',['../getopt_8h.html#a8616b8a74ae6c01a7ad95ad2876226ec',1,'getopt.h']]],
+  ['getopt_5flong_5fonly',['getopt_long_only',['../getopt_8h.html#ac07930413317507d5c51c19b3ac6ed20',1,'getopt.h']]],
+  ['getpairwisescorematrix',['getPairwiseScoreMatrix',['../score_8c.html#a6589227c4b47c35cca34ecc18c7f9634',1,'getPairwiseScoreMatrix(bgModel *models, const struct aln *alignment[]):&#160;score.c'],['../score_8h.html#a6589227c4b47c35cca34ecc18c7f9634',1,'getPairwiseScoreMatrix(bgModel *models, const struct aln *alignment[]):&#160;score.c']]],
+  ['getscoringmatrix',['getScoringMatrix',['../score_8c.html#a5deb0fecb3a13330879241f24575ac6c',1,'getScoringMatrix():&#160;score.c'],['../score_8h.html#a5deb0fecb3a13330879241f24575ac6c',1,'getScoringMatrix():&#160;score.c']]],
+  ['getseqlength',['getSeqLength',['../misc_8c.html#a935b3901ff2b656c44257b4606ceab6c',1,'getSeqLength(char *seq):&#160;misc.c'],['../misc_8h.html#a935b3901ff2b656c44257b4606ceab6c',1,'getSeqLength(char *seq):&#160;misc.c']]]
+];

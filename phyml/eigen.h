@@ -1,38 +1,49 @@
+#include <config.h>
+
 #ifndef EIGEN_H
 #define EIGEN_H
 
-int Eigen(int job, double *A, int n, double *rr, double *ri,
-          double *vr, double *vi, double *w);
+#include "utilities.h"
+#include "free.h"
 
-/* wash. renamed balance to bbalance due to name clash with SISSI */
-void bbalance(double *mat, int n, int *low, int *hi, double *scale);
-void unbalance(int n, double *vr, double *vi, int low, int hi,
-               double *scale);
-int realeig(int job, double *mat, int n,int low, int hi, double *valr,
-            double *vali, double *vr, double *vi);
-void elemhess(int job, double *mat, int n, int low, int hi, 
-            double *vr, double *vi, int *work);
+#ifdef RWRAPPER
+#include <R.h>
+#endif
 
-int ludcmp(double **a, int n, double *d);
-void det(double **a, int n, double *d);
+int ludcmp_1D(phydbl *a, int n, phydbl *d);
+void det_1D(phydbl *a, int n, phydbl *d);
+
+int Eigen(int job, phydbl *A, int n, phydbl *rr, phydbl *ri,
+          phydbl *vr, phydbl *vi, phydbl *w);
+void balance(phydbl *mat, int n, int *low, int *hi, phydbl *scale);
+void unbalance(int n, phydbl *vr, phydbl *vi, int low, int hi,
+               phydbl *scale);
+int realeig(int job, phydbl *mat, int n,int low, int hi, phydbl *valr,
+            phydbl *vali, phydbl *vr, phydbl *vi);
+void elemhess(int job, phydbl *mat, int n, int low, int hi, 
+            phydbl *vr, phydbl *vi, int *work);
+
+int ludcmp(phydbl **a, int n, phydbl *d);
+void det(phydbl **a, int n, phydbl *d);
 
 /* complex functions */
 
-typedef struct { double re, im; } complex;
-#define csize(a) (fabs(a.re)+fabs(a.im))
+typedef struct { phydbl re, im; } complex;
+#define csize(a) (FABS(a.re)+FABS(a.im))
 
-complex compl (double re,double im);
+complex compl (phydbl re,phydbl im);
 complex _conj (complex a);
 complex cplus (complex a, complex b);
 complex cminus (complex a, complex b);
 complex cby (complex a, complex b);
 complex cdiv (complex a,complex b);
 /* complex local_cexp (complex a); */
-complex cfactor (complex x, double a);
+complex cfactor (complex x, phydbl a);
 int cxtoy (complex *x, complex *y, int n);
 int cmatby (complex *a, complex *b, complex *c, int n,int m,int k);
 int cmatout (FILE * fout, complex *x, int n, int m);
-int cmatinv( complex *x, int n, int m, double *space);
+int cmatinv( complex *x, int n, int m, phydbl *space);
+phydbl *Cholesky_Decomp(phydbl *A,  int dim);
 
 
 #endif

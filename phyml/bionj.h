@@ -10,12 +10,14 @@ the GNU public licence. See http://www.opensource.org for details.
 
 */
 
+#include <config.h>
+
 #ifndef NJ_H
 #define NJ_H
 
 #include "utilities.h"
 #include "optimiz.h"
-/*#include "tools.h"*/
+#include "free.h"
 
 void   Bionj(matrix *mat);
 void   Finish(matrix *mat);
@@ -23,7 +25,7 @@ void   Compute_Sx(matrix *mat);
 phydbl Sum_S(matrix *mat, int i);
 phydbl Dist(matrix *mat, int x, int y);
 phydbl Q_Agglo(matrix *mat, int x, int y);
-phydbl Variance(matrix *mat, int x, int y);
+phydbl BioNJ_Variance(matrix *mat, int x, int y);
 phydbl Br_Length(matrix *mat, int x, int y);
 void   Update_Dist(matrix *mat, int x, int y);
 phydbl Lamda(matrix *mat, int x, int y, phydbl vxy);
@@ -34,7 +36,7 @@ void   Update_Mat(matrix *mat, int x, int y,
 		  phydbl lx, phydbl ly, phydbl vxy, phydbl lamda);
 phydbl Dist_Red(matrix *mat, int x, phydbl lx, int y, 
 		phydbl ly, int i, phydbl lamda);
-int    Bionj_Br_Length_Post(node *a, node *d, matrix *mat);
+int    Bionj_Br_Length_Post(t_node *a, t_node *d, matrix *mat);
 void   Bionj_Br_Length(matrix *mat);
 
 #endif

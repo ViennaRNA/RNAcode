@@ -10,20 +10,26 @@ the GNU public licence.  See http://www.opensource.org for details.
 
 */
 
+#include <config.h>
+
 #ifndef CURR_H
 #define CURR_H
 
-void Simu_Loop(arbre *tree);
-void Simu(arbre *tree,int n_step_max);
-void Select_Edges_To_Swap(arbre *tree,edge **sorted_b,int *n_neg);
-void Update_Bl(arbre *tree,phydbl fact);
-void Make_N_Swap(arbre *tree,edge **b,int beg,int end);
-int Make_Best_Swap(arbre *tree);
-int Mov_Backward_Topo_Bl(arbre *tree,phydbl lk_old,edge **tested_b,int n_tested);
-void Unswap_N_Branch(arbre *tree,edge **b,int beg,int end);
-void Swap_N_Branch(arbre *tree,edge **b,int beg,int end);
-void Check_NNI_Scores_Around(node *a, node *d, edge *b, phydbl *best_score);
-int Mov_Backward_Topo_Pars(arbre *tree, int pars_old, edge **tested_b, int n_tested);
-void Simu_Pars(arbre *tree, int n_step_max);
+#include "utilities.h"
+
+int Simu(t_tree *tree, int n_step_max, phydbl delta_lnL, phydbl init_T, phydbl delta_T, int min_n_edges_traversed);
+void Simu_Loop(t_tree *tree);
+void Select_Edges_To_Swap(t_tree *tree,t_edge **sorted_b,int *n_neg);
+void Update_Bl(t_tree *tree,phydbl fact);
+void Make_N_Swap(t_tree *tree,t_edge **b,int beg,int end);
+int Make_Best_Swap(t_tree *tree);
+int Mov_Backward_Topo_Bl(t_tree *tree,phydbl lk_old,t_edge **tested_b,int n_tested);
+void Unswap_N_Branch(t_tree *tree,t_edge **b,int beg,int end);
+void Swap_N_Branch(t_tree *tree,t_edge **b,int beg,int end);
+void Check_NNI_Scores_Around(t_node *a, t_node *d, t_edge *b, phydbl *best_score, t_tree *tree);
+int Mov_Backward_Topo_Pars(t_tree *tree, int pars_old, t_edge **tested_b, int n_tested);
+void Simu_Pars(t_tree *tree, int n_step_max);
+void NNI_Traversal(t_node *a, t_node *d, t_node *v, t_edge *b, int opt_edges, t_tree *tree);
+void NNI_Core(t_node *a, t_node *d, t_node *v, t_edge *b, int opt_edges, t_tree *tree);
 
 #endif

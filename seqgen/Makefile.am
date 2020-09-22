@@ -4,3 +4,5 @@ libseqgen_a_SOURCES =  aamodels.c  eigen.c  evolve.c  gamma.c  global.c  model.c
 
 noinst_HEADERS = aamodels.h  eigen.h  evolve.h  gamma.h  global.h  model.h  nucmodels.h  progress.h  treefile.h  tree.h  twister.h
 
+all-local: 
+	objcopy --weaken libseqgen.a libseqgen.a 

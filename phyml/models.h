@@ -10,41 +10,39 @@ the GNU public licence.  See http://www.opensource.org for details.
 
 */
 
+#include <config.h>
+
 #ifndef MODELS_H
 #define MODELS_H
 
-void  PMat(phydbl l, model *mod, double ***Pij);
-void  PMat_K80(phydbl l,phydbl kappa, double ***Pij);
-void  PMat_TN93(phydbl l, model *mod, double ***Pij);
-void  PMat_Empirical(phydbl l, model *mod, double ***Pij);
+#include "utilities.h"
+#include "eigen.h"
+#include "free.h"
+#include "stats.h"
+#include "mixt.h"
+
+void PMat(phydbl l, t_mod *mod, int pos, phydbl *Pij, phydbl *tPij);
+void  PMat_K80(phydbl l,phydbl kappa, int pos, phydbl *Pij);
+void  PMat_TN93(phydbl l, t_mod *mod, int pos, phydbl *Pij);
+void  PMat_Empirical(const phydbl l, const t_mod *mod, const int pos, phydbl *Pij, phydbl *tPij);
+void PMat_Zero_Br_Len(t_mod *mod, int pos, phydbl *Pij);
+void PMat_Gamma(phydbl l, t_mod *mod, int pos, phydbl *Pij);
 int GetDaa (phydbl *daa, phydbl *pi, char *file_name);
-int Matinv (double *x, int n, int m, double *space);
-
-/* add error checking, return value is set to int instead of void */
-int Init_Model(allseq *data, model *mod);
-void Update_Qmat_GTR(double *rr, phydbl *rr_val, int *rr_num, double *pi, double *qmat);
-void Update_Qmat_HKY(double kappa, double *pi, double *qmat);
-void Update_Qmat_Generic(double *rr, double *pi, int ns, double *qmat);
-void Translate_Custom_Mod_String(model *mod);
-
-/* add error checking, return value is set to int instead of void */
-int Set_Model_Parameters(model *mod);
-void PMat_Zero_Br_Len(model  *mod, double ***Pij);
+void Update_Qmat_GTR(phydbl *rr, phydbl *rr_val, int *rr_num, phydbl *pi, phydbl *qmat, int opt_rr);
+void Update_Qmat_HKY(phydbl kappa, phydbl *pi, phydbl *qmat);
+void Update_Qmat_Generic(phydbl *rr, phydbl *pi, int ns, phydbl *qmat);
+void Translate_Custom_Mod_String(t_mod *mod);
+int Set_Model_Parameters(t_mod *mod);
 phydbl GTR_Dist(phydbl *F, phydbl alpha, eigen *eigen_struct);
-phydbl General_Dist(phydbl *F, model *mod, eigen *eigen_struct);
-
-int Init_Qmat_WAG(double *daa, phydbl *pi);
-int Init_Qmat_Dayhoff(double *daa, phydbl *pi);
-int Init_Qmat_JTT(double *daa, phydbl *pi);
-int Init_Qmat_RtREV(double *daa, phydbl *pi);
-int Init_Qmat_CpREV(double *daa, phydbl *pi);
-int Init_Qmat_VT(double *daa, phydbl *pi);
-int Init_Qmat_Blosum62(double *daa, phydbl *pi);
-int Init_Qmat_MtMam(double *daa, phydbl *pi);
-int Init_Qmat_MtArt(double *daa, double *pi); // Added by Federico Abascal
-int Init_Qmat_HIVb(double *daa, double *pi); //added by Federic Abascal
-int Init_Qmat_HIVw(double *daa, double *pi); //added by Federico Abascal
-void Switch_From_Mod_To_M4mod(model *mod);
-void Switch_From_M4mod_To_Mod(model *mod);
+phydbl General_Dist(phydbl *F, t_mod *mod, eigen *eigen_struct);
+void Switch_From_Mod_To_M4mod(t_mod *mod);
+void Switch_From_M4mod_To_Mod(t_mod *mod);
+void PMat_JC69(phydbl l, int pos, phydbl *Pij, t_mod *mod);
+phydbl Get_Lambda_F84(phydbl *pi, phydbl *kappa);
+int Update_Eigen(t_mod *mod);
+int Update_RAS(t_mod *mod);
+int Update_Efrq(t_mod *mod);
+void PMat_MGF_Gamma(phydbl *Pij, phydbl shape, phydbl scale, phydbl scaling_fact, t_mod *mod);
+int Update_Boundaries(t_mod *mod);
 
 #endif

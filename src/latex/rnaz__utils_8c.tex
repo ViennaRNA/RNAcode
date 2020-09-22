@@ -1,0 +1,277 @@
+\hypertarget{rnaz__utils_8c}{}\section{rnaz\+\_\+utils.\+c File Reference}
+\label{rnaz__utils_8c}\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+{\ttfamily \#include \char`\"{}config.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}fold.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}fold\+\_\+vars.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pair\+\_\+mat.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}alifold.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rnaz\+\_\+utils.\+h\char`\"{}}\newline
+Include dependency graph for rnaz\+\_\+utils.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{rnaz__utils_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{rnaz__utils_8c_ad571d9ad5858c8e2d834225efec51163}{read\+\_\+clustal} (F\+I\+LE $\ast$clust, struct \hyperlink{structaln}{aln} $\ast$aligned\+Seqs\mbox{[}$\,$\mbox{]})
+\item 
+int \hyperlink{rnaz__utils_8c_a2207280ef510cc5d737b0b04bcfba476}{read\+\_\+maf} (F\+I\+LE $\ast$clust, struct \hyperlink{structaln}{aln} $\ast$aligned\+Seqs\mbox{[}$\,$\mbox{]})
+\item 
+char $\ast$ \hyperlink{rnaz__utils_8c_aa870f4f41dc7bf4808af716a34482ac5}{consensus} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]})
+\item 
+double \hyperlink{rnaz__utils_8c_a802470f11cb32abaa510b2c67f098235}{mean\+Pair\+ID} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{rnaz__utils_8c_a9c0adcc1f46e9fceab51c54bd25475e2}{rev\+Aln} (struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{rnaz__utils_8c_a43cebeec9c40c9be2970b4ed266e7065}{slice\+Aln} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$source\+Aln\mbox{[}$\,$\mbox{]}, struct \hyperlink{structaln}{aln} $\ast$dest\+Aln\mbox{[}$\,$\mbox{]}, int from, int to)
+\item 
+void \hyperlink{rnaz__utils_8c_ace5cb65b010161f9eb138717b4592673}{free\+Aln} (struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]})
+\item 
+struct \hyperlink{structaln}{aln} $\ast$ \hyperlink{rnaz__utils_8c_ab3af11f3fc09669574f682072f795865}{create\+Aln\+Entry} (char $\ast$name, char $\ast$seq, int start, int \hyperlink{postscript_8c_a9f59b34b1f25fe00023291b678246bcc}{length}, int full\+Length, char strand)
+\item 
+void \hyperlink{rnaz__utils_8c_ac38565a99389ebf0aed62a623d893299}{free\+Aln\+Entry} (struct \hyperlink{structaln}{aln} $\ast$entry)
+\item 
+void \hyperlink{rnaz__utils_8c_ad1830dc656474e2da129e5322927ee15}{print\+Aln} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]})
+\item 
+int \hyperlink{rnaz__utils_8c_a7e802ce86090ca9375d5e39ebacc1470}{check\+Format} (F\+I\+LE $\ast$file)
+\item 
+char $\ast$$\ast$ \hyperlink{rnaz__utils_8c_a174b786ba35d783d0937a545d2d4071b}{split\+Fields} (char $\ast$string)
+\item 
+char $\ast$$\ast$ \hyperlink{rnaz__utils_8c_ad897a202b424203bee4a1746872aa095}{split\+Lines} (char $\ast$string)
+\item 
+void \hyperlink{rnaz__utils_8c_a5afeb493cf63c3077bc7ccc2df25208d}{free\+Fields} (char $\ast$$\ast$fields)
+\item 
+double \hyperlink{rnaz__utils_8c_aa5d9fd87f6384e8d19af13f1365b503b}{comb\+Per\+Pair} (struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]}, char $\ast$structure)
+\item 
+int \hyperlink{rnaz__utils_8c_a48ca69cad11fcf2c4d962b73ff4388ee}{encode\+Base} (char base)
+\item 
+void \hyperlink{rnaz__utils_8c_a7dc7886bc41a49ff0a19e67451026d81}{print\+Aln\+M\+AF} (F\+I\+LE $\ast$out, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$AS\mbox{[}$\,$\mbox{]}, int printU)
+\item 
+void \hyperlink{rnaz__utils_8c_a121bcc17b926e5be6edd36caea0a8985}{prune\+Aln} (char $\ast$species, struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+char $\ast$$\ast$ \hyperlink{rnaz__utils_8c_a7d5f1b4f24c9a156013547278b473278}{split\+String} (char $\ast$string, char $\ast$separators)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{rnaz__utils_8c_a7e802ce86090ca9375d5e39ebacc1470}\label{rnaz__utils_8c_a7e802ce86090ca9375d5e39ebacc1470}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!check\+Format@{check\+Format}}
+\index{check\+Format@{check\+Format}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{check\+Format()}{checkFormat()}}
+{\footnotesize\ttfamily int check\+Format (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{file }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{rnaz__utils_8c_a7e802ce86090ca9375d5e39ebacc1470_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_aa5d9fd87f6384e8d19af13f1365b503b}\label{rnaz__utils_8c_aa5d9fd87f6384e8d19af13f1365b503b}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!comb\+Per\+Pair@{comb\+Per\+Pair}}
+\index{comb\+Per\+Pair@{comb\+Per\+Pair}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{comb\+Per\+Pair()}{combPerPair()}}
+{\footnotesize\ttfamily double comb\+Per\+Pair (\begin{DoxyParamCaption}\item[{struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]},  }\item[{char $\ast$}]{structure }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{rnaz__utils_8c_aa5d9fd87f6384e8d19af13f1365b503b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_aa870f4f41dc7bf4808af716a34482ac5}\label{rnaz__utils_8c_aa870f4f41dc7bf4808af716a34482ac5}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!consensus@{consensus}}
+\index{consensus@{consensus}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{consensus()}{consensus()}}
+{\footnotesize\ttfamily char$\ast$ consensus (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{rnaz__utils_8c_aa870f4f41dc7bf4808af716a34482ac5_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_ab3af11f3fc09669574f682072f795865}\label{rnaz__utils_8c_ab3af11f3fc09669574f682072f795865}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!create\+Aln\+Entry@{create\+Aln\+Entry}}
+\index{create\+Aln\+Entry@{create\+Aln\+Entry}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{create\+Aln\+Entry()}{createAlnEntry()}}
+{\footnotesize\ttfamily struct \hyperlink{structaln}{aln}$\ast$ create\+Aln\+Entry (\begin{DoxyParamCaption}\item[{char $\ast$}]{name,  }\item[{char $\ast$}]{seq,  }\item[{int}]{start,  }\item[{int}]{length,  }\item[{int}]{full\+Length,  }\item[{char}]{strand }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{rnaz__utils_8c_ab3af11f3fc09669574f682072f795865_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_a48ca69cad11fcf2c4d962b73ff4388ee}\label{rnaz__utils_8c_a48ca69cad11fcf2c4d962b73ff4388ee}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!encode\+Base@{encode\+Base}}
+\index{encode\+Base@{encode\+Base}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{encode\+Base()}{encodeBase()}}
+{\footnotesize\ttfamily int encode\+Base (\begin{DoxyParamCaption}\item[{char}]{base }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{rnaz__utils_8c_ace5cb65b010161f9eb138717b4592673}\label{rnaz__utils_8c_ace5cb65b010161f9eb138717b4592673}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!free\+Aln@{free\+Aln}}
+\index{free\+Aln@{free\+Aln}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{free\+Aln()}{freeAln()}}
+{\footnotesize\ttfamily void free\+Aln (\begin{DoxyParamCaption}\item[{struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{rnaz__utils_8c_ace5cb65b010161f9eb138717b4592673_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_ac38565a99389ebf0aed62a623d893299}\label{rnaz__utils_8c_ac38565a99389ebf0aed62a623d893299}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!free\+Aln\+Entry@{free\+Aln\+Entry}}
+\index{free\+Aln\+Entry@{free\+Aln\+Entry}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{free\+Aln\+Entry()}{freeAlnEntry()}}
+{\footnotesize\ttfamily void free\+Aln\+Entry (\begin{DoxyParamCaption}\item[{struct \hyperlink{structaln}{aln} $\ast$}]{entry }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{rnaz__utils_8c_a5afeb493cf63c3077bc7ccc2df25208d}\label{rnaz__utils_8c_a5afeb493cf63c3077bc7ccc2df25208d}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!free\+Fields@{free\+Fields}}
+\index{free\+Fields@{free\+Fields}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{free\+Fields()}{freeFields()}}
+{\footnotesize\ttfamily void free\+Fields (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{fields }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{rnaz__utils_8c_a802470f11cb32abaa510b2c67f098235}\label{rnaz__utils_8c_a802470f11cb32abaa510b2c67f098235}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!mean\+Pair\+ID@{mean\+Pair\+ID}}
+\index{mean\+Pair\+ID@{mean\+Pair\+ID}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{mean\+Pair\+I\+D()}{meanPairID()}}
+{\footnotesize\ttfamily double mean\+Pair\+ID (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{rnaz__utils_8c_ad1830dc656474e2da129e5322927ee15}\label{rnaz__utils_8c_ad1830dc656474e2da129e5322927ee15}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!print\+Aln@{print\+Aln}}
+\index{print\+Aln@{print\+Aln}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{print\+Aln()}{printAln()}}
+{\footnotesize\ttfamily void print\+Aln (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{rnaz__utils_8c_a7dc7886bc41a49ff0a19e67451026d81}\label{rnaz__utils_8c_a7dc7886bc41a49ff0a19e67451026d81}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!print\+Aln\+M\+AF@{print\+Aln\+M\+AF}}
+\index{print\+Aln\+M\+AF@{print\+Aln\+M\+AF}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{print\+Aln\+M\+A\+F()}{printAlnMAF()}}
+{\footnotesize\ttfamily void print\+Aln\+M\+AF (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{out,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]},  }\item[{int}]{printU }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{rnaz__utils_8c_a121bcc17b926e5be6edd36caea0a8985}\label{rnaz__utils_8c_a121bcc17b926e5be6edd36caea0a8985}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!prune\+Aln@{prune\+Aln}}
+\index{prune\+Aln@{prune\+Aln}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{prune\+Aln()}{pruneAln()}}
+{\footnotesize\ttfamily void prune\+Aln (\begin{DoxyParamCaption}\item[{char $\ast$}]{species,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{rnaz__utils_8c_a121bcc17b926e5be6edd36caea0a8985_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_ad571d9ad5858c8e2d834225efec51163}\label{rnaz__utils_8c_ad571d9ad5858c8e2d834225efec51163}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!read\+\_\+clustal@{read\+\_\+clustal}}
+\index{read\+\_\+clustal@{read\+\_\+clustal}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{read\+\_\+clustal()}{read\_clustal()}}
+{\footnotesize\ttfamily int read\+\_\+clustal (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{clust,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{aligned\+Seqs\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{rnaz__utils_8c_ad571d9ad5858c8e2d834225efec51163_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_a2207280ef510cc5d737b0b04bcfba476}\label{rnaz__utils_8c_a2207280ef510cc5d737b0b04bcfba476}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!read\+\_\+maf@{read\+\_\+maf}}
+\index{read\+\_\+maf@{read\+\_\+maf}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{read\+\_\+maf()}{read\_maf()}}
+{\footnotesize\ttfamily int read\+\_\+maf (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{clust,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{aligned\+Seqs\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{rnaz__utils_8c_a2207280ef510cc5d737b0b04bcfba476_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_a9c0adcc1f46e9fceab51c54bd25475e2}\label{rnaz__utils_8c_a9c0adcc1f46e9fceab51c54bd25475e2}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!rev\+Aln@{rev\+Aln}}
+\index{rev\+Aln@{rev\+Aln}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{rev\+Aln()}{revAln()}}
+{\footnotesize\ttfamily void rev\+Aln (\begin{DoxyParamCaption}\item[{struct \hyperlink{structaln}{aln} $\ast$}]{AS\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{rnaz__utils_8c_a9c0adcc1f46e9fceab51c54bd25475e2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_a43cebeec9c40c9be2970b4ed266e7065}\label{rnaz__utils_8c_a43cebeec9c40c9be2970b4ed266e7065}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!slice\+Aln@{slice\+Aln}}
+\index{slice\+Aln@{slice\+Aln}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{slice\+Aln()}{sliceAln()}}
+{\footnotesize\ttfamily void slice\+Aln (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{source\+Aln\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{dest\+Aln\mbox{[}$\,$\mbox{]},  }\item[{int}]{from,  }\item[{int}]{to }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{rnaz__utils_8c_a43cebeec9c40c9be2970b4ed266e7065_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_a174b786ba35d783d0937a545d2d4071b}\label{rnaz__utils_8c_a174b786ba35d783d0937a545d2d4071b}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!split\+Fields@{split\+Fields}}
+\index{split\+Fields@{split\+Fields}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{split\+Fields()}{splitFields()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ split\+Fields (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{rnaz__utils_8c_a174b786ba35d783d0937a545d2d4071b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_ad897a202b424203bee4a1746872aa095}\label{rnaz__utils_8c_ad897a202b424203bee4a1746872aa095}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!split\+Lines@{split\+Lines}}
+\index{split\+Lines@{split\+Lines}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{split\+Lines()}{splitLines()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ split\+Lines (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{rnaz__utils_8c_ad897a202b424203bee4a1746872aa095_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{rnaz__utils_8c_a7d5f1b4f24c9a156013547278b473278}\label{rnaz__utils_8c_a7d5f1b4f24c9a156013547278b473278}} 
+\index{rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}!split\+String@{split\+String}}
+\index{split\+String@{split\+String}!rnaz\+\_\+utils.\+c@{rnaz\+\_\+utils.\+c}}
+\subsubsection{\texorpdfstring{split\+String()}{splitString()}}
+{\footnotesize\ttfamily char$\ast$$\ast$ split\+String (\begin{DoxyParamCaption}\item[{char $\ast$}]{string,  }\item[{char $\ast$}]{separators }\end{DoxyParamCaption})}
+

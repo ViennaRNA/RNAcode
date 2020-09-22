@@ -103,7 +103,7 @@ TTree* string2tree(char* treeString){
   TTree* tree;
   int dummy1;
   double dummy2;
-  
+
   tmpfh = tmpfile();
   fprintf(tmpfh,"%s",treeString);
   rewind(tmpfh); 

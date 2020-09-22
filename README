@@ -21,6 +21,7 @@ coding potential together with an associated p-value.
 
 You can compile and install RNAcode like this:
 
+# ./autogen.sh
 # ./configure
 # make
 # make install (as root)
@@ -211,3 +212,12 @@ RNA (2011), in revision
 ==========
 
 Stefan Washietl <wash@mit.edu>
+
+
+5. Changes from phyml version 1 to version 3
+============================================
+
+As the default parameters of phyml changed, the results may differ between both versions. 
+To change the options for phyml, take a look at parameter in Read_Command_Line() in phyml/cl.c.
+
+

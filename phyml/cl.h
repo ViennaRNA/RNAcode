@@ -1,3 +1,4 @@
+
 /*
 
 PHYML :  a program that  computes maximum likelihood  phylogenies from
@@ -10,11 +11,22 @@ the GNU public licence.  See http://www.opensource.org for details.
 
 */
 
-#include "utilities.h"
+#include <config.h>
 
 #ifndef CL_H
 #define CL_H
 
-void Read_Command_Line(option *input, int argc, char **argv);
+#include <unistd.h>
+#include <getopt.h>
+#include "utilities.h"
+#include "help.h"
+#include "models.h"
+#include "free.h"
+#include "interface.h"
+#include "invitee.h"
+#include "date.h"
+
+
+int Read_Command_Line(option *input, int argc, char **argv);
 
 #endif

@@ -1,0 +1,90 @@
+\hypertarget{treeSimulate_8h}{}\section{tree\+Simulate.\+h File Reference}
+\label{treeSimulate_8h}\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+{\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rnaz\+\_\+utils.\+h\char`\"{}}\newline
+Include dependency graph for tree\+Simulate.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{treeSimulate_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{treeSimulate_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+T\+Node $\ast$ \hyperlink{treeSimulate_8h_a3d5dbc026864385b3c931c928110b32a}{get\+L\+CA} (T\+Tree $\ast$tree, T\+Node $\ast$nodeA, T\+Node $\ast$nodeB)
+\item 
+void \hyperlink{treeSimulate_8h_a3de1638db8b0f14df05b49f41bae2da6}{tree2aln} (T\+Tree $\ast$tree, struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+T\+Tree $\ast$ \hyperlink{treeSimulate_8h_af77eeafe78dc6291a2c5a0f9e0dea164}{string2tree} (char $\ast$tree\+String)
+\item 
+void \hyperlink{treeSimulate_8h_a2a10fb3293a345ad28201efc8f452348}{simulate\+Tree} (T\+Tree $\ast$tree, float freqs\mbox{[}$\,$\mbox{]}, float kap, int L)
+\item 
+float $\ast$$\ast$ \hyperlink{treeSimulate_8h_a684681e84edaa63e768ec7ad1ff4884f}{get\+Distance\+Matrix} (T\+Tree $\ast$tree, struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{treeSimulate_8h_a0f4d088716aa0dbcb5485641a0be7096}{free\+Seqgen\+Tree} (T\+Tree $\ast$tree)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{treeSimulate_8h_a0f4d088716aa0dbcb5485641a0be7096}\label{treeSimulate_8h_a0f4d088716aa0dbcb5485641a0be7096}} 
+\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}!free\+Seqgen\+Tree@{free\+Seqgen\+Tree}}
+\index{free\+Seqgen\+Tree@{free\+Seqgen\+Tree}!tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+\subsubsection{\texorpdfstring{free\+Seqgen\+Tree()}{freeSeqgenTree()}}
+{\footnotesize\ttfamily void free\+Seqgen\+Tree (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8h_a684681e84edaa63e768ec7ad1ff4884f}\label{treeSimulate_8h_a684681e84edaa63e768ec7ad1ff4884f}} 
+\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}!get\+Distance\+Matrix@{get\+Distance\+Matrix}}
+\index{get\+Distance\+Matrix@{get\+Distance\+Matrix}!tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+\subsubsection{\texorpdfstring{get\+Distance\+Matrix()}{getDistanceMatrix()}}
+{\footnotesize\ttfamily float$\ast$$\ast$ get\+Distance\+Matrix (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{treeSimulate_8h_a684681e84edaa63e768ec7ad1ff4884f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{treeSimulate_8h_a3d5dbc026864385b3c931c928110b32a}\label{treeSimulate_8h_a3d5dbc026864385b3c931c928110b32a}} 
+\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}!get\+L\+CA@{get\+L\+CA}}
+\index{get\+L\+CA@{get\+L\+CA}!tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+\subsubsection{\texorpdfstring{get\+L\+C\+A()}{getLCA()}}
+{\footnotesize\ttfamily T\+Node$\ast$ get\+L\+CA (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{T\+Node $\ast$}]{nodeA,  }\item[{T\+Node $\ast$}]{nodeB }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8h_a2a10fb3293a345ad28201efc8f452348}\label{treeSimulate_8h_a2a10fb3293a345ad28201efc8f452348}} 
+\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}!simulate\+Tree@{simulate\+Tree}}
+\index{simulate\+Tree@{simulate\+Tree}!tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+\subsubsection{\texorpdfstring{simulate\+Tree()}{simulateTree()}}
+{\footnotesize\ttfamily void simulate\+Tree (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{float}]{freqs\mbox{[}$\,$\mbox{]},  }\item[{float}]{kap,  }\item[{int}]{L }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8h_af77eeafe78dc6291a2c5a0f9e0dea164}\label{treeSimulate_8h_af77eeafe78dc6291a2c5a0f9e0dea164}} 
+\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}!string2tree@{string2tree}}
+\index{string2tree@{string2tree}!tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+\subsubsection{\texorpdfstring{string2tree()}{string2tree()}}
+{\footnotesize\ttfamily T\+Tree$\ast$ string2tree (\begin{DoxyParamCaption}\item[{char $\ast$}]{tree\+String }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8h_a3de1638db8b0f14df05b49f41bae2da6}\label{treeSimulate_8h_a3de1638db8b0f14df05b49f41bae2da6}} 
+\index{tree\+Simulate.\+h@{tree\+Simulate.\+h}!tree2aln@{tree2aln}}
+\index{tree2aln@{tree2aln}!tree\+Simulate.\+h@{tree\+Simulate.\+h}}
+\subsubsection{\texorpdfstring{tree2aln()}{tree2aln()}}
+{\footnotesize\ttfamily void tree2aln (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{treeSimulate_8h_a3de1638db8b0f14df05b49f41bae2da6_cgraph}
+\end{center}
+\end{figure}

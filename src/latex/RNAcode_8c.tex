@@ -1,0 +1,184 @@
+\hypertarget{RNAcode_8c}{}\section{R\+N\+Acode.\+c File Reference}
+\label{RNAcode_8c}\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}R\+N\+Acode.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rnaz\+\_\+utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tree\+M\+L.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cmdline.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}code.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}score.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tree\+Simulate.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}extreme\+\_\+fit.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}postscript.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}misc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\newline
+Include dependency graph for R\+N\+Acode.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{RNAcode_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{RNAcode_8c_a303c139a77497eb1282c6d2a4d415c1c}{free\+Models} (\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$\hyperlink{score_8c_a2351b02aa48f9f78d350b4b19408d38f}{models}, int N)
+\item 
+int \hyperlink{RNAcode_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{RNAcode_8c_ae8605e2b78cd4a81b6c6b5c30cb7366a}{usage} (void)
+\item 
+void \hyperlink{RNAcode_8c_a0bed8474bd33a912769360766f6b10d4}{help} (void)
+\item 
+void \hyperlink{RNAcode_8c_af986bd0575ec9b913dfab4b8422509ae}{version} (void)
+\item 
+void \hyperlink{RNAcode_8c_ae36ab4408b3aaada4218ac5f60ea6027}{read\+\_\+commandline} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{RNAcode_8h_ac21aeabbefffddb27496994611a09dcd}{parameters} \hyperlink{RNAcode_8c_a8dea3b88a171ed8de9f8f98079e7561a}{pars}
+\item 
+\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$ \hyperlink{RNAcode_8c_a2351b02aa48f9f78d350b4b19408d38f}{models}
+\item 
+\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$ \hyperlink{RNAcode_8c_aa758f546869f82fa894aeeab59fc8a4f}{models\+Rev}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{RNAcode_8c_a1662932a5f2814e67dfbbd95ab925073}{Sk}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{RNAcode_8c_a189ec0118947b93b0df1359ab643d3ce}{Sk\+\_\+native}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{RNAcode_8c_a720f3e09e87f08ee95fd84af1c9c575e}{Sk\+\_\+native\+\_\+rev}
+\item 
+long int \hyperlink{RNAcode_8c_a8c5872fcd4604b525d509ffd6afc5631}{hit\+Counter}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{RNAcode_8c_a303c139a77497eb1282c6d2a4d415c1c}\label{RNAcode_8c_a303c139a77497eb1282c6d2a4d415c1c}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!free\+Models@{free\+Models}}
+\index{free\+Models@{free\+Models}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{free\+Models()}{freeModels()}}
+{\footnotesize\ttfamily void free\+Models (\begin{DoxyParamCaption}\item[{\hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$}]{models,  }\item[{int}]{N }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{RNAcode_8c_a303c139a77497eb1282c6d2a4d415c1c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{RNAcode_8c_a0bed8474bd33a912769360766f6b10d4}\label{RNAcode_8c_a0bed8474bd33a912769360766f6b10d4}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!help@{help}}
+\index{help@{help}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{help()}{help()}}
+{\footnotesize\ttfamily void help (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{RNAcode_8c_a0bed8474bd33a912769360766f6b10d4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{RNAcode_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{RNAcode_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!main@{main}}
+\index{main@{main}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{RNAcode_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{RNAcode_8c_ae36ab4408b3aaada4218ac5f60ea6027}\label{RNAcode_8c_ae36ab4408b3aaada4218ac5f60ea6027}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!read\+\_\+commandline@{read\+\_\+commandline}}
+\index{read\+\_\+commandline@{read\+\_\+commandline}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{read\+\_\+commandline()}{read\_commandline()}}
+{\footnotesize\ttfamily void read\+\_\+commandline (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{RNAcode_8c_ae36ab4408b3aaada4218ac5f60ea6027_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{RNAcode_8c_ae8605e2b78cd4a81b6c6b5c30cb7366a}\label{RNAcode_8c_ae8605e2b78cd4a81b6c6b5c30cb7366a}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!usage@{usage}}
+\index{usage@{usage}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{usage()}{usage()}}
+{\footnotesize\ttfamily void usage (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=337pt]{RNAcode_8c_ae8605e2b78cd4a81b6c6b5c30cb7366a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{RNAcode_8c_af986bd0575ec9b913dfab4b8422509ae}\label{RNAcode_8c_af986bd0575ec9b913dfab4b8422509ae}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!version@{version}}
+\index{version@{version}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{version()}{version()}}
+{\footnotesize\ttfamily void version (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{RNAcode_8c_a8c5872fcd4604b525d509ffd6afc5631}\label{RNAcode_8c_a8c5872fcd4604b525d509ffd6afc5631}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!hit\+Counter@{hit\+Counter}}
+\index{hit\+Counter@{hit\+Counter}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{hit\+Counter}{hitCounter}}
+{\footnotesize\ttfamily long int hit\+Counter}
+
+\mbox{\Hypertarget{RNAcode_8c_a2351b02aa48f9f78d350b4b19408d38f}\label{RNAcode_8c_a2351b02aa48f9f78d350b4b19408d38f}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!models@{models}}
+\index{models@{models}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{models}{models}}
+{\footnotesize\ttfamily \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model}$\ast$ models}
+
+\mbox{\Hypertarget{RNAcode_8c_aa758f546869f82fa894aeeab59fc8a4f}\label{RNAcode_8c_aa758f546869f82fa894aeeab59fc8a4f}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!models\+Rev@{models\+Rev}}
+\index{models\+Rev@{models\+Rev}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{models\+Rev}{modelsRev}}
+{\footnotesize\ttfamily \hyperlink{score_8h_aec88546fa977a827f3312b2c12738421}{bg\+Model} $\ast$ models\+Rev}
+
+\mbox{\Hypertarget{RNAcode_8c_a8dea3b88a171ed8de9f8f98079e7561a}\label{RNAcode_8c_a8dea3b88a171ed8de9f8f98079e7561a}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!pars@{pars}}
+\index{pars@{pars}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{pars}{pars}}
+{\footnotesize\ttfamily \hyperlink{RNAcode_8h_ac21aeabbefffddb27496994611a09dcd}{parameters} pars}
+
+\mbox{\Hypertarget{RNAcode_8c_a1662932a5f2814e67dfbbd95ab925073}\label{RNAcode_8c_a1662932a5f2814e67dfbbd95ab925073}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!Sk@{Sk}}
+\index{Sk@{Sk}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{Sk}{Sk}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk}
+
+\mbox{\Hypertarget{RNAcode_8c_a189ec0118947b93b0df1359ab643d3ce}\label{RNAcode_8c_a189ec0118947b93b0df1359ab643d3ce}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!Sk\+\_\+native@{Sk\+\_\+native}}
+\index{Sk\+\_\+native@{Sk\+\_\+native}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{Sk\+\_\+native}{Sk\_native}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk\+\_\+native}
+
+\mbox{\Hypertarget{RNAcode_8c_a720f3e09e87f08ee95fd84af1c9c575e}\label{RNAcode_8c_a720f3e09e87f08ee95fd84af1c9c575e}} 
+\index{R\+N\+Acode.\+c@{R\+N\+Acode.\+c}!Sk\+\_\+native\+\_\+rev@{Sk\+\_\+native\+\_\+rev}}
+\index{Sk\+\_\+native\+\_\+rev@{Sk\+\_\+native\+\_\+rev}!R\+N\+Acode.\+c@{R\+N\+Acode.\+c}}
+\subsubsection{\texorpdfstring{Sk\+\_\+native\+\_\+rev}{Sk\_native\_rev}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk\+\_\+native\+\_\+rev}
+

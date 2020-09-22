@@ -1,0 +1,745 @@
+\hypertarget{structgengetopt__args__info}{}\section{gengetopt\+\_\+args\+\_\+info Struct Reference}
+\label{structgengetopt__args__info}\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+
+
+Where the command line options are stored.  
+
+
+
+
+{\ttfamily \#include $<$cmdline.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_afb4efa68a6f43a4d112e9b96ffe89101}{help\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Print help and exit help description. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_adef454ea6f3ff4114ae5009e58360cfc}{version\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Print version and exit help description. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_ab9e3d63af39beb195c0ce4b30628475b}{outfile\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em Output filename. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a39782404c00e6f9107f8fdcae948222f}{outfile\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Output filename original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_ae7d54ef8556b73161c14a77b20fe321f}{outfile\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Output filename help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_a3cc76992b00eb5f69d49ecabfa65de28}{gtf\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em G\+TF output (default=off). \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a7eb6417bded13cc26a47a1ee53bcb8dc}{gtf\+\_\+help}
+\begin{DoxyCompactList}\small\item\em G\+TF output help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_aa01935a1796974d3347aff6062718afc}{tabular\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em Tab delimited output (default=off). \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a923b9288287e40df1b3f21bfe288f123}{tabular\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Tab delimited output help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_ab0275ce8469b8fa0415ec84a692aba90}{best\+\_\+only\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em Print only best hit per alignment (default=off). \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a4f31622f59d764e13fe3ef9d3d0cc579}{best\+\_\+only\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Print only best hit per alignment help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_a4ee2d5172359ee7a6b7fd042fae11817}{best\+\_\+region\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em Print all best non-\/overlapping hits per alignment (default=off). \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a8943d1adc6dc6a89790adb4ce383943e}{best\+\_\+region\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Print all best non-\/overlapping hits per alignment help description. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a965c61281e9339738647ff5e44604d8b}{pars\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em String with parameters. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a2c6837447e74b77af713002cdb58949b}{pars\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em String with parameters original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_aacd28fcc4238ef2516cca7526df79533}{pars\+\_\+help}
+\begin{DoxyCompactList}\small\item\em String with parameters help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_aa4b8393ab6c37bca14cb1b291b5871df}{stop\+\_\+early\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em Don\textquotesingle{}t calculate p-\/values if below cutoff (default=off). \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_aefd3bdbabef305d8e53741dc229e7cb0}{stop\+\_\+early\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Don\textquotesingle{}t calculate p-\/values if below cutoff help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_ac62c13305dd12c4d426aeb82b6e4561b}{num\+\_\+samples\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em Number of samples. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a043409e12989cdbf8cd34fa47f8c6a4c}{num\+\_\+samples\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Number of samples original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a1c4039a0fea549c7db4b2c62482179f8}{num\+\_\+samples\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Number of samples help description. \end{DoxyCompactList}\item 
+float \hyperlink{structgengetopt__args__info_a79efa24e1a3d614f474d323f147edf10}{cutoff\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em p-\/value cutoff. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_ac1cc7e0fbe8552f19e4760b827349622}{cutoff\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em p-\/value cutoff original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a46f7d71837544abf13c5972fc5e528b3}{cutoff\+\_\+help}
+\begin{DoxyCompactList}\small\item\em p-\/value cutoff help description. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a648135bce096c7f592d4a6cc6d2b4d20}{debug\+\_\+file\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em Debug file. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a2b22e7ebbc50b2b054e9be56785fb2de}{debug\+\_\+file\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Debug file original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_af5d881c802b02a6f85b5e4b957de85e9}{debug\+\_\+file\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Debug file help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_a4c97eb3971c8f9222073e63484872bf0}{eps\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em Postscript output (default=off). \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_aa87d33b8ebe4fa33c6c4b7454c3e7e55}{eps\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Postscript output help description. \end{DoxyCompactList}\item 
+float \hyperlink{structgengetopt__args__info_a7d5c15c092764baac13552613fda575f}{eps\+\_\+cutoff\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em Postscript output p-\/value cutoff. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_ad2f45ed857ac6e6d8b1a371d85b65e25}{eps\+\_\+cutoff\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Postscript output p-\/value cutoff original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a32790cf21a0f8e8623371d12deb4b337}{eps\+\_\+cutoff\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Postscript output p-\/value cutoff help description. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a29434f1b1030755c24dde59d8c157de5}{eps\+\_\+dir\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em Postscript directory. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a7474b0d19ed3f9c13ebc88e6cf652c65}{eps\+\_\+dir\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em Postscript directory original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a1c676a66f0cf100d49679440032ae4ab}{eps\+\_\+dir\+\_\+help}
+\begin{DoxyCompactList}\small\item\em Postscript directory help description. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_afe75799aec30a1011e3f65a93538eb88}{limit\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em limit to species. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a77bc7cac390e1901106ad9c70e04b9aa}{limit\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em limit to species original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_ac54bb7e91539b98c4d0756254880b4ee}{limit\+\_\+help}
+\begin{DoxyCompactList}\small\item\em limit to species help description. \end{DoxyCompactList}\item 
+int \hyperlink{structgengetopt__args__info_a7d3c9030b97320380911d603e2130e0d}{blosum\+\_\+arg}
+\begin{DoxyCompactList}\small\item\em B\+L\+O\+S\+UM matrix version. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structgengetopt__args__info_a93a262b5d97dda58b75849a1318e2918}{blosum\+\_\+orig}
+\begin{DoxyCompactList}\small\item\em B\+L\+O\+S\+UM matrix version original value given at command line. \end{DoxyCompactList}\item 
+\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$ \hyperlink{structgengetopt__args__info_a6527f32b39a7c09ee3daffe899887075}{blosum\+\_\+help}
+\begin{DoxyCompactList}\small\item\em B\+L\+O\+S\+UM matrix version help description. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_ab9fd677f890731fd7d6f6c62e6dfc99c}{help\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether help was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_ad4953a2130b2f8b94a3a687014f278e1}{version\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether version was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_af6f058929187956cb68a0192b866f942}{outfile\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether outfile was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a0e6e111149cf2a4bc171c80ee4055f8e}{gtf\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether gtf was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a3b5a200c98e9f33b1dfa0adf5fbaf69d}{tabular\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether tabular was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a6c48b4d066a85f4a580a6a64dbdb176e}{best\+\_\+only\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether best-\/only was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_afd4b6f3efee5f421948359ec5eea335c}{best\+\_\+region\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether best-\/region was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_abaf16e517f88e5ad41e06e0584045074}{pars\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether pars was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a69729e2dba0de954d98a56a1b3d8d1c1}{stop\+\_\+early\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether stop-\/early was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a26d6c50dc3b78c9194509a8399d62888}{num\+\_\+samples\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether num-\/samples was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_ace7446eaaaffb4c8be5ee2d157933ac1}{cutoff\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether cutoff was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a87bd42cd11567d4e27859cc0569752d6}{debug\+\_\+file\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether debug-\/file was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a9d52e7e979f21f9278bcb39005164a44}{eps\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether eps was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a60b5aec84888abe557256b1909b01a01}{eps\+\_\+cutoff\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether eps-\/cutoff was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a33c0504245a49e483924248119b400a6}{eps\+\_\+dir\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether eps-\/dir was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a1058bb49a05830b377b2335d9ae1c7c9}{limit\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether limit was given. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{structgengetopt__args__info_a5c4114dd20295edf631f04e637214386}{blosum\+\_\+given}
+\begin{DoxyCompactList}\small\item\em Whether blosum was given. \end{DoxyCompactList}\item 
+char $\ast$$\ast$ \hyperlink{structgengetopt__args__info_a9604690019dd09b318302dae6868726c}{inputs}
+\begin{DoxyCompactList}\small\item\em unamed options (options without names) \end{DoxyCompactList}\item 
+unsigned \hyperlink{structgengetopt__args__info_a3d69c180d5ac0b1124fd9a6fe680706c}{inputs\+\_\+num}
+\begin{DoxyCompactList}\small\item\em unamed options number \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Where the command line options are stored. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structgengetopt__args__info_ab0275ce8469b8fa0415ec84a692aba90}\label{structgengetopt__args__info_ab0275ce8469b8fa0415ec84a692aba90}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!best\+\_\+only\+\_\+flag@{best\+\_\+only\+\_\+flag}}
+\index{best\+\_\+only\+\_\+flag@{best\+\_\+only\+\_\+flag}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{best\+\_\+only\+\_\+flag}{best\_only\_flag}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::best\+\_\+only\+\_\+flag}
+
+
+
+Print only best hit per alignment (default=off). 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a6c48b4d066a85f4a580a6a64dbdb176e}\label{structgengetopt__args__info_a6c48b4d066a85f4a580a6a64dbdb176e}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!best\+\_\+only\+\_\+given@{best\+\_\+only\+\_\+given}}
+\index{best\+\_\+only\+\_\+given@{best\+\_\+only\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{best\+\_\+only\+\_\+given}{best\_only\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::best\+\_\+only\+\_\+given}
+
+
+
+Whether best-\/only was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a4f31622f59d764e13fe3ef9d3d0cc579}\label{structgengetopt__args__info_a4f31622f59d764e13fe3ef9d3d0cc579}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!best\+\_\+only\+\_\+help@{best\+\_\+only\+\_\+help}}
+\index{best\+\_\+only\+\_\+help@{best\+\_\+only\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{best\+\_\+only\+\_\+help}{best\_only\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::best\+\_\+only\+\_\+help}
+
+
+
+Print only best hit per alignment help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a4ee2d5172359ee7a6b7fd042fae11817}\label{structgengetopt__args__info_a4ee2d5172359ee7a6b7fd042fae11817}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!best\+\_\+region\+\_\+flag@{best\+\_\+region\+\_\+flag}}
+\index{best\+\_\+region\+\_\+flag@{best\+\_\+region\+\_\+flag}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{best\+\_\+region\+\_\+flag}{best\_region\_flag}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::best\+\_\+region\+\_\+flag}
+
+
+
+Print all best non-\/overlapping hits per alignment (default=off). 
+
+\mbox{\Hypertarget{structgengetopt__args__info_afd4b6f3efee5f421948359ec5eea335c}\label{structgengetopt__args__info_afd4b6f3efee5f421948359ec5eea335c}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!best\+\_\+region\+\_\+given@{best\+\_\+region\+\_\+given}}
+\index{best\+\_\+region\+\_\+given@{best\+\_\+region\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{best\+\_\+region\+\_\+given}{best\_region\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::best\+\_\+region\+\_\+given}
+
+
+
+Whether best-\/region was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a8943d1adc6dc6a89790adb4ce383943e}\label{structgengetopt__args__info_a8943d1adc6dc6a89790adb4ce383943e}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!best\+\_\+region\+\_\+help@{best\+\_\+region\+\_\+help}}
+\index{best\+\_\+region\+\_\+help@{best\+\_\+region\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{best\+\_\+region\+\_\+help}{best\_region\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::best\+\_\+region\+\_\+help}
+
+
+
+Print all best non-\/overlapping hits per alignment help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a7d3c9030b97320380911d603e2130e0d}\label{structgengetopt__args__info_a7d3c9030b97320380911d603e2130e0d}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!blosum\+\_\+arg@{blosum\+\_\+arg}}
+\index{blosum\+\_\+arg@{blosum\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{blosum\+\_\+arg}{blosum\_arg}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::blosum\+\_\+arg}
+
+
+
+B\+L\+O\+S\+UM matrix version. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a5c4114dd20295edf631f04e637214386}\label{structgengetopt__args__info_a5c4114dd20295edf631f04e637214386}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!blosum\+\_\+given@{blosum\+\_\+given}}
+\index{blosum\+\_\+given@{blosum\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{blosum\+\_\+given}{blosum\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::blosum\+\_\+given}
+
+
+
+Whether blosum was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a6527f32b39a7c09ee3daffe899887075}\label{structgengetopt__args__info_a6527f32b39a7c09ee3daffe899887075}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!blosum\+\_\+help@{blosum\+\_\+help}}
+\index{blosum\+\_\+help@{blosum\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{blosum\+\_\+help}{blosum\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::blosum\+\_\+help}
+
+
+
+B\+L\+O\+S\+UM matrix version help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a93a262b5d97dda58b75849a1318e2918}\label{structgengetopt__args__info_a93a262b5d97dda58b75849a1318e2918}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!blosum\+\_\+orig@{blosum\+\_\+orig}}
+\index{blosum\+\_\+orig@{blosum\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{blosum\+\_\+orig}{blosum\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::blosum\+\_\+orig}
+
+
+
+B\+L\+O\+S\+UM matrix version original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a79efa24e1a3d614f474d323f147edf10}\label{structgengetopt__args__info_a79efa24e1a3d614f474d323f147edf10}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!cutoff\+\_\+arg@{cutoff\+\_\+arg}}
+\index{cutoff\+\_\+arg@{cutoff\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{cutoff\+\_\+arg}{cutoff\_arg}}
+{\footnotesize\ttfamily float gengetopt\+\_\+args\+\_\+info\+::cutoff\+\_\+arg}
+
+
+
+p-\/value cutoff. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ace7446eaaaffb4c8be5ee2d157933ac1}\label{structgengetopt__args__info_ace7446eaaaffb4c8be5ee2d157933ac1}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!cutoff\+\_\+given@{cutoff\+\_\+given}}
+\index{cutoff\+\_\+given@{cutoff\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{cutoff\+\_\+given}{cutoff\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::cutoff\+\_\+given}
+
+
+
+Whether cutoff was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a46f7d71837544abf13c5972fc5e528b3}\label{structgengetopt__args__info_a46f7d71837544abf13c5972fc5e528b3}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!cutoff\+\_\+help@{cutoff\+\_\+help}}
+\index{cutoff\+\_\+help@{cutoff\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{cutoff\+\_\+help}{cutoff\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::cutoff\+\_\+help}
+
+
+
+p-\/value cutoff help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ac1cc7e0fbe8552f19e4760b827349622}\label{structgengetopt__args__info_ac1cc7e0fbe8552f19e4760b827349622}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!cutoff\+\_\+orig@{cutoff\+\_\+orig}}
+\index{cutoff\+\_\+orig@{cutoff\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{cutoff\+\_\+orig}{cutoff\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::cutoff\+\_\+orig}
+
+
+
+p-\/value cutoff original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a648135bce096c7f592d4a6cc6d2b4d20}\label{structgengetopt__args__info_a648135bce096c7f592d4a6cc6d2b4d20}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!debug\+\_\+file\+\_\+arg@{debug\+\_\+file\+\_\+arg}}
+\index{debug\+\_\+file\+\_\+arg@{debug\+\_\+file\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{debug\+\_\+file\+\_\+arg}{debug\_file\_arg}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::debug\+\_\+file\+\_\+arg}
+
+
+
+Debug file. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a87bd42cd11567d4e27859cc0569752d6}\label{structgengetopt__args__info_a87bd42cd11567d4e27859cc0569752d6}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!debug\+\_\+file\+\_\+given@{debug\+\_\+file\+\_\+given}}
+\index{debug\+\_\+file\+\_\+given@{debug\+\_\+file\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{debug\+\_\+file\+\_\+given}{debug\_file\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::debug\+\_\+file\+\_\+given}
+
+
+
+Whether debug-\/file was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_af5d881c802b02a6f85b5e4b957de85e9}\label{structgengetopt__args__info_af5d881c802b02a6f85b5e4b957de85e9}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!debug\+\_\+file\+\_\+help@{debug\+\_\+file\+\_\+help}}
+\index{debug\+\_\+file\+\_\+help@{debug\+\_\+file\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{debug\+\_\+file\+\_\+help}{debug\_file\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::debug\+\_\+file\+\_\+help}
+
+
+
+Debug file help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a2b22e7ebbc50b2b054e9be56785fb2de}\label{structgengetopt__args__info_a2b22e7ebbc50b2b054e9be56785fb2de}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!debug\+\_\+file\+\_\+orig@{debug\+\_\+file\+\_\+orig}}
+\index{debug\+\_\+file\+\_\+orig@{debug\+\_\+file\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{debug\+\_\+file\+\_\+orig}{debug\_file\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::debug\+\_\+file\+\_\+orig}
+
+
+
+Debug file original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a7d5c15c092764baac13552613fda575f}\label{structgengetopt__args__info_a7d5c15c092764baac13552613fda575f}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+cutoff\+\_\+arg@{eps\+\_\+cutoff\+\_\+arg}}
+\index{eps\+\_\+cutoff\+\_\+arg@{eps\+\_\+cutoff\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+cutoff\+\_\+arg}{eps\_cutoff\_arg}}
+{\footnotesize\ttfamily float gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+cutoff\+\_\+arg}
+
+
+
+Postscript output p-\/value cutoff. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a60b5aec84888abe557256b1909b01a01}\label{structgengetopt__args__info_a60b5aec84888abe557256b1909b01a01}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+cutoff\+\_\+given@{eps\+\_\+cutoff\+\_\+given}}
+\index{eps\+\_\+cutoff\+\_\+given@{eps\+\_\+cutoff\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+cutoff\+\_\+given}{eps\_cutoff\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+cutoff\+\_\+given}
+
+
+
+Whether eps-\/cutoff was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a32790cf21a0f8e8623371d12deb4b337}\label{structgengetopt__args__info_a32790cf21a0f8e8623371d12deb4b337}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+cutoff\+\_\+help@{eps\+\_\+cutoff\+\_\+help}}
+\index{eps\+\_\+cutoff\+\_\+help@{eps\+\_\+cutoff\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+cutoff\+\_\+help}{eps\_cutoff\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+cutoff\+\_\+help}
+
+
+
+Postscript output p-\/value cutoff help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ad2f45ed857ac6e6d8b1a371d85b65e25}\label{structgengetopt__args__info_ad2f45ed857ac6e6d8b1a371d85b65e25}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+cutoff\+\_\+orig@{eps\+\_\+cutoff\+\_\+orig}}
+\index{eps\+\_\+cutoff\+\_\+orig@{eps\+\_\+cutoff\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+cutoff\+\_\+orig}{eps\_cutoff\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+cutoff\+\_\+orig}
+
+
+
+Postscript output p-\/value cutoff original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a29434f1b1030755c24dde59d8c157de5}\label{structgengetopt__args__info_a29434f1b1030755c24dde59d8c157de5}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+dir\+\_\+arg@{eps\+\_\+dir\+\_\+arg}}
+\index{eps\+\_\+dir\+\_\+arg@{eps\+\_\+dir\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+dir\+\_\+arg}{eps\_dir\_arg}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+dir\+\_\+arg}
+
+
+
+Postscript directory. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a33c0504245a49e483924248119b400a6}\label{structgengetopt__args__info_a33c0504245a49e483924248119b400a6}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+dir\+\_\+given@{eps\+\_\+dir\+\_\+given}}
+\index{eps\+\_\+dir\+\_\+given@{eps\+\_\+dir\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+dir\+\_\+given}{eps\_dir\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+dir\+\_\+given}
+
+
+
+Whether eps-\/dir was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a1c676a66f0cf100d49679440032ae4ab}\label{structgengetopt__args__info_a1c676a66f0cf100d49679440032ae4ab}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+dir\+\_\+help@{eps\+\_\+dir\+\_\+help}}
+\index{eps\+\_\+dir\+\_\+help@{eps\+\_\+dir\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+dir\+\_\+help}{eps\_dir\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+dir\+\_\+help}
+
+
+
+Postscript directory help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a7474b0d19ed3f9c13ebc88e6cf652c65}\label{structgengetopt__args__info_a7474b0d19ed3f9c13ebc88e6cf652c65}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+dir\+\_\+orig@{eps\+\_\+dir\+\_\+orig}}
+\index{eps\+\_\+dir\+\_\+orig@{eps\+\_\+dir\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+dir\+\_\+orig}{eps\_dir\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+dir\+\_\+orig}
+
+
+
+Postscript directory original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a4c97eb3971c8f9222073e63484872bf0}\label{structgengetopt__args__info_a4c97eb3971c8f9222073e63484872bf0}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+flag@{eps\+\_\+flag}}
+\index{eps\+\_\+flag@{eps\+\_\+flag}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+flag}{eps\_flag}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+flag}
+
+
+
+Postscript output (default=off). 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a9d52e7e979f21f9278bcb39005164a44}\label{structgengetopt__args__info_a9d52e7e979f21f9278bcb39005164a44}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+given@{eps\+\_\+given}}
+\index{eps\+\_\+given@{eps\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+given}{eps\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+given}
+
+
+
+Whether eps was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_aa87d33b8ebe4fa33c6c4b7454c3e7e55}\label{structgengetopt__args__info_aa87d33b8ebe4fa33c6c4b7454c3e7e55}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!eps\+\_\+help@{eps\+\_\+help}}
+\index{eps\+\_\+help@{eps\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{eps\+\_\+help}{eps\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::eps\+\_\+help}
+
+
+
+Postscript output help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a3cc76992b00eb5f69d49ecabfa65de28}\label{structgengetopt__args__info_a3cc76992b00eb5f69d49ecabfa65de28}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!gtf\+\_\+flag@{gtf\+\_\+flag}}
+\index{gtf\+\_\+flag@{gtf\+\_\+flag}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{gtf\+\_\+flag}{gtf\_flag}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::gtf\+\_\+flag}
+
+
+
+G\+TF output (default=off). 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a0e6e111149cf2a4bc171c80ee4055f8e}\label{structgengetopt__args__info_a0e6e111149cf2a4bc171c80ee4055f8e}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!gtf\+\_\+given@{gtf\+\_\+given}}
+\index{gtf\+\_\+given@{gtf\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{gtf\+\_\+given}{gtf\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::gtf\+\_\+given}
+
+
+
+Whether gtf was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a7eb6417bded13cc26a47a1ee53bcb8dc}\label{structgengetopt__args__info_a7eb6417bded13cc26a47a1ee53bcb8dc}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!gtf\+\_\+help@{gtf\+\_\+help}}
+\index{gtf\+\_\+help@{gtf\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{gtf\+\_\+help}{gtf\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::gtf\+\_\+help}
+
+
+
+G\+TF output help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ab9fd677f890731fd7d6f6c62e6dfc99c}\label{structgengetopt__args__info_ab9fd677f890731fd7d6f6c62e6dfc99c}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!help\+\_\+given@{help\+\_\+given}}
+\index{help\+\_\+given@{help\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{help\+\_\+given}{help\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::help\+\_\+given}
+
+
+
+Whether help was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_afb4efa68a6f43a4d112e9b96ffe89101}\label{structgengetopt__args__info_afb4efa68a6f43a4d112e9b96ffe89101}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!help\+\_\+help@{help\+\_\+help}}
+\index{help\+\_\+help@{help\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{help\+\_\+help}{help\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::help\+\_\+help}
+
+
+
+Print help and exit help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a9604690019dd09b318302dae6868726c}\label{structgengetopt__args__info_a9604690019dd09b318302dae6868726c}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!inputs@{inputs}}
+\index{inputs@{inputs}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{inputs}{inputs}}
+{\footnotesize\ttfamily char$\ast$$\ast$ gengetopt\+\_\+args\+\_\+info\+::inputs}
+
+
+
+unamed options (options without names) 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a3d69c180d5ac0b1124fd9a6fe680706c}\label{structgengetopt__args__info_a3d69c180d5ac0b1124fd9a6fe680706c}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!inputs\+\_\+num@{inputs\+\_\+num}}
+\index{inputs\+\_\+num@{inputs\+\_\+num}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{inputs\+\_\+num}{inputs\_num}}
+{\footnotesize\ttfamily unsigned gengetopt\+\_\+args\+\_\+info\+::inputs\+\_\+num}
+
+
+
+unamed options number 
+
+\mbox{\Hypertarget{structgengetopt__args__info_afe75799aec30a1011e3f65a93538eb88}\label{structgengetopt__args__info_afe75799aec30a1011e3f65a93538eb88}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!limit\+\_\+arg@{limit\+\_\+arg}}
+\index{limit\+\_\+arg@{limit\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{limit\+\_\+arg}{limit\_arg}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::limit\+\_\+arg}
+
+
+
+limit to species. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a1058bb49a05830b377b2335d9ae1c7c9}\label{structgengetopt__args__info_a1058bb49a05830b377b2335d9ae1c7c9}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!limit\+\_\+given@{limit\+\_\+given}}
+\index{limit\+\_\+given@{limit\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{limit\+\_\+given}{limit\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::limit\+\_\+given}
+
+
+
+Whether limit was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ac54bb7e91539b98c4d0756254880b4ee}\label{structgengetopt__args__info_ac54bb7e91539b98c4d0756254880b4ee}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!limit\+\_\+help@{limit\+\_\+help}}
+\index{limit\+\_\+help@{limit\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{limit\+\_\+help}{limit\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::limit\+\_\+help}
+
+
+
+limit to species help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a77bc7cac390e1901106ad9c70e04b9aa}\label{structgengetopt__args__info_a77bc7cac390e1901106ad9c70e04b9aa}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!limit\+\_\+orig@{limit\+\_\+orig}}
+\index{limit\+\_\+orig@{limit\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{limit\+\_\+orig}{limit\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::limit\+\_\+orig}
+
+
+
+limit to species original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ac62c13305dd12c4d426aeb82b6e4561b}\label{structgengetopt__args__info_ac62c13305dd12c4d426aeb82b6e4561b}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!num\+\_\+samples\+\_\+arg@{num\+\_\+samples\+\_\+arg}}
+\index{num\+\_\+samples\+\_\+arg@{num\+\_\+samples\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{num\+\_\+samples\+\_\+arg}{num\_samples\_arg}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::num\+\_\+samples\+\_\+arg}
+
+
+
+Number of samples. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a26d6c50dc3b78c9194509a8399d62888}\label{structgengetopt__args__info_a26d6c50dc3b78c9194509a8399d62888}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!num\+\_\+samples\+\_\+given@{num\+\_\+samples\+\_\+given}}
+\index{num\+\_\+samples\+\_\+given@{num\+\_\+samples\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{num\+\_\+samples\+\_\+given}{num\_samples\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::num\+\_\+samples\+\_\+given}
+
+
+
+Whether num-\/samples was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a1c4039a0fea549c7db4b2c62482179f8}\label{structgengetopt__args__info_a1c4039a0fea549c7db4b2c62482179f8}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!num\+\_\+samples\+\_\+help@{num\+\_\+samples\+\_\+help}}
+\index{num\+\_\+samples\+\_\+help@{num\+\_\+samples\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{num\+\_\+samples\+\_\+help}{num\_samples\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::num\+\_\+samples\+\_\+help}
+
+
+
+Number of samples help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a043409e12989cdbf8cd34fa47f8c6a4c}\label{structgengetopt__args__info_a043409e12989cdbf8cd34fa47f8c6a4c}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!num\+\_\+samples\+\_\+orig@{num\+\_\+samples\+\_\+orig}}
+\index{num\+\_\+samples\+\_\+orig@{num\+\_\+samples\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{num\+\_\+samples\+\_\+orig}{num\_samples\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::num\+\_\+samples\+\_\+orig}
+
+
+
+Number of samples original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ab9e3d63af39beb195c0ce4b30628475b}\label{structgengetopt__args__info_ab9e3d63af39beb195c0ce4b30628475b}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!outfile\+\_\+arg@{outfile\+\_\+arg}}
+\index{outfile\+\_\+arg@{outfile\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{outfile\+\_\+arg}{outfile\_arg}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::outfile\+\_\+arg}
+
+
+
+Output filename. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_af6f058929187956cb68a0192b866f942}\label{structgengetopt__args__info_af6f058929187956cb68a0192b866f942}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!outfile\+\_\+given@{outfile\+\_\+given}}
+\index{outfile\+\_\+given@{outfile\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{outfile\+\_\+given}{outfile\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::outfile\+\_\+given}
+
+
+
+Whether outfile was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ae7d54ef8556b73161c14a77b20fe321f}\label{structgengetopt__args__info_ae7d54ef8556b73161c14a77b20fe321f}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!outfile\+\_\+help@{outfile\+\_\+help}}
+\index{outfile\+\_\+help@{outfile\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{outfile\+\_\+help}{outfile\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::outfile\+\_\+help}
+
+
+
+Output filename help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a39782404c00e6f9107f8fdcae948222f}\label{structgengetopt__args__info_a39782404c00e6f9107f8fdcae948222f}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!outfile\+\_\+orig@{outfile\+\_\+orig}}
+\index{outfile\+\_\+orig@{outfile\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{outfile\+\_\+orig}{outfile\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::outfile\+\_\+orig}
+
+
+
+Output filename original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a965c61281e9339738647ff5e44604d8b}\label{structgengetopt__args__info_a965c61281e9339738647ff5e44604d8b}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!pars\+\_\+arg@{pars\+\_\+arg}}
+\index{pars\+\_\+arg@{pars\+\_\+arg}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{pars\+\_\+arg}{pars\_arg}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::pars\+\_\+arg}
+
+
+
+String with parameters. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_abaf16e517f88e5ad41e06e0584045074}\label{structgengetopt__args__info_abaf16e517f88e5ad41e06e0584045074}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!pars\+\_\+given@{pars\+\_\+given}}
+\index{pars\+\_\+given@{pars\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{pars\+\_\+given}{pars\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::pars\+\_\+given}
+
+
+
+Whether pars was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_aacd28fcc4238ef2516cca7526df79533}\label{structgengetopt__args__info_aacd28fcc4238ef2516cca7526df79533}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!pars\+\_\+help@{pars\+\_\+help}}
+\index{pars\+\_\+help@{pars\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{pars\+\_\+help}{pars\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::pars\+\_\+help}
+
+
+
+String with parameters help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a2c6837447e74b77af713002cdb58949b}\label{structgengetopt__args__info_a2c6837447e74b77af713002cdb58949b}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!pars\+\_\+orig@{pars\+\_\+orig}}
+\index{pars\+\_\+orig@{pars\+\_\+orig}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{pars\+\_\+orig}{pars\_orig}}
+{\footnotesize\ttfamily char$\ast$ gengetopt\+\_\+args\+\_\+info\+::pars\+\_\+orig}
+
+
+
+String with parameters original value given at command line. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_aa4b8393ab6c37bca14cb1b291b5871df}\label{structgengetopt__args__info_aa4b8393ab6c37bca14cb1b291b5871df}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!stop\+\_\+early\+\_\+flag@{stop\+\_\+early\+\_\+flag}}
+\index{stop\+\_\+early\+\_\+flag@{stop\+\_\+early\+\_\+flag}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{stop\+\_\+early\+\_\+flag}{stop\_early\_flag}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::stop\+\_\+early\+\_\+flag}
+
+
+
+Don\textquotesingle{}t calculate p-\/values if below cutoff (default=off). 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a69729e2dba0de954d98a56a1b3d8d1c1}\label{structgengetopt__args__info_a69729e2dba0de954d98a56a1b3d8d1c1}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!stop\+\_\+early\+\_\+given@{stop\+\_\+early\+\_\+given}}
+\index{stop\+\_\+early\+\_\+given@{stop\+\_\+early\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{stop\+\_\+early\+\_\+given}{stop\_early\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::stop\+\_\+early\+\_\+given}
+
+
+
+Whether stop-\/early was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_aefd3bdbabef305d8e53741dc229e7cb0}\label{structgengetopt__args__info_aefd3bdbabef305d8e53741dc229e7cb0}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!stop\+\_\+early\+\_\+help@{stop\+\_\+early\+\_\+help}}
+\index{stop\+\_\+early\+\_\+help@{stop\+\_\+early\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{stop\+\_\+early\+\_\+help}{stop\_early\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::stop\+\_\+early\+\_\+help}
+
+
+
+Don\textquotesingle{}t calculate p-\/values if below cutoff help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_aa01935a1796974d3347aff6062718afc}\label{structgengetopt__args__info_aa01935a1796974d3347aff6062718afc}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!tabular\+\_\+flag@{tabular\+\_\+flag}}
+\index{tabular\+\_\+flag@{tabular\+\_\+flag}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{tabular\+\_\+flag}{tabular\_flag}}
+{\footnotesize\ttfamily int gengetopt\+\_\+args\+\_\+info\+::tabular\+\_\+flag}
+
+
+
+Tab delimited output (default=off). 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a3b5a200c98e9f33b1dfa0adf5fbaf69d}\label{structgengetopt__args__info_a3b5a200c98e9f33b1dfa0adf5fbaf69d}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!tabular\+\_\+given@{tabular\+\_\+given}}
+\index{tabular\+\_\+given@{tabular\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{tabular\+\_\+given}{tabular\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::tabular\+\_\+given}
+
+
+
+Whether tabular was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_a923b9288287e40df1b3f21bfe288f123}\label{structgengetopt__args__info_a923b9288287e40df1b3f21bfe288f123}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!tabular\+\_\+help@{tabular\+\_\+help}}
+\index{tabular\+\_\+help@{tabular\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{tabular\+\_\+help}{tabular\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::tabular\+\_\+help}
+
+
+
+Tab delimited output help description. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_ad4953a2130b2f8b94a3a687014f278e1}\label{structgengetopt__args__info_ad4953a2130b2f8b94a3a687014f278e1}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!version\+\_\+given@{version\+\_\+given}}
+\index{version\+\_\+given@{version\+\_\+given}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{version\+\_\+given}{version\_given}}
+{\footnotesize\ttfamily unsigned int gengetopt\+\_\+args\+\_\+info\+::version\+\_\+given}
+
+
+
+Whether version was given. 
+
+\mbox{\Hypertarget{structgengetopt__args__info_adef454ea6f3ff4114ae5009e58360cfc}\label{structgengetopt__args__info_adef454ea6f3ff4114ae5009e58360cfc}} 
+\index{gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}!version\+\_\+help@{version\+\_\+help}}
+\index{version\+\_\+help@{version\+\_\+help}!gengetopt\+\_\+args\+\_\+info@{gengetopt\+\_\+args\+\_\+info}}
+\subsubsection{\texorpdfstring{version\+\_\+help}{version\_help}}
+{\footnotesize\ttfamily \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char$\ast$ gengetopt\+\_\+args\+\_\+info\+::version\+\_\+help}
+
+
+
+Print version and exit help description. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{cmdline_8h}{cmdline.\+h}\end{DoxyCompactItemize}

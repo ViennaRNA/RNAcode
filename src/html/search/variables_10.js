@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['samplen',['sampleN',['../struct__parameters.html#a40706f4d64be0c9ee5cb411cee949416',1,'_parameters']]],
+  ['score',['score',['../struct__segmentStats.html#aea28293c9c59198e9f14542d99ac1484',1,'_segmentStats']]],
+  ['scores',['scores',['../struct__bgModel.html#af4fae6328e121d42a0a8fb3dd882c549',1,'_bgModel::scores()'],['../struct__backtrackData.html#af803a69e3c75e33c0ba7df036642c44d',1,'_backtrackData::scores()']]],
+  ['seq',['seq',['../structaln.html#aee1fbffa2c18c0b3d6016b8fe409eeae',1,'aln']]],
+  ['seqsx',['seqsX',['../postscript_8c.html#a69294d581be62ee920a2ef6622500cbd',1,'postscript.c']]],
+  ['sk',['Sk',['../RNAcode_8c.html#a1662932a5f2814e67dfbbd95ab925073',1,'Sk():&#160;RNAcode.c'],['../score_8c.html#a1662932a5f2814e67dfbbd95ab925073',1,'Sk():&#160;RNAcode.c']]],
+  ['sk_5fnative',['Sk_native',['../postscript_8c.html#a189ec0118947b93b0df1359ab643d3ce',1,'Sk_native():&#160;postscript.c'],['../RNAcode_8c.html#a189ec0118947b93b0df1359ab643d3ce',1,'Sk_native():&#160;RNAcode.c'],['../score_8c.html#a189ec0118947b93b0df1359ab643d3ce',1,'Sk_native():&#160;postscript.c']]],
+  ['sk_5fnative_5frev',['Sk_native_rev',['../postscript_8c.html#a720f3e09e87f08ee95fd84af1c9c575e',1,'Sk_native_rev():&#160;postscript.c'],['../RNAcode_8c.html#a720f3e09e87f08ee95fd84af1c9c575e',1,'Sk_native_rev():&#160;RNAcode.c'],['../score_8c.html#a720f3e09e87f08ee95fd84af1c9c575e',1,'Sk_native_rev():&#160;postscript.c']]],
+  ['ssstep',['ssStep',['../postscript_8c.html#a0fa03894e3a7c9aa3690c217af65c7c3',1,'postscript.c']]],
+  ['start',['start',['../structaln.html#a1cde67bfa55bc9e8f2d98f9e53a4ba12',1,'aln::start()'],['../struct__segmentStats.html#acbd4b0e7ceaa05b6506aab77d2bf1090',1,'_segmentStats::start()']]],
+  ['startgenomic',['startGenomic',['../struct__segmentStats.html#a95a69dcd9686db97033daded2f42878b',1,'_segmentStats']]],
+  ['startsite',['startSite',['../struct__segmentStats.html#a403f946ddab65393861d93fbb81f0d5a',1,'_segmentStats']]],
+  ['starty',['startY',['../postscript_8c.html#aa3dfc2d68f6a44a7941b7e6f2940ecac',1,'postscript.c']]],
+  ['states',['states',['../struct__backtrackData.html#a5dc8d2471b3ad228bfba4b4a4638ac85',1,'_backtrackData']]],
+  ['stop_5fearly_5fflag',['stop_early_flag',['../structgengetopt__args__info.html#aa4b8393ab6c37bca14cb1b291b5871df',1,'gengetopt_args_info']]],
+  ['stop_5fearly_5fgiven',['stop_early_given',['../structgengetopt__args__info.html#a69729e2dba0de954d98a56a1b3d8d1c1',1,'gengetopt_args_info']]],
+  ['stop_5fearly_5fhelp',['stop_early_help',['../structgengetopt__args__info.html#aefd3bdbabef305d8e53741dc229e7cb0',1,'gengetopt_args_info']]],
+  ['stopearly',['stopEarly',['../struct__parameters.html#ad170b87fd49f42a1ca464c93e36fa0e3',1,'_parameters']]],
+  ['stoppenalty_5f0',['stopPenalty_0',['../struct__parameters.html#a35c6c83856e4256be0fb543410014f1e',1,'_parameters']]],
+  ['stoppenalty_5fk',['stopPenalty_k',['../struct__parameters.html#ae26af9c558d90b735b7ed5c2bb8bbb1b',1,'_parameters']]],
+  ['strand',['strand',['../structaln.html#aa3a2e698a569a230e9e14e14d3afe653',1,'aln::strand()'],['../struct__segmentStats.html#a84cfdd51d1e7fe9555f887c3658e9ced',1,'_segmentStats::strand()']]]
+];

@@ -1,0 +1,182 @@
+\hypertarget{treeSimulate_8c}{}\section{tree\+Simulate.\+c File Reference}
+\label{treeSimulate_8c}\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rnaz\+\_\+utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tree\+Simulate.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}global.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}treefile.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}evolve.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nucmodels.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}aamodels.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}progress.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}twister.\+h\char`\"{}}\newline
+Include dependency graph for tree\+Simulate.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{treeSimulate_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{treeSimulate_8c_a2a10fb3293a345ad28201efc8f452348}{simulate\+Tree} (T\+Tree $\ast$tree, float freqs\mbox{[}$\,$\mbox{]}, float kap, int L)
+\item 
+T\+Tree $\ast$ \hyperlink{treeSimulate_8c_af77eeafe78dc6291a2c5a0f9e0dea164}{string2tree} (char $\ast$tree\+String)
+\item 
+float $\ast$$\ast$ \hyperlink{treeSimulate_8c_a684681e84edaa63e768ec7ad1ff4884f}{get\+Distance\+Matrix} (T\+Tree $\ast$tree, struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+T\+Node $\ast$ \hyperlink{treeSimulate_8c_a3d5dbc026864385b3c931c928110b32a}{get\+L\+CA} (T\+Tree $\ast$tree, T\+Node $\ast$nodeA, T\+Node $\ast$nodeB)
+\item 
+void \hyperlink{treeSimulate_8c_a3de1638db8b0f14df05b49f41bae2da6}{tree2aln} (T\+Tree $\ast$tree, struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{treeSimulate_8c_a0f4d088716aa0dbcb5485641a0be7096}{free\+Seqgen\+Tree} (T\+Tree $\ast$tree)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{treeSimulate_8c_a027a1f1731d22465c926ce57be2364c3}{model}
+\item 
+int \hyperlink{treeSimulate_8c_a39cc268c324972ce5653c35bdc8aa80f}{num\+States}
+\item 
+int \hyperlink{treeSimulate_8c_a72e05eb4637bf2f93aa05f211b1a57b2}{is\+Nuc\+Model}
+\item 
+int \hyperlink{treeSimulate_8c_a2d2500b39f829187e7542d576b71a547}{user\+Freqs}
+\item 
+int \hyperlink{treeSimulate_8c_a85ef69963901475137a5babcaf4233b3}{equal\+Freqs}
+\item 
+int \hyperlink{treeSimulate_8c_a13ffae79c3c34f8e30570d5baf7641b0}{num\+Sites}
+\item 
+double \hyperlink{treeSimulate_8c_a489eb68465b539564550251550697a47}{tstv}
+\item 
+double \hyperlink{treeSimulate_8c_a720f633590f8f9d192891d52735cfcce}{nuc\+Freq} \mbox{[}N\+U\+M\+\_\+\+N\+UC\mbox{]}
+\item 
+int \hyperlink{treeSimulate_8c_a3893608bdd239b0b3b47338282608791}{num\+Taxa}
+\item 
+char $\ast$ \hyperlink{treeSimulate_8c_aed2d481a3756e5431b6d0e26b1d4b246}{P}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{treeSimulate_8c_a0f4d088716aa0dbcb5485641a0be7096}\label{treeSimulate_8c_a0f4d088716aa0dbcb5485641a0be7096}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!free\+Seqgen\+Tree@{free\+Seqgen\+Tree}}
+\index{free\+Seqgen\+Tree@{free\+Seqgen\+Tree}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{free\+Seqgen\+Tree()}{freeSeqgenTree()}}
+{\footnotesize\ttfamily void free\+Seqgen\+Tree (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8c_a684681e84edaa63e768ec7ad1ff4884f}\label{treeSimulate_8c_a684681e84edaa63e768ec7ad1ff4884f}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!get\+Distance\+Matrix@{get\+Distance\+Matrix}}
+\index{get\+Distance\+Matrix@{get\+Distance\+Matrix}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{get\+Distance\+Matrix()}{getDistanceMatrix()}}
+{\footnotesize\ttfamily float$\ast$$\ast$ get\+Distance\+Matrix (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{treeSimulate_8c_a684681e84edaa63e768ec7ad1ff4884f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{treeSimulate_8c_a3d5dbc026864385b3c931c928110b32a}\label{treeSimulate_8c_a3d5dbc026864385b3c931c928110b32a}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!get\+L\+CA@{get\+L\+CA}}
+\index{get\+L\+CA@{get\+L\+CA}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{get\+L\+C\+A()}{getLCA()}}
+{\footnotesize\ttfamily T\+Node$\ast$ get\+L\+CA (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{T\+Node $\ast$}]{nodeA,  }\item[{T\+Node $\ast$}]{nodeB }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8c_a2a10fb3293a345ad28201efc8f452348}\label{treeSimulate_8c_a2a10fb3293a345ad28201efc8f452348}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!simulate\+Tree@{simulate\+Tree}}
+\index{simulate\+Tree@{simulate\+Tree}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{simulate\+Tree()}{simulateTree()}}
+{\footnotesize\ttfamily void simulate\+Tree (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{float}]{freqs\mbox{[}$\,$\mbox{]},  }\item[{float}]{kap,  }\item[{int}]{L }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8c_af77eeafe78dc6291a2c5a0f9e0dea164}\label{treeSimulate_8c_af77eeafe78dc6291a2c5a0f9e0dea164}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!string2tree@{string2tree}}
+\index{string2tree@{string2tree}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{string2tree()}{string2tree()}}
+{\footnotesize\ttfamily T\+Tree$\ast$ string2tree (\begin{DoxyParamCaption}\item[{char $\ast$}]{tree\+String }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{treeSimulate_8c_a3de1638db8b0f14df05b49f41bae2da6}\label{treeSimulate_8c_a3de1638db8b0f14df05b49f41bae2da6}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!tree2aln@{tree2aln}}
+\index{tree2aln@{tree2aln}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{tree2aln()}{tree2aln()}}
+{\footnotesize\ttfamily void tree2aln (\begin{DoxyParamCaption}\item[{T\+Tree $\ast$}]{tree,  }\item[{struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{treeSimulate_8c_a3de1638db8b0f14df05b49f41bae2da6_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{treeSimulate_8c_a85ef69963901475137a5babcaf4233b3}\label{treeSimulate_8c_a85ef69963901475137a5babcaf4233b3}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!equal\+Freqs@{equal\+Freqs}}
+\index{equal\+Freqs@{equal\+Freqs}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{equal\+Freqs}{equalFreqs}}
+{\footnotesize\ttfamily int equal\+Freqs}
+
+\mbox{\Hypertarget{treeSimulate_8c_a72e05eb4637bf2f93aa05f211b1a57b2}\label{treeSimulate_8c_a72e05eb4637bf2f93aa05f211b1a57b2}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!is\+Nuc\+Model@{is\+Nuc\+Model}}
+\index{is\+Nuc\+Model@{is\+Nuc\+Model}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{is\+Nuc\+Model}{isNucModel}}
+{\footnotesize\ttfamily int is\+Nuc\+Model}
+
+\mbox{\Hypertarget{treeSimulate_8c_a027a1f1731d22465c926ce57be2364c3}\label{treeSimulate_8c_a027a1f1731d22465c926ce57be2364c3}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!model@{model}}
+\index{model@{model}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{model}{model}}
+{\footnotesize\ttfamily int model}
+
+\mbox{\Hypertarget{treeSimulate_8c_a720f633590f8f9d192891d52735cfcce}\label{treeSimulate_8c_a720f633590f8f9d192891d52735cfcce}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!nuc\+Freq@{nuc\+Freq}}
+\index{nuc\+Freq@{nuc\+Freq}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{nuc\+Freq}{nucFreq}}
+{\footnotesize\ttfamily double nuc\+Freq\mbox{[}N\+U\+M\+\_\+\+N\+UC\mbox{]}}
+
+\mbox{\Hypertarget{treeSimulate_8c_a13ffae79c3c34f8e30570d5baf7641b0}\label{treeSimulate_8c_a13ffae79c3c34f8e30570d5baf7641b0}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!num\+Sites@{num\+Sites}}
+\index{num\+Sites@{num\+Sites}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{num\+Sites}{numSites}}
+{\footnotesize\ttfamily int num\+Sites}
+
+\mbox{\Hypertarget{treeSimulate_8c_a39cc268c324972ce5653c35bdc8aa80f}\label{treeSimulate_8c_a39cc268c324972ce5653c35bdc8aa80f}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!num\+States@{num\+States}}
+\index{num\+States@{num\+States}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{num\+States}{numStates}}
+{\footnotesize\ttfamily int num\+States}
+
+\mbox{\Hypertarget{treeSimulate_8c_a3893608bdd239b0b3b47338282608791}\label{treeSimulate_8c_a3893608bdd239b0b3b47338282608791}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!num\+Taxa@{num\+Taxa}}
+\index{num\+Taxa@{num\+Taxa}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{num\+Taxa}{numTaxa}}
+{\footnotesize\ttfamily int num\+Taxa}
+
+\mbox{\Hypertarget{treeSimulate_8c_aed2d481a3756e5431b6d0e26b1d4b246}\label{treeSimulate_8c_aed2d481a3756e5431b6d0e26b1d4b246}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!P@{P}}
+\index{P@{P}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily char$\ast$ P}
+
+\mbox{\Hypertarget{treeSimulate_8c_a489eb68465b539564550251550697a47}\label{treeSimulate_8c_a489eb68465b539564550251550697a47}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!tstv@{tstv}}
+\index{tstv@{tstv}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{tstv}{tstv}}
+{\footnotesize\ttfamily double tstv}
+
+\mbox{\Hypertarget{treeSimulate_8c_a2d2500b39f829187e7542d576b71a547}\label{treeSimulate_8c_a2d2500b39f829187e7542d576b71a547}} 
+\index{tree\+Simulate.\+c@{tree\+Simulate.\+c}!user\+Freqs@{user\+Freqs}}
+\index{user\+Freqs@{user\+Freqs}!tree\+Simulate.\+c@{tree\+Simulate.\+c}}
+\subsubsection{\texorpdfstring{user\+Freqs}{userFreqs}}
+{\footnotesize\ttfamily int user\+Freqs}
+

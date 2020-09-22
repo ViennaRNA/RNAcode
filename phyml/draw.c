@@ -10,293 +10,419 @@ the GNU public licence.  See http://www.opensource.org for details.
 
 */
 
-#include "utilities.h"
 #include "draw.h"
 
 
-/*********************************************************/
+void DR_Draw_Tree(char *file_name, t_tree *tree)
+{
+  FILE *ps_tree;
+  
+  ps_tree = (FILE *)fopen(file_name,"w");  
+  DR_Print_Postscript_Header(1,ps_tree);
+  tree->ps_tree = DR_Make_Tdraw_Struct(tree);
+  DR_Init_Tdraw_Struct(tree->ps_tree);
+  DR_Get_Tree_Box_Width(tree->ps_tree,tree);
+  Dist_To_Root(tree);
+  tree->ps_tree->max_dist_to_root = DR_Get_Max_Dist_To_Root(tree);
+  DR_Get_X_Coord(NO,tree->ps_tree,tree);
+  DR_Get_Y_Coord(NO,tree->ps_tree,tree);
+  DR_Print_Tree_Postscript(1,NO,ps_tree,tree);
+  DR_Print_Postscript_EOF(ps_tree);
+  fclose(ps_tree);
+}
 
-void DR_Get_Tree_Coord(arbre *tree)
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+
+void DR_Get_Tree_Coord(t_tree *tree)
 {
   DR_Init_Tdraw_Struct(tree->ps_tree);
   DR_Get_Tree_Box_Width(tree->ps_tree,tree);
   if(!tree->n_root) 
     {
-      printf("\n. Adding root before rendering the tree.");
-      Add_Root(tree->t_edges[0],tree);
+      PhyML_Printf("\n. Adding root before rendering the tree.");
+      Add_Root(tree->a_edges[0],tree);
     }
-  else Update_Root_Pos(tree);
-  DR_Dist_To_Root(tree->n_root,tree);
+  Dist_To_Root(tree);
   tree->ps_tree->max_dist_to_root = DR_Get_Max_Dist_To_Root(tree);
-  DR_Get_X_Coord(tree->ps_tree,tree);
-  DR_Get_Y_Coord(tree->ps_tree,tree);
+  DR_Get_X_Coord(NO,tree->ps_tree,tree);
+  DR_Get_Y_Coord(NO,tree->ps_tree,tree);
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void DR_Print_Postscript_Header(int n_pages, FILE *fp)
 {
   if(!fp)
     {
-      printf("\n. Failed to open the postscript file.");
-      printf("\n. Did you forget the '--ps' option ?.");
-      Warn_And_Exit("\n");
+      PhyML_Printf("\n== Failed to open the postscript file.");
+      PhyML_Printf("\n== Did you forget the '--ps' option ?.");
+      Exit("\n");
     }
 
-  fprintf(fp,"%%!PS-Adobe-3.0\n");
-  fprintf(fp,"%%%%DocumentFonts: Times-Roman Times-Roman\n");
-  fprintf(fp,"%%%%Creator: Stephane Guindon\n");
-  fprintf(fp,"%%%%Title: tree\n");
-  fprintf(fp,"%%%%BeginFeature: *PageSize\n"); 
-  fprintf(fp,"a4\n");
-  fprintf(fp,"%%%%EndFeature\n");
-  fprintf(fp,"%%%%EndComments\n");
-  fprintf(fp,"%%%%Pages: %d\n",n_pages);
+  PhyML_Fprintf(fp,"%%!PS-Adobe-3.0\n");
+  PhyML_Fprintf(fp,"%%%%BoundingBox: 0 0 595.28 841.89\n");
+  PhyML_Fprintf(fp,"%%%%DocumentFonts: Times-Roman Times-Roman\n");
+  PhyML_Fprintf(fp,"%%%%Creator: Stephane Guindon\n");
+  PhyML_Fprintf(fp,"%%%%Title: tree\n");
+  PhyML_Fprintf(fp,"%%%%EndComments\n");
+  PhyML_Fprintf(fp,"%%%%Pages: %d\n",n_pages);
 
-  fprintf(fp,"/lt {lineto} bind def\n");
-  fprintf(fp,"/mt {moveto} bind def\n");
-  fprintf(fp,"/sc {setrgbcolor} bind def\n");
-
-  fprintf(fp,"/clipbox\n");
-  fprintf(fp,"{\n");
-  fprintf(fp,"newpath\n");
-  fprintf(fp,"40 40 moveto\n");
-  fprintf(fp,"560 40 lineto\n");
-  fprintf(fp,"560 820 lineto\n");
-  fprintf(fp,"40 820 lineto\n");
-  fprintf(fp,"40 40 lineto\n");
-  fprintf(fp,"closepath\n");
-  fprintf(fp,"clip\n");
-  fprintf(fp,"} bind def\n");
+  PhyML_Fprintf(fp,"/lt {lineto} bind def\n");
+  PhyML_Fprintf(fp,"/mt {moveto} bind def\n");
+  PhyML_Fprintf(fp,"/sc {setrgbcolor} bind def\n");
+  PhyML_Fprintf(fp,"/ct {curveto} bind def\n");
+  PhyML_Fprintf(fp,"/np {newpath} bind def\n");
+  PhyML_Fprintf(fp,"/cp {closepath} bind def\n");
+  PhyML_Fprintf(fp,"/gs {gsave} bind def\n");
+  PhyML_Fprintf(fp,"/gr {grestore} bind def\n");
   
-  fprintf(fp,"/Times-Roman findfont\n");
-  fprintf(fp,"12 scalefont\n");
-  fprintf(fp,"setfont\n");
+  PhyML_Fprintf(fp,"/Times-Roman findfont\n");
+  PhyML_Fprintf(fp,"12 scalefont\n");
+  PhyML_Fprintf(fp,"setfont\n");
+
+  PhyML_Fprintf(fp,"/clipbox\n");
+  PhyML_Fprintf(fp,"{\n");
+  PhyML_Fprintf(fp,"newpath\n");
+  PhyML_Fprintf(fp,"20 20 mt\n");
+  PhyML_Fprintf(fp,"580 20 lt\n");
+  PhyML_Fprintf(fp,"580 820 lt\n");
+  PhyML_Fprintf(fp,"20 820 lt\n");
+  PhyML_Fprintf(fp,"20 20 lt\n");
+  PhyML_Fprintf(fp,"closepath\n");
+  PhyML_Fprintf(fp,"clip\n");
+  PhyML_Fprintf(fp,"} bind def\n");
+
+
+  /* PhyML_Fprintf(fp,"gs\n"); */
+  /* PhyML_Fprintf(fp,"newpath\n"); */
+  /* PhyML_Fprintf(fp,"20 20 mt\n"); */
+  /* PhyML_Fprintf(fp,"580 20 lt\n"); */
+  /* PhyML_Fprintf(fp,"580 820 lt\n"); */
+  /* PhyML_Fprintf(fp,"20 820 lt\n"); */
+  /* PhyML_Fprintf(fp,"20 20 lt\n"); */
+  /* PhyML_Fprintf(fp,"closepath\n"); */
+  /* PhyML_Fprintf(fp,"stroke\n"); */
+  /* PhyML_Fprintf(fp,"gr\n"); */
+  /* PhyML_Fprintf(fp,"0 0 0 sc\n"); */
 
 
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void DR_Print_Postscript_EOF(FILE *fp)
 {
-  fprintf(fp,"%%%%Trailer\n");
-  fprintf(fp,"%%%%EOF\n");
+  PhyML_Fprintf(fp,"%%%%Trailer\n");
+  PhyML_Fprintf(fp,"%%%%EOF\n");
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Print_Tree_Postscript(int page_num, FILE *fp, arbre *tree)
+
+void DR_Print_Tree_Postscript(int page_num, int render_name, FILE *fp, t_tree *tree)
 {
-  int i;
   tdraw *draw;
-  node *n_root;
+  t_node *n_root;
   
   draw = tree->ps_tree;
-  DR_Get_Tree_Coord(tree);
+/*   DR_Get_Tree_Coord(tree); */
   n_root = tree->n_root;
 
-  fprintf(fp,"%%%%Page: %d %d\n",page_num,page_num); 
-  fprintf(fp,"clipbox\n");
-  fprintf(fp,"stroke\n");
-  fprintf(fp,"50 50 translate\n");
-  fprintf(fp,"newpath\n");
-
-/*   if(b_root->prob_sel_regime <= 0.1) */
-/*     fprintf(fp,".0 .0 1. sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.1 && b_root->prob_sel_regime <= 0.2) */
-/*     fprintf(fp,".0 .5 1. sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.2 && b_root->prob_sel_regime <= 0.3) */
-/*     fprintf(fp,".0 1. 1. sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.3 && b_root->prob_sel_regime <= 0.4) */
-/*     fprintf(fp,".0 1. .5 sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.4 && b_root->prob_sel_regime <= 0.5) */
-/*     fprintf(fp,".0 1. .0 sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.5 && b_root->prob_sel_regime <= 0.6) */
-/*     fprintf(fp,".5 1. .0 sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.6 && b_root->prob_sel_regime <= 0.7) */
-/*     fprintf(fp,"1. 1. 0. sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.7 && b_root->prob_sel_regime <= 0.8) */
-/*     fprintf(fp,"1. .5 0. sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.8 && b_root->prob_sel_regime <= 0.9) */
-/*     fprintf(fp,"1. 0. 0. sc\n"); */
-/*   else if(b_root->prob_sel_regime > 0.9) */
-/*     fprintf(fp,"1. .0 .0 sc\n"); */
-
-  fprintf(fp,"%d %d mt\n",draw->xcoord[n_root->v[0]->num],draw->ycoord[n_root->v[0]->num]);
-  fprintf(fp,"%d %d lt\n",0,draw->ycoord[n_root->v[0]->num]);
-  fprintf(fp,"%d %d lt\n",0,draw->ycoord[n_root->v[1]->num]);
-  fprintf(fp,"%d %d lt\n",draw->xcoord[n_root->v[1]->num],draw->ycoord[n_root->v[1]->num]);
-  fprintf(fp,"stroke\n");
+/*   PhyML_Fprintf(fp,"%%%%Page: %d %d\n",page_num,page_num); */
+  /* PhyML_Fprintf(fp,"0.001 setlinewidth\n"); */
+/*   PhyML_Fprintf(fp,"0.5 0.5 0.4 sc\n"); */
+  /* PhyML_Fprintf(fp,"0 0 0 sc\n"); */
+/*   PhyML_Fprintf(fp,"clipbox\n"); */
+/*   PhyML_Fprintf(fp,"stroke\n"); */
+  PhyML_Fprintf(fp,"20 20 translate\n");
+  PhyML_Fprintf(fp,"newpath\n");
 
 
-  fprintf(fp,"%d %d mt\n",draw->xcoord[n_root->v[0]->num],draw->ycoord[n_root->v[0]->num]);
-  if(n_root->v[0]->tax) fprintf(fp,"(%s) show\n",n_root->v[0]->name);
-  else
-    {
-      For(i,3)
-	if((n_root->v[0]->v[i]) && (n_root->v[0]->v[i] != n_root->v[1]))
-	  DR_Print_Tree_Postscript_Pre(n_root->v[0],n_root->v[0]->v[i],fp,draw,tree);
-    }
+  draw->ycoord[n_root->num] = (draw->ycoord[n_root->v[2]->num] + draw->ycoord[n_root->v[1]->num])/2. + 20; 
+  draw->xcoord[n_root->num] = 0.0; 
+  DR_Print_Tree_Postscript_Pre(n_root,n_root->v[2],n_root->b[2],render_name,fp,draw,tree);
+  DR_Print_Tree_Postscript_Pre(n_root,n_root->v[1],n_root->b[1],render_name,fp,draw,tree);
 
-  fprintf(fp,"%d %d mt\n",draw->xcoord[n_root->v[1]->num],draw->ycoord[n_root->v[1]->num]);
 
-  if(n_root->v[1]->tax) fprintf(fp,"(%s) show\n",n_root->v[1]->name);
-  else
-    {
-      For(i,3)
-	if((n_root->v[1]->v[i]) && (n_root->v[1]->v[i] != n_root->v[0]))
-	  DR_Print_Tree_Postscript_Pre(n_root->v[1],n_root->v[1]->v[i],fp,draw,tree);
-    }
-
-  fprintf(fp,"closepath\n");
-  fprintf(fp,"stroke\n");
-  fprintf(fp,"showpage\n");
+  PhyML_Fprintf(fp,"closepath\n");
+  PhyML_Fprintf(fp,"0 0 translate\n");
+  PhyML_Fprintf(fp,"stroke\n");
+  PhyML_Fprintf(fp,"showpage\n");
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Print_Tree_Postscript_Pre(node *a, node *d, FILE *fp, tdraw *w, arbre *tree)
+
+void DR_Print_Tree_Postscript_Pre(t_node *a, t_node *d, t_edge *b, int render_name, FILE *fp, tdraw *w, t_tree *tree)
 {
   int i;
-
-  fprintf(fp,"gsave\n");
+  phydbl R, G, B;
   
-  For(i,3)
-    if(a->v[i] == d)
-      {
-/* 	if(a->b[i]->prob_sel_regime <= 0.1) */
-/* 	  fprintf(fp,".0 .0 1. sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.1 && a->b[i]->prob_sel_regime <= 0.2) */
-/* 	  fprintf(fp,".0 .5 1. sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.2 && a->b[i]->prob_sel_regime <= 0.3) */
-/* 	  fprintf(fp,".0 1. 1. sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.3 && a->b[i]->prob_sel_regime <= 0.4) */
-/* 	  fprintf(fp,".0 1. .5 sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.4 && a->b[i]->prob_sel_regime <= 0.5) */
-/* 	  fprintf(fp,".0 1. .0 sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.5 && a->b[i]->prob_sel_regime <= 0.6) */
-/* 	  fprintf(fp,".5 1. .0 sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.6 && a->b[i]->prob_sel_regime <= 0.7) */
-/* 	  fprintf(fp,"1. 1. 0. sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.7 && a->b[i]->prob_sel_regime <= 0.8) */
-/* 	  fprintf(fp,"1. .5 0. sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.8 && a->b[i]->prob_sel_regime <= 0.9) */
-/* 	  fprintf(fp,"1. 0. 0. sc\n"); */
-/* 	else if(a->b[i]->prob_sel_regime > 0.9) */
-/* 	  fprintf(fp,"1. .0 .0 sc\n"); */
-	break;
-      }
+  R = G = B = 0.0;
 
-  fprintf(fp,"%d %d mt\n",w->xcoord[a->num],w->ycoord[a->num]);
-  fprintf(fp,"%d %d lt\n",w->xcoord[a->num],w->ycoord[d->num]);
-  fprintf(fp,"%d %d lt\n",w->xcoord[d->num],w->ycoord[d->num]);
+  PhyML_Fprintf(fp,"gs\n");
+  
+  PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[a->num],w->ycoord[a->num]);
+
+/*   PhyML_Fprintf(fp,"%.1f %.1f lt\n",w->xcoord[a->num],w->ycoord[d->num]); */
+/*   PhyML_Fprintf(fp,"%.1f %.1f lt\n",w->xcoord[d->num],w->ycoord[d->num]); */
+
+  phydbl min,max,step,val;
+  
+  min = 0.0;
+  max = 5.;
+  
+  step = (max-min)/13.;
+  
+  /* val = tree->rates->mean_r[d->num] / (phydbl)(tree->mcmc->run/tree->mcmc->sample_interval+1.); */
+  /* val = tree->rates->mean_r[d->num]; */
+  /* val = tree->rates->has_survived[d->num]; */
+  /* if(val > 0.5) {R=1.; G=.0; B=0.;} */
+  /* val = tree->geo->ldscape[tree->geo->idx_loc[d->num]*tree->geo->n_dim+0] + 2.5; */
+  val = tree->geo->coord_loc[tree->geo->idx_loc[d->num]]->lonlat[0] + 2.5;
+  /* val = 0.; */
+  
+  if(val <= min+1.*step)
+    {R=.0; G=1.; B=1.;}
+  else if(val > min+1.*step && val <= min+2.*step)
+    {R=.0; G=1.; B=.8;}
+  else if(val > min+2.*step && val <= min+3.*step)
+    {R=.0; G=1.; B=.5;}
+  else if(val > min+3.*step && val <= min+4.*step)
+    {R=.0; G=1.; B=.3;}
+  else if(val > min+4.*step && val <= min+5.*step)
+    {R=.0; G=1.; B=.0;}
+  else if(val > min+5.*step && val <= min+6.*step)
+    {R=.25; G=1.; B=0.;}
+  else if(val > min+6.*step && val <= min+7.*step)
+    {R=.5; G=1.; B=0.;}
+  else if(val > min+7.*step && val <= min+8.*step)
+    {R=.75; G=1.; B=.0;}
+  else if(val > min+8.*step && val <= min+9.*step)
+    {R=1.; G=1.; B=.0;}
+  else if(val > min+9.*step && val <= min+10.*step)
+    {R=1.; G=.75; B=.0;}
+  else if(val > min+10.*step && val <= min+11.*step)
+    {R=1.; G=.5; B=.0;}
+  else if(val > min+11.*step && val <= min+12.*step)
+    {R=1.; G=.25; B=.0;}
+  else if(val > min+12.*step)
+    {R=1.; G=.0; B=0.;}
+
+
+  /* R = 0.; G = 0.; B = 0.; */
+
+  PhyML_Fprintf(fp,"2 setlinewidth\n");
+  /* PhyML_Fprintf(fp,"%.1f %.1f lt\n",w->xcoord[a->num],w->ycoord[d->num]); */
+  /* PhyML_Fprintf(fp,"%.1f %.1f lt\n",w->xcoord[d->num],w->ycoord[d->num]); */
+
+  phydbl xa = w->xcoord[a->num];
+  phydbl xd = MIN(w->xcoord[a->num] + 5,w->xcoord[d->num]);
+  phydbl ya = w->ycoord[a->num];
+  phydbl yd = w->ycoord[d->num];
+  
+  PhyML_Fprintf(fp,"%.1f %.1f %.1f %.1f %.1f %.1f ct\n",
+                xa + (xd-xa)/2.,(ya+yd)/2.,
+                xd - (xd-xa)/5.,yd,
+                xd,yd);
+  
+  PhyML_Fprintf(fp,"%.1f %.1f lt\n",w->xcoord[d->num],w->ycoord[d->num]);
+
+  /* PhyML_Fprintf(fp,"%.1f %.1f %.1f %.1f %.1f %.1f ct\n", */
+  /* 		w->xcoord[a->num], */
+  /* 		w->ycoord[d->num], */
+  /* 		w->xcoord[d->num], */
+  /* 		w->ycoord[d->num], */
+  /* 		w->xcoord[d->num], */
+  /* 		w->ycoord[d->num]); */
+
+
+  if(tree->rates && tree->rates->has_survived[d->num] == YES)
+    {
+      PhyML_Fprintf(fp," /Helvetica findfont 16 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+      PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num]-5,w->ycoord[d->num]);
+      PhyML_Fprintf(fp,"0 0 0 sc\n");
+      PhyML_Fprintf(fp,"(*) show \n");      
+    }
+
+  PhyML_Fprintf(fp,"%f %f %f sc\n",R,G,B);
 
   if(d->tax) 
     {
-      fprintf(fp,"(%s) show \n",d->name);
-      fprintf(fp,"stroke\n");
-      fprintf(fp,"grestore\n");
+      PhyML_Fprintf(fp,"stroke\n");
+      PhyML_Fprintf(fp,"0 setgray\n");
+      PhyML_Fprintf(fp,"2 setlinewidth\n");
+      PhyML_Fprintf(fp,"np %.1f %.1f 1 0 360 arc cp\n",w->xcoord[d->num],w->ycoord[d->num]);
+      PhyML_Fprintf(fp,"%.1f %.1f %.1f sc fill\n",R,G,B);
+/*       PhyML_Fprintf(fp,"%f setgray fill\n",greylevel); */
+      PhyML_Fprintf(fp,"0 0 0 sc\n");
+
+
+      PhyML_Fprintf(fp," /Helvetica findfont 10 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+      PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num]+2,w->ycoord[d->num]-6);
+      /* PhyML_Fprintf(fp,"(%d) show \n",d->num); */
+      /* PhyML_Fprintf(fp,"(%s) show \n",d->name); */
+      PhyML_Fprintf(fp," /Helvetica findfont 14 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+
+
+      PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num] - (w->xcoord[d->num] - w->xcoord[a->num])/2.,w->ycoord[d->num]);
+      PhyML_Fprintf(fp," /Helvetica findfont 10 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+
+#if (defined GEO)
+      /* PhyML_Fprintf(fp,"([%4.4f,%4.4f]) show \n", */
+      /*               tree->geo->ldscape[tree->geo->loc[d->num]*tree->geo->n_dim+0], */
+      /*               tree->geo->ldscape[tree->geo->loc[d->num]*tree->geo->n_dim+1]); */
+#endif
+
+     
+      /* PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num]+5,w->ycoord[d->num]); */
+      /* PhyML_Fprintf(fp,"(%.10s) show \n",d->name); */
+
+      
+/*       if(render_name) */
+/* 	{ */
+/* 	  if(tree->io->long_tax_names) */
+/* 	    PhyML_Fprintf(fp,"(%s) show \n",tree->io->long_tax_names[d->num]); */
+/* 	  else */
+/* 	    PhyML_Fprintf(fp,"(%s) show \n",d->name); */
+/* 	} */
+
+      PhyML_Fprintf(fp,"stroke\n");
+      PhyML_Fprintf(fp,"gr\n");
+      PhyML_Fprintf(fp,"0 0 0 sc\n");
       return;
     }
   else
     {
-      fprintf(fp,"stroke\n");
-      fprintf(fp,"grestore\n");
-      For(i,3)
-	if(d->v[i] != a) DR_Print_Tree_Postscript_Pre(d,d->v[i],fp,w,tree);
+      PhyML_Fprintf(fp,"stroke\n");
+      PhyML_Fprintf(fp,"0 setgray\n");
+      PhyML_Fprintf(fp,"2 setlinewidth\n");
+      PhyML_Fprintf(fp,"np %.1f %.1f 1 0 360 arc cp\n",w->xcoord[d->num],w->ycoord[d->num]);
+      PhyML_Fprintf(fp,"%.1f %.1f %.1f sc fill\n",R,G,B);
+/*       PhyML_Fprintf(fp,"%f setgray fill\n",greylevel); */
+      PhyML_Fprintf(fp,"0 0 0 sc\n");
+
+      PhyML_Fprintf(fp," /Helvetica findfont 10 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+      PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num]+2,w->ycoord[d->num]);
+
+      /* PhyML_Fprintf(fp,"(%d) show \n",b->num); */
+
+      PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num],w->ycoord[d->num]);
+      PhyML_Fprintf(fp," /Helvetica findfont 14 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+
+
+      PhyML_Fprintf(fp,"%.1f %.1f mt\n",w->xcoord[d->num] - (w->xcoord[d->num] - w->xcoord[a->num])/2.,w->ycoord[d->num]);
+      PhyML_Fprintf(fp," /Helvetica findfont 10 scalefont\n");
+      PhyML_Fprintf(fp,"setfont\n");
+
+#if (defined GEO)
+      /* PhyML_Fprintf(fp,"([%4.4f,%4.4f]) show \n", */
+      /*               tree->geo->ldscape[tree->geo->loc[d->num]*tree->geo->n_dim+0], */
+      /*               tree->geo->ldscape[tree->geo->loc[d->num]*tree->geo->n_dim+1]); */
+#endif      
+
+
+      PhyML_Fprintf(fp,"stroke\n");
+      PhyML_Fprintf(fp,"gr\n");
+      PhyML_Fprintf(fp,"0 0 0 sc\n");
+      for(i=0;i<3;i++)
+	if(d->v[i] != a && d->b[i] != tree->e_root) DR_Print_Tree_Postscript_Pre(d,d->v[i],d->b[i],render_name,fp,w,tree);
     }
+
+
 
 
   return;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Dist_To_Root_Pre(node *a, node *d, edge *b, arbre *tree)
+
+void DR_Get_X_Coord_Pre(t_node *a, t_node *d, t_edge *b, tdraw *w, int fixed_tips, t_tree *tree)
 {
   int i;
 
-  if(b) d->dist_to_root = a->dist_to_root + b->l;
+  if(!(d->tax && fixed_tips == YES)) w->xcoord[d->num] =  d->dist_to_root * (phydbl)w->tree_box_width/w->max_dist_to_root;
 
   if(d->tax) return;
   else
     {
-      For(i,3)
+      for(i=0;i<3;i++)
 	if((d->v[i] != a) && (d->b[i] != tree->e_root)) 
-	  DR_Dist_To_Root_Pre(d,d->v[i],d->b[i],tree);
+	  DR_Get_X_Coord_Pre(d,d->v[i],d->b[i],w,fixed_tips,tree);
     }
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Dist_To_Root(node *n_root, arbre *tree)
-{  
-  n_root->v[0]->dist_to_root = tree->e_root->l * tree->n_root_pos;
-  n_root->v[1]->dist_to_root = tree->e_root->l * (1.-tree->n_root_pos);
-  DR_Dist_To_Root_Pre(n_root,n_root->v[0],NULL,tree);
-  DR_Dist_To_Root_Pre(n_root,n_root->v[1],NULL,tree);
-}
 
-/*********************************************************/
-
-void DR_Get_X_Coord_Pre(node *a, node *d, edge *b, tdraw *w, arbre *tree)
+void DR_Get_X_Coord(int fixed_tips, tdraw *w, t_tree *tree)
 {
-  int i;
-
-  if(b) w->xcoord[d->num] =  d->dist_to_root * (double)w->tree_box_width/w->max_dist_to_root;
-
-  if(d->tax) return;
-  else
-    {
-      For(i,3)
-	if((d->v[i] != a) && (d->b[i] != tree->e_root)) 
-	  DR_Get_X_Coord_Pre(d,d->v[i],d->b[i],w,tree);
-    }
-}
-
-/*********************************************************/
-
-void DR_Get_X_Coord(tdraw *w, arbre *tree)
-{
-  w->xcoord[tree->n_root->v[0]->num] = tree->n_root->v[0]->dist_to_root * (double)w->tree_box_width/w->max_dist_to_root;
-  w->xcoord[tree->n_root->v[1]->num] = tree->n_root->v[1]->dist_to_root * (double)w->tree_box_width/w->max_dist_to_root;
-  DR_Get_X_Coord_Pre(tree->n_root,tree->n_root->v[0],NULL,w,tree);
-  DR_Get_X_Coord_Pre(tree->n_root,tree->n_root->v[1],NULL,w,tree);
+  if(!(tree->n_root->v[2]->tax && fixed_tips == YES)) w->xcoord[tree->n_root->v[2]->num] = tree->n_root->v[2]->dist_to_root * (phydbl)w->tree_box_width/w->max_dist_to_root;
+  if(!(tree->n_root->v[1]->tax && fixed_tips == YES)) w->xcoord[tree->n_root->v[1]->num] = tree->n_root->v[1]->dist_to_root * (phydbl)w->tree_box_width/w->max_dist_to_root;
+  DR_Get_X_Coord_Pre(tree->n_root,tree->n_root->v[2],NULL,w,fixed_tips,tree);
+  DR_Get_X_Coord_Pre(tree->n_root,tree->n_root->v[1],NULL,w,fixed_tips,tree);
+  w->xcoord[tree->n_root->num] = 0;
 }
 
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Get_Y_Coord(tdraw *w, arbre *tree)
+
+void DR_Get_Y_Coord(int fixed_tips, tdraw *w, t_tree *tree)
 {
   int next_y_slot;
   next_y_slot = 0;
-  DR_Get_Y_Coord_Post(tree->e_root->left,tree->e_root->rght,tree->e_root,&next_y_slot,w,tree);
-  DR_Get_Y_Coord_Post(tree->e_root->rght,tree->e_root->left,tree->e_root,&next_y_slot,w,tree);
+  DR_Get_Y_Coord_Post(tree->n_root,tree->n_root->v[2],NULL,&next_y_slot,fixed_tips,w,tree);
+  DR_Get_Y_Coord_Post(tree->n_root,tree->n_root->v[1],NULL,&next_y_slot,fixed_tips,w,tree);
+  w->ycoord[tree->n_root->num] = (int)((w->ycoord[tree->n_root->v[2]->num] + w->ycoord[tree->n_root->v[2]->num]) / 2.) + 20;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Get_Y_Coord_Post(node *a, node *d, edge *b, int *next_y_slot, tdraw *w, arbre *tree)
+
+void DR_Get_Y_Coord_Post(t_node *a, t_node *d, t_edge *b, int *next_y_slot, int fixed_tips, tdraw *w, t_tree *tree)
 {
   int i;
 
   if(d->tax) 
     {
-      w->ycoord[d->num] = *next_y_slot + (int)(w->page_height / (2.*tree->n_otu));
-      (*next_y_slot) += (int)(w->page_height / (tree->n_otu));
+      if(!fixed_tips)
+	{
+/* 	  w->ycoord[d->num] = *next_y_slot + (int)(w->page_height / (2.*tree->n_otu)); */
+	  w->ycoord[d->num] = *next_y_slot + 20;
+	  (*next_y_slot) += (int)(w->page_height / (tree->n_otu-1));
+          printf("\n. %s %f",d->name,w->ycoord[d->num]);
+	}
     }
   else
     {
       int d1, d2;
 
       d1 = d2 = -1;
-      For(i,3)
+      for(i=0;i<3;i++)
 	{
-	  if(d->v[i] != a)
+	  if(d->v[i] != a && d->b[i] != tree->e_root)
 	    {
-	      DR_Get_Y_Coord_Post(d,d->v[i],d->b[i],next_y_slot,w,tree);
+	      DR_Get_Y_Coord_Post(d,d->v[i],d->b[i],next_y_slot,fixed_tips,w,tree);
 	      if(d1<0) d1 = i;
 	      else     d2 = i;
 	    }
@@ -305,61 +431,190 @@ void DR_Get_Y_Coord_Post(node *a, node *d, edge *b, int *next_y_slot, tdraw *w, 
     }
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-tdraw *DR_Make_Tdraw_Struct(arbre *tree)
+
+tdraw *DR_Make_Tdraw_Struct(t_tree *tree)
 {
   tdraw *w;
 
   w = (tdraw *)mCalloc(1,sizeof(tdraw));
-  w->xcoord = (int *)mCalloc(2*tree->n_otu-2,sizeof(int));
-  w->ycoord = (int *)mCalloc(2*tree->n_otu-2,sizeof(int));
+  w->xcoord = (phydbl *)mCalloc(2*tree->n_otu-1,sizeof(phydbl));
+  w->ycoord = (phydbl *)mCalloc(2*tree->n_otu-1,sizeof(phydbl));
+  w->xcoord_s = (phydbl *)mCalloc(2*tree->n_otu-1,sizeof(phydbl));
+  w->ycoord_s = (phydbl *)mCalloc(2*tree->n_otu-1,sizeof(phydbl));
+  w->cdf_mat  = (int *)mCalloc((2*tree->n_otu-2)*(2*tree->n_otu-2),sizeof(int));
+  w->cdf_mat_x  = (phydbl *)mCalloc(2*tree->n_otu-1,sizeof(phydbl));
+  w->cdf_mat_y  = (phydbl *)mCalloc(2*tree->n_otu-1,sizeof(phydbl));
 
   return w;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 
 void DR_Init_Tdraw_Struct(tdraw *w)
 {
-  w->page_width  = 510;
-  w->page_height = 770;
+  w->page_width  = 580-20;
+  w->page_height = 820-20;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-void DR_Get_Tree_Box_Width(tdraw *w, arbre *tree)
+
+void DR_Get_Tree_Box_Width(tdraw *w, t_tree *tree)
 {
   int i;
   int max_name_len, curr_len;
 
   max_name_len = curr_len = 0;
-  For(i,tree->n_otu)
+  for(i=0;i<tree->n_otu;i++)
     {
-      curr_len = (int)strlen(tree->noeud[i]->name);
+      curr_len = (int)strlen(tree->a_nodes[i]->name);
       if(curr_len > max_name_len) max_name_len = curr_len;
     }
 
   w->tree_box_width = w->page_width - max_name_len * 8.66667;
+  /* w->tree_box_width = w->page_width - max_name_len * 10.; */
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
-double DR_Get_Max_Dist_To_Root(arbre *tree)
+
+phydbl DR_Get_Max_Dist_To_Root(t_tree *tree)
 {
-  double mx;
+  phydbl mx;
   int i;
 
   mx = .0;
-  For(i,tree->n_otu)
+  for(i=0;i<tree->n_otu;i++)
     {
-      if(tree->noeud[i]->dist_to_root > mx)
+      if(tree->a_nodes[i]->dist_to_root > mx)
 	{
-	  mx = tree->noeud[i]->dist_to_root;
+	  mx = tree->a_nodes[i]->dist_to_root;
 	}
     }
 
   return mx;
 }
 
-/*********************************************************/
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+void DR_Get_Tree_Coord_Scaled(tdraw *w, t_tree *tree)
+{
+  int i;
+  int max_x,min_x;
+  int max_y,min_y;
+ 
+  max_x = -INT_MAX;
+  min_x =  INT_MAX;
+
+  For(i,2*tree->n_otu-1)
+    {
+      if(w->xcoord[i] > max_x) max_x = w->xcoord[i];
+      if(w->xcoord[i] < min_x) min_x = w->xcoord[i];
+    }
+
+  max_y = -INT_MAX;
+  min_y =  INT_MAX;
+
+  For(i,2*tree->n_otu-1)
+    {
+      if(w->ycoord[i] > max_y) max_y = w->ycoord[i];
+      if(w->ycoord[i] < min_y) min_y = w->ycoord[i];
+    }
+
+
+  For(i,2*tree->n_otu-1)
+    {
+      w->xcoord_s[i] = (phydbl)(w->xcoord[i] - min_x) / (max_x - min_x);
+      w->ycoord_s[i] = (phydbl)(w->ycoord[i] - min_y) / (max_y - min_y);
+    }
+}
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+void DR_Get_Cdf_Mat(t_tree *tree)
+{
+  int i,j,k;
+  phydbl min_x,max_x,y;
+  phydbl x_mat,y_mat;
+  t_node *d, *a;
+  phydbl eps;
+
+  eps = 1.E-6;
+
+  For(i,2*tree->n_otu-1)  tree->ps_tree->cdf_mat_x[i] = tree->ps_tree->xcoord_s[i];
+  For(i,2*tree->n_otu-1)  tree->ps_tree->cdf_mat_y[i] = tree->ps_tree->ycoord_s[i];
+
+  Qksort(tree->ps_tree->cdf_mat_x,NULL,0,2*tree->n_otu-2);
+  Qksort(tree->ps_tree->cdf_mat_y,NULL,0,2*tree->n_otu-2);
+
+  For(i,2*tree->n_otu-2) /* x coordinates */
+    {
+      For(j,2*tree->n_otu-2) /* y coordinates */
+	{
+	  For(k,2*tree->n_otu-2) /* all nodes in the tree */
+	    {
+	      d = tree->a_nodes[k];
+	      a = tree->a_nodes[k]->anc;
+
+	      min_x = tree->ps_tree->xcoord_s[a->num];
+	      max_x = tree->ps_tree->xcoord_s[d->num];
+
+	      y = tree->ps_tree->ycoord_s[d->num];
+
+	      x_mat = tree->ps_tree->cdf_mat_x[i];
+	      y_mat = tree->ps_tree->cdf_mat_y[j];
+	
+/* 	      printf("\n. x_mat=%.1f ymat=%.1f min=%.1f max=%.1f y=%.1f", */
+/* 		     x_mat,y_mat,min_x,max_x,y); */
+	      
+	      if((min_x < x_mat + eps) && (max_x > x_mat) && (y > y_mat))
+		{
+		  tree->ps_tree->cdf_mat[j*(2*tree->n_otu-2)+i] += 1;
+/* 		  PhyML_Printf("\n. Add 1 to [%.1f,%.1f]", */
+/* 			       tree->ps_tree->cdf_mat_x[i], */
+/* 			       tree->ps_tree->cdf_mat_y[j]); */
+		}
+	    }
+	}
+    }
+}
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+

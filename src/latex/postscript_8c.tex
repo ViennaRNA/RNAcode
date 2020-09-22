@@ -1,0 +1,270 @@
+\hypertarget{postscript_8c}{}\section{postscript.\+c File Reference}
+\label{postscript_8c}\index{postscript.\+c@{postscript.\+c}}
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}score.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}code.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}misc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}postscript.\+h\char`\"{}}\newline
+Include dependency graph for postscript.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{postscript_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{postscript_8c_a1d6c94586a33965dd4277c7fe62de430}{set\+Parameters} ()
+\item 
+int \hyperlink{postscript_8c_ac7d6bf70e040d36788b6eacace4cb312}{color\+Aln} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$filename, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]}, \hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats} region)
+\item 
+void \hyperlink{postscript_8c_a88d8c5c3031b8ee553b4bfc437e4b73e}{color\+H\+SS} (\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$filename, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$alignment\mbox{[}$\,$\mbox{]}, \hyperlink{score_8h_a0751e1c4932f95e3e60c73409408a97f}{backtrack\+Data} $\ast$bt, \hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$label, int b, int i)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{postscript_8c_a05a25f17ddf6ed395c481d783d1af2b4}{font\+Width}
+\item 
+float \hyperlink{postscript_8c_a8fc5219f9ead102b3596111331374b2f}{font\+Height}
+\item 
+float \hyperlink{postscript_8c_a97b51530ccb867cc13f911e57be3a559}{image\+Height}
+\item 
+float \hyperlink{postscript_8c_a056677386b85246c5b6f9de91327868c}{image\+Width}
+\item 
+float \hyperlink{postscript_8c_a7e166443fa8165daca1829477a3678c1}{tmp\+Columns}
+\item 
+int \hyperlink{postscript_8c_a9f59b34b1f25fe00023291b678246bcc}{length}
+\item 
+int \hyperlink{postscript_8c_a04c4ce9dea57def69ca277c748f1ec4a}{max\+Name}
+\item 
+int \hyperlink{postscript_8c_af4b91d5ea883f66de1f385aee64a0d5f}{max\+Num}
+\item 
+int \hyperlink{postscript_8c_aee13643f97e046b7492876910b23b59d}{curr\+Pos}
+\item 
+int \hyperlink{postscript_8c_acb1a982424fe4ce17865ade904f6afbb}{column\+Width}
+\item 
+float \hyperlink{postscript_8c_a47c6c3302e0a9d686ba540869d4f3688}{line\+Step}
+\item 
+float \hyperlink{postscript_8c_a2d6e8a7836bfad8586715c3bb775cbb4}{block\+Step}
+\item 
+float \hyperlink{postscript_8c_a6290c97dafee311a97e747d02251da9d}{cons\+Step}
+\item 
+float \hyperlink{postscript_8c_a0fa03894e3a7c9aa3690c217af65c7c3}{ss\+Step}
+\item 
+float \hyperlink{postscript_8c_adbb97a02a7e2f5bc69940fc230062839}{ruler\+Step}
+\item 
+float \hyperlink{postscript_8c_a7b9ed0953c4c3a72b4763f3913467d83}{name\+Step}
+\item 
+float \hyperlink{postscript_8c_ab2e008e977e58c17747a69818f653584}{number\+Step}
+\item 
+float \hyperlink{postscript_8c_a0c4c0a1f79429ea034c156318b576175}{max\+Cons\+Bar}
+\item 
+float \hyperlink{postscript_8c_aa3dfc2d68f6a44a7941b7e6f2940ecac}{startY}
+\item 
+float \hyperlink{postscript_8c_ab9e364a4cf29b5aad82e7ec316ac09e9}{namesX}
+\item 
+float \hyperlink{postscript_8c_a69294d581be62ee920a2ef6622500cbd}{seqsX}
+\item 
+float \hyperlink{postscript_8c_a6cd3947c7e694dc9a6516a4efce1c73d}{currY}
+\item 
+F\+I\+LE $\ast$ \hyperlink{postscript_8c_ae581849c67336453bd5b81e6518019a9}{outfile}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{postscript_8c_a189ec0118947b93b0df1359ab643d3ce}{Sk\+\_\+native}
+\item 
+float $\ast$$\ast$$\ast$$\ast$ \hyperlink{postscript_8c_a720f3e09e87f08ee95fd84af1c9c575e}{Sk\+\_\+native\+\_\+rev}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{postscript_8c_ac7d6bf70e040d36788b6eacace4cb312}\label{postscript_8c_ac7d6bf70e040d36788b6eacace4cb312}} 
+\index{postscript.\+c@{postscript.\+c}!color\+Aln@{color\+Aln}}
+\index{color\+Aln@{color\+Aln}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{color\+Aln()}{colorAln()}}
+{\footnotesize\ttfamily int color\+Aln (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{filename,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]},  }\item[{\hyperlink{score_8h_a5b7f5df9506ff8c871dc49e4bf9f22af}{segment\+Stats}}]{region }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{postscript_8c_ac7d6bf70e040d36788b6eacace4cb312_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{postscript_8c_a88d8c5c3031b8ee553b4bfc437e4b73e}\label{postscript_8c_a88d8c5c3031b8ee553b4bfc437e4b73e}} 
+\index{postscript.\+c@{postscript.\+c}!color\+H\+SS@{color\+H\+SS}}
+\index{color\+H\+SS@{color\+H\+SS}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{color\+H\+S\+S()}{colorHSS()}}
+{\footnotesize\ttfamily void color\+H\+SS (\begin{DoxyParamCaption}\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{filename,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} struct \hyperlink{structaln}{aln} $\ast$}]{alignment\mbox{[}$\,$\mbox{]},  }\item[{\hyperlink{score_8h_a0751e1c4932f95e3e60c73409408a97f}{backtrack\+Data} $\ast$}]{bt,  }\item[{\hyperlink{getopt_8c_a2c212835823e3c54a8ab6d95c652660e}{const} char $\ast$}]{label,  }\item[{int}]{b,  }\item[{int}]{i }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{postscript_8c_a88d8c5c3031b8ee553b4bfc437e4b73e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{postscript_8c_a1d6c94586a33965dd4277c7fe62de430}\label{postscript_8c_a1d6c94586a33965dd4277c7fe62de430}} 
+\index{postscript.\+c@{postscript.\+c}!set\+Parameters@{set\+Parameters}}
+\index{set\+Parameters@{set\+Parameters}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{set\+Parameters()}{setParameters()}}
+{\footnotesize\ttfamily void set\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{postscript_8c_a2d6e8a7836bfad8586715c3bb775cbb4}\label{postscript_8c_a2d6e8a7836bfad8586715c3bb775cbb4}} 
+\index{postscript.\+c@{postscript.\+c}!block\+Step@{block\+Step}}
+\index{block\+Step@{block\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{block\+Step}{blockStep}}
+{\footnotesize\ttfamily float block\+Step}
+
+\mbox{\Hypertarget{postscript_8c_acb1a982424fe4ce17865ade904f6afbb}\label{postscript_8c_acb1a982424fe4ce17865ade904f6afbb}} 
+\index{postscript.\+c@{postscript.\+c}!column\+Width@{column\+Width}}
+\index{column\+Width@{column\+Width}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{column\+Width}{columnWidth}}
+{\footnotesize\ttfamily int column\+Width}
+
+\mbox{\Hypertarget{postscript_8c_a6290c97dafee311a97e747d02251da9d}\label{postscript_8c_a6290c97dafee311a97e747d02251da9d}} 
+\index{postscript.\+c@{postscript.\+c}!cons\+Step@{cons\+Step}}
+\index{cons\+Step@{cons\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{cons\+Step}{consStep}}
+{\footnotesize\ttfamily float cons\+Step}
+
+\mbox{\Hypertarget{postscript_8c_aee13643f97e046b7492876910b23b59d}\label{postscript_8c_aee13643f97e046b7492876910b23b59d}} 
+\index{postscript.\+c@{postscript.\+c}!curr\+Pos@{curr\+Pos}}
+\index{curr\+Pos@{curr\+Pos}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{curr\+Pos}{currPos}}
+{\footnotesize\ttfamily int curr\+Pos}
+
+\mbox{\Hypertarget{postscript_8c_a6cd3947c7e694dc9a6516a4efce1c73d}\label{postscript_8c_a6cd3947c7e694dc9a6516a4efce1c73d}} 
+\index{postscript.\+c@{postscript.\+c}!currY@{currY}}
+\index{currY@{currY}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{currY}{currY}}
+{\footnotesize\ttfamily float currY}
+
+\mbox{\Hypertarget{postscript_8c_a8fc5219f9ead102b3596111331374b2f}\label{postscript_8c_a8fc5219f9ead102b3596111331374b2f}} 
+\index{postscript.\+c@{postscript.\+c}!font\+Height@{font\+Height}}
+\index{font\+Height@{font\+Height}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{font\+Height}{fontHeight}}
+{\footnotesize\ttfamily float font\+Height}
+
+\mbox{\Hypertarget{postscript_8c_a05a25f17ddf6ed395c481d783d1af2b4}\label{postscript_8c_a05a25f17ddf6ed395c481d783d1af2b4}} 
+\index{postscript.\+c@{postscript.\+c}!font\+Width@{font\+Width}}
+\index{font\+Width@{font\+Width}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{font\+Width}{fontWidth}}
+{\footnotesize\ttfamily float font\+Width}
+
+\mbox{\Hypertarget{postscript_8c_a97b51530ccb867cc13f911e57be3a559}\label{postscript_8c_a97b51530ccb867cc13f911e57be3a559}} 
+\index{postscript.\+c@{postscript.\+c}!image\+Height@{image\+Height}}
+\index{image\+Height@{image\+Height}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{image\+Height}{imageHeight}}
+{\footnotesize\ttfamily float image\+Height}
+
+\mbox{\Hypertarget{postscript_8c_a056677386b85246c5b6f9de91327868c}\label{postscript_8c_a056677386b85246c5b6f9de91327868c}} 
+\index{postscript.\+c@{postscript.\+c}!image\+Width@{image\+Width}}
+\index{image\+Width@{image\+Width}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{image\+Width}{imageWidth}}
+{\footnotesize\ttfamily float image\+Width}
+
+\mbox{\Hypertarget{postscript_8c_a9f59b34b1f25fe00023291b678246bcc}\label{postscript_8c_a9f59b34b1f25fe00023291b678246bcc}} 
+\index{postscript.\+c@{postscript.\+c}!length@{length}}
+\index{length@{length}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{length}{length}}
+{\footnotesize\ttfamily int length}
+
+\mbox{\Hypertarget{postscript_8c_a47c6c3302e0a9d686ba540869d4f3688}\label{postscript_8c_a47c6c3302e0a9d686ba540869d4f3688}} 
+\index{postscript.\+c@{postscript.\+c}!line\+Step@{line\+Step}}
+\index{line\+Step@{line\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{line\+Step}{lineStep}}
+{\footnotesize\ttfamily float line\+Step}
+
+\mbox{\Hypertarget{postscript_8c_a0c4c0a1f79429ea034c156318b576175}\label{postscript_8c_a0c4c0a1f79429ea034c156318b576175}} 
+\index{postscript.\+c@{postscript.\+c}!max\+Cons\+Bar@{max\+Cons\+Bar}}
+\index{max\+Cons\+Bar@{max\+Cons\+Bar}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{max\+Cons\+Bar}{maxConsBar}}
+{\footnotesize\ttfamily float max\+Cons\+Bar}
+
+\mbox{\Hypertarget{postscript_8c_a04c4ce9dea57def69ca277c748f1ec4a}\label{postscript_8c_a04c4ce9dea57def69ca277c748f1ec4a}} 
+\index{postscript.\+c@{postscript.\+c}!max\+Name@{max\+Name}}
+\index{max\+Name@{max\+Name}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{max\+Name}{maxName}}
+{\footnotesize\ttfamily int max\+Name}
+
+\mbox{\Hypertarget{postscript_8c_af4b91d5ea883f66de1f385aee64a0d5f}\label{postscript_8c_af4b91d5ea883f66de1f385aee64a0d5f}} 
+\index{postscript.\+c@{postscript.\+c}!max\+Num@{max\+Num}}
+\index{max\+Num@{max\+Num}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{max\+Num}{maxNum}}
+{\footnotesize\ttfamily int max\+Num}
+
+\mbox{\Hypertarget{postscript_8c_a7b9ed0953c4c3a72b4763f3913467d83}\label{postscript_8c_a7b9ed0953c4c3a72b4763f3913467d83}} 
+\index{postscript.\+c@{postscript.\+c}!name\+Step@{name\+Step}}
+\index{name\+Step@{name\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{name\+Step}{nameStep}}
+{\footnotesize\ttfamily float name\+Step}
+
+\mbox{\Hypertarget{postscript_8c_ab9e364a4cf29b5aad82e7ec316ac09e9}\label{postscript_8c_ab9e364a4cf29b5aad82e7ec316ac09e9}} 
+\index{postscript.\+c@{postscript.\+c}!namesX@{namesX}}
+\index{namesX@{namesX}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{namesX}{namesX}}
+{\footnotesize\ttfamily float namesX}
+
+\mbox{\Hypertarget{postscript_8c_ab2e008e977e58c17747a69818f653584}\label{postscript_8c_ab2e008e977e58c17747a69818f653584}} 
+\index{postscript.\+c@{postscript.\+c}!number\+Step@{number\+Step}}
+\index{number\+Step@{number\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{number\+Step}{numberStep}}
+{\footnotesize\ttfamily float number\+Step}
+
+\mbox{\Hypertarget{postscript_8c_ae581849c67336453bd5b81e6518019a9}\label{postscript_8c_ae581849c67336453bd5b81e6518019a9}} 
+\index{postscript.\+c@{postscript.\+c}!outfile@{outfile}}
+\index{outfile@{outfile}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{outfile}{outfile}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ outfile}
+
+\mbox{\Hypertarget{postscript_8c_adbb97a02a7e2f5bc69940fc230062839}\label{postscript_8c_adbb97a02a7e2f5bc69940fc230062839}} 
+\index{postscript.\+c@{postscript.\+c}!ruler\+Step@{ruler\+Step}}
+\index{ruler\+Step@{ruler\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{ruler\+Step}{rulerStep}}
+{\footnotesize\ttfamily float ruler\+Step}
+
+\mbox{\Hypertarget{postscript_8c_a69294d581be62ee920a2ef6622500cbd}\label{postscript_8c_a69294d581be62ee920a2ef6622500cbd}} 
+\index{postscript.\+c@{postscript.\+c}!seqsX@{seqsX}}
+\index{seqsX@{seqsX}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{seqsX}{seqsX}}
+{\footnotesize\ttfamily float seqsX}
+
+\mbox{\Hypertarget{postscript_8c_a189ec0118947b93b0df1359ab643d3ce}\label{postscript_8c_a189ec0118947b93b0df1359ab643d3ce}} 
+\index{postscript.\+c@{postscript.\+c}!Sk\+\_\+native@{Sk\+\_\+native}}
+\index{Sk\+\_\+native@{Sk\+\_\+native}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{Sk\+\_\+native}{Sk\_native}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk\+\_\+native}
+
+\mbox{\Hypertarget{postscript_8c_a720f3e09e87f08ee95fd84af1c9c575e}\label{postscript_8c_a720f3e09e87f08ee95fd84af1c9c575e}} 
+\index{postscript.\+c@{postscript.\+c}!Sk\+\_\+native\+\_\+rev@{Sk\+\_\+native\+\_\+rev}}
+\index{Sk\+\_\+native\+\_\+rev@{Sk\+\_\+native\+\_\+rev}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{Sk\+\_\+native\+\_\+rev}{Sk\_native\_rev}}
+{\footnotesize\ttfamily float$\ast$$\ast$$\ast$$\ast$ Sk\+\_\+native\+\_\+rev}
+
+\mbox{\Hypertarget{postscript_8c_a0fa03894e3a7c9aa3690c217af65c7c3}\label{postscript_8c_a0fa03894e3a7c9aa3690c217af65c7c3}} 
+\index{postscript.\+c@{postscript.\+c}!ss\+Step@{ss\+Step}}
+\index{ss\+Step@{ss\+Step}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{ss\+Step}{ssStep}}
+{\footnotesize\ttfamily float ss\+Step}
+
+\mbox{\Hypertarget{postscript_8c_aa3dfc2d68f6a44a7941b7e6f2940ecac}\label{postscript_8c_aa3dfc2d68f6a44a7941b7e6f2940ecac}} 
+\index{postscript.\+c@{postscript.\+c}!startY@{startY}}
+\index{startY@{startY}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{startY}{startY}}
+{\footnotesize\ttfamily float startY}
+
+\mbox{\Hypertarget{postscript_8c_a7e166443fa8165daca1829477a3678c1}\label{postscript_8c_a7e166443fa8165daca1829477a3678c1}} 
+\index{postscript.\+c@{postscript.\+c}!tmp\+Columns@{tmp\+Columns}}
+\index{tmp\+Columns@{tmp\+Columns}!postscript.\+c@{postscript.\+c}}
+\subsubsection{\texorpdfstring{tmp\+Columns}{tmpColumns}}
+{\footnotesize\ttfamily float tmp\+Columns}
+

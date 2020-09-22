@@ -22,9 +22,6 @@
 #include <ctype.h>
 #include <math.h>
 
-#include <execinfo.h>
-#include <signal.h>
-#include <unistd.h>
 
 #include "RNAcode.h"
 #include "rnaz_utils.h"
@@ -68,7 +65,6 @@ long int hitCounter;
 void freeModels(bgModel* models, int N);
 
 int main(int argc, char *argv[]){
-  signal(SIGSEGV, handler);
   int i,j,k,x,L,N,hssCount, alnCounter;
   char *tmpSeq, *treeString;
   float kappa, maxScore;

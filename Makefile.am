@@ -1,4 +1,4 @@
-SUBDIRS=phyml/src levmar seqgen librna src examples
+SUBDIRS=phyml levmar seqgen librna src examples
 
 docu_DATA = INSTALL README AUTHORS COPYING
  

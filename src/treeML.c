@@ -335,8 +335,6 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
         Insert_Duplicates(dum);
         Free(most_likely_tree);
         most_likely_tree = Write_Tree(dum);
-
-        printf("most_likely_tree: %s\n", most_likely_tree);
         Free_Tree(dum);
 
         //PhyML_Fprintf(io->fp_out_tree, "%s\n", most_likely_tree);

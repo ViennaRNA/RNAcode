@@ -5,5 +5,7 @@ libRNA_a_SOURCES =  fold_vars.c read_epars.c \
 
 noinst_HEADERS =alifold.h energy_const.h fold.h\
         intloops.h params.h utils.h energy_par.h fold_vars.h\
-        pair_mat.h PS_dot.h aln_util.h circfold.inc alicircfold.inc			
-			   
+        pair_mat.h PS_dot.h aln_util.h circfold.inc alicircfold.inc	
+        		
+all-local: 
+	objcopy --weaken libRNA.a libRNA.a 

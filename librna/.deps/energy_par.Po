@@ -1,0 +1,8 @@
+energy_par.o: energy_par.c /usr/include/stdc-predef.h energy_const.h \
+ intloops.h
+
+/usr/include/stdc-predef.h:
+
+energy_const.h:
+
+intloops.h:

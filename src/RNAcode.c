@@ -173,6 +173,7 @@ int main(int argc, char *argv[]){
       continue;
     }
 
+    printf("treestring: %s\n", treeString);
     tree=string2tree(treeString);
     free(treeString);
     

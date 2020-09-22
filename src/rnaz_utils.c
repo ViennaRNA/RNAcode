@@ -26,6 +26,129 @@
 #include "pair_mat.h"
 #include "alifold.h"
 #include "rnaz_utils.h"
+#include <errno.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <ctype.h>
+
+/*
+ int64_t read_line(char **restrict line, size_t *restrict len, FILE *restrict fp){
+     // Check if either line, len or fp are NULL pointers
+     if(line == NULL || len == NULL || fp == NULL) {
+         errno = EINVAL;
+         return -1;
+     }
+     // Use a chunk array of 128 bytes as parameter for fgets
+     char chunk[128];
+     // Allocate a block of memory for *line if it is NULL or smaller than the chunk array
+     if(*line == NULL || *len < sizeof(chunk)) {
+         *len = sizeof(chunk);
+         if((*line = malloc(*len)) == NULL) {
+             errno = ENOMEM;
+             return -1;
+         }
+     }
+     // "Empty" the string
+     (*line)[0] = '\0';
+     while(fgets(chunk, sizeof(chunk), fp) != NULL) {
+         // Resize the line buffer if necessary
+         size_t len_used = strlen(*line);
+         size_t chunk_used = strlen(chunk);
+         if(*len - len_used < chunk_used) {
+             // Check for overflow
+             if(*len > SIZE_MAX / 2) {
+                 errno = EOVERFLOW;
+                 return -1;
+             }
+             else {
+                 *len *= 2;
+             }
+             if((*line = realloc(*line, *len)) == NULL) {
+                 errno = ENOMEM;
+                 return -1;
+             }
+         }
+         // Copy the chunk to the end of the line buffer
+         memcpy(*line + len_used, chunk, chunk_used);
+         len_used += chunk_used;
+         (*line)[len_used] = '\0';
+
+         // Check if *line contains '\n', if yes, return the *line length
+         if((*line)[len_used - 1] == '\n') {
+             return len_used;
+         }
+     }
+     return -1;
+ }
+
+
+
+ int64_t read_clustal2(FILE *fp, struct aln **alignments){
+     const char delim[] = " ";
+     char * token;
+     struct aln *tmp_alignments = NULL;
+     char *line = NULL;
+     int no_alignments = 0;
+     size_t len = 0;
+     int current_no_alignment;
+     char *alignment_id = NULL;
+     read_line(&line, &len, fp);
+     if (strncmp(line,"CLUSTAL", 7)==0) {
+         errno = EINVAL;
+         return -1;
+     }
+     bool alignment_id_unknown;
+     while(read_line(&line, &len, fp) != -1) {
+         if (strlen(line) == 1){
+             continue;
+         }
+         token = strtok(line, delim);
+         alignment_id = token;
+         alignment_id_unknown = true;
+         for (current_no_alignment = 0; current_no_alignment < no_alignments; current_no_alignment++){
+             if (strcmp(tmp_alignments[current_no_alignment].name, alignment_id) == 0){
+                 alignment_id_unknown = false;
+                 break;
+             }
+         }
+         if (alignment_id_unknown){
+             no_alignments += 1;
+             tmp_alignments = realloc(tmp_alignments, sizeof(struct aln) * no_alignments);
+             if (!tmp_alignments){
+                 errno = ENOMEM;
+                 return -1;
+             }
+             tmp_alignments[current_no_alignment].name = malloc(sizeof(char) * (strlen(alignment_id)+1));
+             if (!tmp_alignments[current_no_alignment].name){
+                 errno = ENOMEM;
+                 return -1;
+             }
+             strcpy(tmp_alignments[current_no_alignment].name, alignment_id);
+             tmp_alignments[current_no_alignment].seq = malloc(sizeof(char));
+             tmp_alignments[current_no_alignment].seq[0] = '\0';
+             tmp_alignments[current_no_alignment].seqlen = 0;
+         }
+         token = strtok(NULL, delim);
+         while( token != NULL ) {
+             tmp_alignments[current_no_alignment].seqlen += strlen(token);
+             tmp_alignments[current_no_alignment].seq = realloc(tmp_alignments[current_no_alignment].seq, sizeof(char) * tmp_alignments[current_no_alignment].seqlen);
+             if (!tmp_alignments[current_no_alignment].seq){
+                 errno = ENOMEM;
+                 return -1;
+             }
+             tmp_alignments[current_no_alignment].seq[tmp_alignments[current_no_alignment].seqlen - 1] = '\0';
+             uppercase(token);
+             strncat(tmp_alignments[current_no_alignment].seq, token, strlen(token) - 1);
+             token = strtok(NULL, delim);
+         }
+         tmp_alignments[current_no_alignment].seq[tmp_alignments[current_no_alignment].seqlen - 1] = '\0';
+     }
+     *alignments = tmp_alignments;
+     fclose(fp);
+     free(line);
+     return no_alignments;
+ }
+*/
 
 /********************************************************************
  *                                                                  *
@@ -112,7 +235,74 @@ int read_clustal(FILE *clust, struct aln *alignedSeqs[]) {
   return num_seq;
 }
 
-
+/*
+ int64_t read_maf2(FILE *fp, struct aln **alignments){
+     const char delim[] = " ";
+     char * token;
+     struct aln *tmp_alignments = NULL;
+     char *line = NULL;
+     int no_alignments = 0;
+     size_t len = 0;
+     int current_no_alignment;
+     char *alignment_id = NULL;
+     read_line(&line, &len, fp);
+     bool alignment_id_unknown;
+     char *seq = NULL;
+     while(read_line(&line, &len, fp) != -1) {
+         if (strlen(line) == 1){
+             continue;
+         }
+         token = strtok(line, delim);
+         if (strcmp("s", token) != 0) {
+             continue;
+         }
+         token = strtok(NULL, delim);
+         alignment_id = token;
+         alignment_id_unknown = true;
+         for (current_no_alignment = 0; current_no_alignment < no_alignments; current_no_alignment++){
+             if (strcmp(tmp_alignments[current_no_alignment].name, alignment_id) == 0){
+                 alignment_id_unknown = false;
+                 break;
+             }
+         }
+         if (alignment_id_unknown){
+             no_alignments += 1;
+             tmp_alignments = realloc(tmp_alignments, sizeof(struct aln) * no_alignments);
+             if (!tmp_alignments){
+                 errno = ENOMEM;
+                 return -1;
+             }
+             tmp_alignments[current_no_alignment].name = malloc(sizeof(char) * (strlen(alignment_id)+1));
+             if (!tmp_alignments[current_no_alignment].name){
+                 errno = ENOMEM;
+                 return -1;
+             }
+             strcpy(tmp_alignments[current_no_alignment].name, alignment_id);
+             tmp_alignments[current_no_alignment].seq = malloc(sizeof(char));
+             tmp_alignments[current_no_alignment].seq[0] = '\0';
+             tmp_alignments[current_no_alignment].seqlen = 0;
+         }
+         token = strtok(NULL, "");
+         seq = strrchr(token, ' ');
+         seq++;
+         if (seq != NULL){
+             uppercase(seq);
+             tmp_alignments[current_no_alignment].seqlen += strlen(seq);
+             tmp_alignments[current_no_alignment].seq = realloc(tmp_alignments[current_no_alignment].seq, sizeof(char) * tmp_alignments[current_no_alignment].seqlen + 1);
+             if (!tmp_alignments[current_no_alignment].seq){
+                 errno = ENOMEM;
+                 return -1;
+             }
+             tmp_alignments[current_no_alignment].seq[tmp_alignments[current_no_alignment].seqlen] = '\0';
+             strncat(tmp_alignments[current_no_alignment].seq, seq, strlen(seq) - 1);
+         }
+     }
+     *alignments = tmp_alignments;
+     fclose(fp);
+     free(line);
+     return no_alignments;
+ }
+*/
 
 /********************************************************************
  *                                                                  *

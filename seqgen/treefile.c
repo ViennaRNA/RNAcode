@@ -287,7 +287,7 @@ void ReadUntil(FILE *fv, char stopChar, char *what)
 	char ch;
 	
 	ch=fgetc(fv);
-	while (!feof(fv) && ch!=stopChar && 
+	while (!feof(fv) && ch!=stopChar &&
 			ch!='(' && ch!=',' && ch!=':' && ch!=')' && ch!=';') 
 		ch=fgetc(fv);
 

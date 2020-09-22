@@ -171,7 +171,7 @@ AUTOMAKE = ${SHELL} /home/work/projects/RNAcode/missing automake-1.15
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -rdynamic -O0 -ggdb3 -Wall -Werror --pedantic 
+CFLAGS = -g -rdynamic -O0 -ggdb3 -Wall --pedantic -Wuninitialized -Winit-self -Wmaybe-uninitialized
 CPP = gcc -E
 CPPFLAGS = 
 CXX = g++

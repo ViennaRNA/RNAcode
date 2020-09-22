@@ -35,6 +35,7 @@ align **Get_Seq_local(align**, option *io,  int rw);
 
 int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
 
+
   calign *cdata;
   option *io;
   t_tree *tree;
@@ -107,6 +108,11 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
     for (n_otu = 0; alignment[n_otu] != NULL; n_otu++);
 
     io->n_otu = n_otu;
+
+    for (int i=0; i<n_otu; i++){
+        printf("seq %d: %s\n", i, alignment[i]->seq);
+    }
+
 
     data = (align **)mCalloc(n_otu, sizeof(align *));
 
@@ -248,7 +254,6 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
           Pars(NULL, tree);
           Get_Tree_Size(tree);
           PhyML_Printf("\n\n. Log likelihood of the current tree: %.*f.", DECIMAL_DIG, tree->c_lnL);
-
           if (tree->io->ancestral == YES) Ancestral_Sequences(tree, YES);
 
           Check_Br_Lens(tree);
@@ -298,8 +303,8 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
           Free_Tree(tree);
         } //Tree done
 
-        if (io->n_data_sets == 1) rewind(io->fp_out_tree);
-        if (most_likely_tree) PhyML_Fprintf(io->fp_out_tree, "%s\n", most_likely_tree);
+        //if (io->n_data_sets == 1) rewind(io->fp_out_tree);
+        //if (most_likely_tree) PhyML_Fprintf(io->fp_out_tree, "%s\n", most_likely_tree);
 
 
         /* Launch bootstrap analysis */
@@ -318,8 +323,8 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
 
 
         /* Print the most likely tree in the output file */
-        if (!io->quiet) PhyML_Printf("\n\n. Printing the most likely tree in file '%s'.", Basename(io->out_tree_file));
-        if (io->n_data_sets == 1) rewind(io->fp_out_tree);
+        //if (!io->quiet) PhyML_Printf("\n\n. Printing the most likely tree in file '%s'.", Basename(io->out_tree_file));
+        //if (io->n_data_sets == 1) rewind(io->fp_out_tree);
 
         t_tree *dum;
         dum = Read_Tree(&most_likely_tree);
@@ -330,9 +335,11 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
         Insert_Duplicates(dum);
         Free(most_likely_tree);
         most_likely_tree = Write_Tree(dum);
+
+        printf("most_likely_tree: %s\n", most_likely_tree);
         Free_Tree(dum);
 
-        PhyML_Fprintf(io->fp_out_tree, "%s\n", most_likely_tree);
+        //PhyML_Fprintf(io->fp_out_tree, "%s\n", most_likely_tree);
 
         if (io->n_trees > 1 && io->n_data_sets > 1) break;
       }
@@ -346,8 +353,8 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
     }
     Free_Model_Complete(mod);
   }
-
-  if (most_likely_tree) Free(most_likely_tree);
+  *treeString = most_likely_tree;
+  //if (most_likely_tree) Free(most_likely_tree);
 
   if (mod->s_opt->n_rand_starts > 1) PhyML_Printf("\n. Best log likelihood: %f\n", best_lnL);
 
@@ -355,10 +362,10 @@ int treeML(const struct aln *alignment[], char** treeString, float* kappa) {
   Free_Model_Basic(mod);
 
   if (io->fp_in_constraint_tree) fclose(io->fp_in_constraint_tree);
-  if (io->fp_in_align)           fclose(io->fp_in_align);
+  //if (io->fp_in_align)           fclose(io->fp_in_align);
   if (io->fp_in_tree)            fclose(io->fp_in_tree);
   if (io->fp_out_lk)             fclose(io->fp_out_lk);
-  if (io->fp_out_tree)           fclose(io->fp_out_tree);
+  //if (io->fp_out_tree)           fclose(io->fp_out_tree);
   if (io->fp_out_trees)          fclose(io->fp_out_trees);
   if (io->fp_out_stats)          fclose(io->fp_out_stats);
   if (io->fp_out_trace)          fclose(io->fp_out_trace);

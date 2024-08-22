@@ -1,4 +1,8 @@
-AM_CPPFLAGS =  -I../phyml -I../seqgen -I../levmar -I../librna
+AM_CPPFLAGS = \
+    -I${top_srcdir}/phyml \
+    -I${top_srcdir}/seqgen \
+    -I${top_srcdir}/levmar \
+    -I${top_srcdir}/librna
 
 bin_PROGRAMS = RNAcode
 
@@ -27,8 +31,8 @@ RNAcode_SOURCES = \
     misc.h
 
 LDADD = \
-    -L../levmar -llevmar \
-    -L../phyml -lPHYML \
-    -L../seqgen -lseqgen \
-    -L../librna -lRNA \
+    -L${top_builddir}/levmar -llevmar \
+    -L${top_builddir}/phyml -lPHYML \
+    -L${top_builddir}/seqgen -lseqgen \
+    -L${top_builddir}/librna -lRNA \
     -lm

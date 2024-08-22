@@ -13,8 +13,8 @@ float lineStep,blockStep,consStep,ssStep,rulerStep,nameStep,numberStep, maxConsB
 float startY,namesX,seqsX, currY;
 
 FILE *outfile;
-float**** Sk_native;   
-float**** Sk_native_rev;  
+extern float**** Sk_native;   
+extern float**** Sk_native_rev;  
 
 void setParameters() {
 

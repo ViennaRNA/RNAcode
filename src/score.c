@@ -38,6 +38,8 @@ extern float**** Sk;
 extern float**** Sk_native;   
 extern float**** Sk_native_rev;  
 
+int ntMap[256]; 
+
 /*********************************************************************
   getScoringMatrix
 

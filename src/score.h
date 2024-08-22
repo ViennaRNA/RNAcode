@@ -76,7 +76,7 @@ struct _backtrackData {
 
 
 /* Values set in main() */
-int ntMap[256]; 
+extern int ntMap[256]; 
 
 extern int transcode[4][4][4];
 
